@@ -229,7 +229,9 @@
                 diskon = (diskon * total_tagihan) / 100
                 new_total = total_tagihan - diskon
             }
-            if(new_total < 0 || diskon > new_total){
+            if(new_total < 0 || diskon > total_tagihan){
+                console.log(diskon)
+                console.log(new_total)
                 new_total = 0
             }
             
