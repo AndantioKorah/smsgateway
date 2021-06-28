@@ -230,8 +230,6 @@
                 new_total = total_tagihan - diskon
             }
             if(new_total < 0 || diskon > total_tagihan){
-                console.log(diskon)
-                console.log(new_total)
                 new_total = 0
             }
             
