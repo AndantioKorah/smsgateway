@@ -7,9 +7,9 @@ class C_Parameter extends CI_Controller
         parent::__construct();
         $this->load->model('general/m_general');
         $this->load->model('parameter/m_parameter', 'parameter');
-        if($this->general_library->getRole() != 'programmer' && $this->general_library->getUserName() != 'prog' && !$this->general_library->isSessionExpired()){
-            redirect('logout');
-        };
+        // if($this->general_library->getRole() != 'programmer' && $this->general_library->getUserName() != 'prog' && !$this->general_library->isSessionExpired()){
+        //     redirect('logout');
+        // };
     }
 
     public function settingApps(){

@@ -73,13 +73,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$hostname = 'localhost';
+$username = 'root';
+$password = encrypt('nikita', DEVELOPER);
+$database = 'db_pos';
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	// 'password' => encrypt('nikita', DEVELOPER),
-	'password' => '',
-	'database' => 'db_pos_get_coffee',
+	'hostname' => $hostname,
+	'username' => $username,
+	'password' => $password,
+	'database' => $database,
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -98,11 +102,10 @@ $db['default'] = array(
 
 $db['main'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	// 'password' => encrypt('nikita', DEVELOPER),
-	'password' => '',
-	'database' => 'db_pos_get_coffee',
+	'hostname' => $hostname,
+	'username' => $username,
+	'password' => $password,
+	'database' => $database,
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
