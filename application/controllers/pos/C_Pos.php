@@ -211,4 +211,17 @@ class C_Pos extends CI_Controller{
         $this->load->view('pos/V_CetakPembayaran', $data);
     }
 
+    public function loadTransaksiForMerge($id = 0){
+        list($data['result'], $data['current_transaksi'], $data['list_merge']) = $this->pos->getTransaksiForMerge($id);
+        $this->load->view('pos/V_ListTransaksiForMerge', $data);
+    }
+
+    public function mergeBill($id_merge, $parent_id){
+        echo json_encode($this->pos->mergeBill($id_merge, $parent_id));
+    }
+
+    public function deleteMerge($id_merge, $parent_id){
+        echo json_encode($this->pos->deleteMerge($id_merge, $parent_id));
+    }
+
 }

@@ -2,8 +2,8 @@
     <style>
         .form-control-custom{
             padding: 5px !important;
-            height: 29px !important;
-            font-size: 23px !important;
+            height: 55px !important;
+            font-size: 50px !important;
             /* border: none; */
             border-bottom: 1px solid #c1c1c1;
             border-radius: 5px;
@@ -13,8 +13,8 @@
             padding: 5px !important;
             /* height: 85px !important;
             font-size: 80px !important; */
-            height: 29px !important;
-            font-size: 23px !important;
+            height: 55px !important;
+            font-size: 50px !important;
             /* border: none; */
             border-bottom: 1px solid #c1c1c1;
             border-radius: 5px;
@@ -33,108 +33,97 @@
             color: white;
             padding: 5px;
             border-radius: 5px;
-            font-size: 12px;
         }
     </style>
     <form id="form_pembayaran">
         <div class="row mt-3">
             <div class="col-6 border-right">
                 <div class="row">
-                    <div class="col-4">
-                        <label class="label_pembayaran">Tanggal Pembayaran</label>
+                    <div class="col-12">
+                        <label>Tanggal Pembayaran</label>
+                        <input class="form-control realdatetimethis" readonly id="tanggal_pembayaran" name="tanggal_pembayaran" />
                     </div>
-                    <div class="col-8">
-                        <input class="form-control form-control-sm realdatetimethis" readonly id="tanggal_pembayaran" name="tanggal_pembayaran" />
+                    <div class="col-12">
+                        <label>Nama Pembayar</label>
+                        <input autocomplete="off" class="form-control" name="nama_pembayar" value="<?=$transaksi['nama']?>" />
                     </div>
-
-                    <div class="col-4 mt-2">
-                        <label class="label_pembayaran">Nama Pembayar</label>
-                    </div>
-                    <div class="col-8 mt-2">
-                        <input autocomplete="off" class="form-control form-control-custom" name="nama_pembayar" value="<?=$transaksi['nama']?>" />
-                    </div>
-
-                    <div class="col-4 mt-2">
-                        <label class="label_pembayaran">Cara Bayar</label>
-                    </div>
-                    <div class="col-8 mt-2">
-                        <select class="form-control form-control-sm select2_pembayaran select2-navy" style="width: 100%" id="cara_bayar" data-dropdown-css-class="select2-navy" name="cara_bayar">
+                    <div class="col-12">
+                        <label>Cara Bayar</label>
+                        <select class="form-control select2_pembayaran select2-navy" style="width: 100%" id="cara_bayar" data-dropdown-css-class="select2-navy" name="cara_bayar">
                             <option value="tunai">Tunai</option>
                             <option value="card">Kartu Debit/Credit</option>
                             <option value="transfer">Transfer</option>
                         </select>
                     </div>
-                    <div class="col-4 mt-2 div_non_tunai" style="display: none;">
-                        <label class="label_pembayaran">Nomor Referensi</label>
-                    </div>
-                    <div class="col-8 mt-2 div_non_tunai" style="display: none;">
-                        <input autocomplete="off" class="form-control form-control-custom" name="nomor_referensi" />
+                    <div class="col-12" id="div_non_tunai" style="display: none;">
+                        <label>Nomor Referensi</label>
+                        <input autocomplete="off" class="form-control" name="nomor_referensi" />
                     </div>
                 </div>
             </div>
             <div class="col-6">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-12">
                         <label class="label_pembayaran">Sub Total</label>
                     </div>
-                    <!-- <div class="col-2">
-                        <label style="font-size: 15px;">Rp </label>
-                    </div> -->
-                    <div class="col-9">
+                    <div class="col-2">
+                        <label style="font-size: 35px;">Rp </label>
+                    </div>
+                    <div class="col-10">
                         <input id="total_biaya_pemb" autocomplete="off" oninput="countTotalBiaya()" name="new_total_biaya"
                         class="form-control form-control-custom format_currency_this text-right" value="<?=formatCurrencyWithoutRp($transaksi['total_biaya'])?>" />
                     </div>
-                    <!-- <div class="col-12"><hr></div> -->
+                    <div class="col-12"><hr></div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-3">
+                <div class="row">
+                    <div class="col-12">
                         <label class="label_pembayaran">Diskon</label>
                     </div>
-                    <!-- <div class="col-2">
-                        <label id="diskon_label" style="font-size: 15px;">Rp </label>
-                    </div> -->
-                    <div class="col-9">
+                    <div class="col-2">
+                        <label id="diskon_label" style="font-size: 35px;">Rp </label>
+                    </div>
+                    <div class="col-10">
                         <input id="diskon_nominal" autocomplete="off" oninput="countTotalBiaya()" name="diskon_nominal"
                         class="form-control form-control-custom format_currency_this text-right" placeholder="0" />
                         <input id="diskon_presentase" autocomplete="off" style="display:none" oninput="countTotalBiaya()" name="diskon_presentase"
                         class="form-control form-control-custom text-right" placeholder="%" />
                     </div>
-                    <!-- <div class="col-12"><hr></div> -->
+                    <div class="col-12"><hr></div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-3">
+                <div class="row">
+                    <div class="col-12">
                         <label class="label_pembayaran">Total Biaya</label>
                     </div>
-                    <!-- <div class="col-2">
-                        <label style="font-size: 15px;">Rp </label>
-                    </div> -->
-                    <div class="col-9">
+                    <div class="col-2">
+                        <label style="font-size: 35px;">Rp </label>
+                    </div>
+                    <div class="col-10">
                         <input id="total_biaya_final_pemb" autocomplete="off" readonly name="new_total_biaya_after_diskon"
                         class="form-control form-control-custom-bigger format_currency_this text-right" value="<?=formatCurrencyWithoutRp($transaksi['total_biaya'])?>" />
                     </div>
-                    <!-- <div class="col-12"><hr></div> -->
+                    <div class="col-12"><hr></div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-3">
+                <div class="row">
+                    <div class="col-12">
                         <label class="label_pembayaran">Jumlah Pembayaran</label>
                     </div>
-                    <!-- <div class="col-2">
-                        <label style="font-size: 15px;">Rp </label>
-                    </div> -->
-                    <div class="col-9">
+                    <div class="col-2">
+                        <label style="font-size: 35px;">Rp </label>
+                    </div>
+                    <div class="col-10">
                         <input id="jumlah_pembayaran_pemb" oninput="countSelisih()" autocomplete="off" name="jumlah_pembayaran"
                         class="form-control form-control-custom-bigger format_currency_this text-right" value="<?=formatCurrencyWithoutRp($transaksi['total_biaya'])?>" />
                     </div>
-                    <!-- <div class="col-12"><hr><div> -->
+                    <div class="col-12"><hr><div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-3">
+                <div class="row">
+                    <div class="col-12">
                         <label id="label_kembalian" class="label_pembayaran">Kembalian</label>
                     </div>
-                    <!-- <div class="col-2">
-                        <label style="font-size: 15px;">Rp </label>
-                    </div> -->
-                    <div class="col-9">
+                    <div class="col-2">
+                        <label style="font-size: 35px;">Rp </label>
+                    </div>
+                    <div class="col-10">
                         <input id="kembalian_pemb" readonly autocomplete="off" name="kembalian"
                         class="form-control form-control-custom-bigger format_currency_this text-right" value="0" />
                     </div>
@@ -306,9 +295,9 @@
         $('#cara_bayar').on('change', function(){
             let val = $(this).val()
             if(val == 'tunai'){
-                $('.div_non_tunai').hide()
+                $('#div_non_tunai').hide()
             } else {
-                $('.div_non_tunai').show()
+                $('#div_non_tunai').show()
             }
         })
     </script>

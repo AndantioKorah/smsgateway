@@ -218,7 +218,7 @@
         }
 
         public function loadDetailTransaksi($id){
-            return $this->db->select('b.nama_item, a.harga_per_item, a.qty, a.total, a.id, a.id_t_transaksi, a.catatan')
+            return $this->db->select('b.nama_item, a.harga_per_item, a.qty, a.total, a.id, a.id_t_transaksi, a.catatan, a.flag_merge')
                             ->from('t_transaksi_detail a')
                             ->join('m_item_barang b', 'a.id_m_item_barang = b.id')
                             ->where('a.flag_active', 1)
@@ -413,6 +413,174 @@
             else {
                 $this->db->trans_commit();
             }
+        }
+
+        public function getTransaksiForMerge($id = 0){
+            $current_transaksi = $this->db->select('*')
+                                        ->from('t_transaksi')
+                                        ->where('id', $id)
+                                        ->where('flag_active', 1)
+                                        ->get()->row_array();
+
+            if($current_transaksi){
+                $result = $this->db->select('*')
+                ->from('t_transaksi')
+                ->where('status !=', '2')
+                ->where('id !=', $id)
+                ->where('flag_active', 1)
+                ->where('DATE(tanggal_transaksi)', formatDateOnlyForEdit($current_transaksi['tanggal_transaksi']))
+                ->order_by('tanggal_transaksi', 'desc')
+                ->get()->result_array();
+
+                $transaksi_merge = $this->db->select('*')
+                ->from('t_transaksi')
+                ->where('id_transaksi_merge', $current_transaksi['id'])
+                ->order_by('tanggal_transaksi', 'desc')
+                ->get()->result_array();
+                return [$result, $current_transaksi, $transaksi_merge];
+            } else {
+                return null;
+            }
+        }
+
+        public function mergeBill($id_merge, $parent_id){
+            $result['code'] = 0;
+            $result['message'] = 'Merge Berhasil';
+            $result['new_total'] = 0;
+
+            $parent = $this->db->select('*')
+                                ->from('t_transaksi')
+                                ->where('id', $parent_id)
+                                ->where('flag_active', 1)
+                                ->get()->row_array();
+
+            $merge = $this->db->select('*')
+                                ->from('t_transaksi')
+                                ->where('id', $id_merge)
+                                ->where('flag_active', 1)
+                                ->get()->row_array();
+
+            if(!$parent || !$merge){
+                $result['code'] = 1;
+                $result['message'] = 'Terjadi Kesalahan';
+            } else {
+                $this->db->trans_begin();
+                $merge_detail = $this->db->select('*')
+                ->from('t_transaksi_detail')
+                ->where('id_t_transaksi', $merge['id'])
+                ->where('flag_active', 1)
+                ->get()->result_array();
+                if(!$merge_detail){
+                    $result['code'] = 1;
+                    $result['message'] = 'Terjadi Kesalahan';
+                } else {
+                    $new_detail = null;
+                    $i = 0;
+                    foreach($merge_detail as $md){
+                        $new_detail[$i]['id_t_transaksi'] = $parent['id'];
+                        $new_detail[$i]['id_m_item_barang'] = $md['id_m_item_barang'];
+                        $new_detail[$i]['qty'] = $md['qty'];
+                        $new_detail[$i]['harga_per_item'] = $md['harga_per_item'];
+                        $new_detail[$i]['total'] = $md['total'];
+                        $new_detail[$i]['flag_merge'] = 1;
+                        $i++;
+                    }
+                    $this->db->insert_batch('t_transaksi_detail', $new_detail);
+
+                    $this->db->where('id', $merge['id'])
+                    ->update('t_transaksi', [
+                        'flag_active' => 0,
+                        'flag_merge' => 1,
+                        'id_transaksi_merge' => $parent['id'],
+                        'updated_by' => $this->general_library->getId(),
+                    ]);
+
+                    $this->db->where('id_t_transaksi', $merge['id'])
+                    ->update('t_transaksi_detail', [
+                        'flag_active' => 0,
+                        'updated_by' => $this->general_library->getId(),
+                    ]);
+
+                    $new_total_tagihan = floatval($parent['total_biaya']) + floatval($merge['total_biaya']);
+                    $result['new_total'] = $new_total_tagihan;
+                    $this->db->where('id', $parent['id'])
+                    ->update('t_transaksi', [
+                        'total_biaya' => $new_total_tagihan,
+                        'updated_by' => $this->general_library->getId(),
+                    ]);
+                }
+                if($this->db->trans_status() == FALSE){
+                    $this->db->trans_rollback();
+                    $result['code'] = 1;
+                    $result['message'] = 'Terjadi Kesalahan';
+                } else {
+                    $this->db->trans_commit();
+                }
+            }
+            return $result;
+        }
+
+        public function deleteMerge($id_merge, $parent_id){
+            $result['code'] = 0;
+            $result['message'] = 'Delete Merge Berhasil';
+            $result['new_total'] = 0;
+
+            $parent = $this->db->select('*')
+                                ->from('t_transaksi')
+                                ->where('id', $parent_id)
+                                ->where('flag_active', 1)
+                                ->get()->row_array();
+
+            $merge = $this->db->select('*')
+                                ->from('t_transaksi')
+                                ->where('id', $id_merge)
+                                // ->where('flag_active', 1)
+                                ->get()->row_array();
+
+            if(!$parent || !$merge){
+                $result['code'] = 1;
+                $result['message'] = 'Terjadi Kesalahan';
+            } else {
+                $this->db->trans_begin();
+
+                $this->db->where('id', $merge['id'])
+                ->update('t_transaksi', [
+                    'flag_active' => 1,
+                    'flag_merge' => 0,
+                    'id_transaksi_merge' => 0,
+                    'updated_by' => $this->general_library->getId(),
+                ]);
+
+                $this->db->where('id_t_transaksi', $merge['id'])
+                ->update('t_transaksi_detail', [
+                    'flag_active' => 1,
+                    'updated_by' => $this->general_library->getId(),
+                ]);
+
+                $this->db->where('id_t_transaksi', $parent['id'])
+                ->where('flag_merge', 1)
+                ->update('t_transaksi_detail', [
+                    'flag_active' => 0,
+                    'updated_by' => $this->general_library->getId(),
+                ]);
+
+                $new_total_tagihan = floatval($parent['total_biaya']) - floatval($merge['total_biaya']);
+                $result['new_total'] = $new_total_tagihan;
+                $this->db->where('id', $parent['id'])
+                    ->update('t_transaksi', [
+                        'total_biaya' => $new_total_tagihan,
+                        'updated_by' => $this->general_library->getId(),
+                    ]);
+                
+                if($this->db->trans_status() == FALSE){
+                    $this->db->trans_rollback();
+                    $result['code'] = 1;
+                    $result['message'] = 'Terjadi Kesalahan';
+                } else {
+                    $this->db->trans_commit();
+                }
+            }
+            return $result;
         }
 	}
 ?>

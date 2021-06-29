@@ -8,7 +8,7 @@
     </div>
     <div class="col-12 text-center">
         <h3>WELCOME <strong><?=$this->general_library->getNamaUser();?></strong> !</h3>
-        <img class="img-circle elevation-2" src="<?=$this->general_library->getProfilePicture()?>" alt="User Image">
+        <img class="img-circle elevation-2" style="max-width: 300px; max-height: 300px;" src="<?=$this->general_library->getProfilePicture()?>" alt="User Image">
     </div>
     <div class="col-12 text-center">
         <h4 style="font-weight: bold;" id="live_date_time_welcome" class="nav-link"></h4>

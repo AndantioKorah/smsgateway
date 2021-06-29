@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <?php $no = 1; $total = 0; foreach($result as $rs){ ?>
-                    <tr>
+                    <tr class=<?=$rs['flag_merge'] == 1 ? "bg-info" : "" ?>>
                         <td class="text-center"><?=$no++;?></td>
                         <td class="text-left"><?=$rs['nama_item']?></td>
                         <td class="text-left"><?=formatCurrency($rs['harga_per_item'])?></td>

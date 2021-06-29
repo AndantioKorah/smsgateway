@@ -239,7 +239,9 @@
                     </form>
                 </div>
                 <div id="merge_tab" class="tab-pane fade">
-                    MERGE
+                    <div class="row mt-2">
+                        <div class="col-12" id="list_transaksi_for_merge"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -262,6 +264,14 @@
     $(function(){
         $('.select2_modal_this').select2({
             dropdownParent: $('#selected_transaksi_modal')
+        })
+
+        $('#li_merge_tab').on('click', function(){
+            $('#list_transaksi_for_merge').html('')
+            $('#list_transaksi_for_merge').append(divLoaderNavy)
+            $('#list_transaksi_for_merge').load('<?=base_url("pos/C_Pos/loadTransaksiForMerge/".$transaksi['id'])?>', function(){
+                $('#laoder').hide()            
+            })
         })
         
         <?php if($pembayaran){ ?>
