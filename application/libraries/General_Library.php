@@ -16,8 +16,8 @@ class General_library
     }
 
     public function getBiosSerialNum(){
-        $info = explode("        ", trim($this->bios_serial_num));
-        return trim($info[1]);
+        $info = $this->bios_serial_num;
+        return trim($info);
     }
 
     public function refreshUserLoggedInData(){
@@ -83,7 +83,6 @@ class General_library
     }
 
     public function isNotThisDevice(){
-		return false;
         $exp_app = $this->getParams('PARAM_BIOS_SERIAL_NUMBER');
         if(DEVELOPMENT_MODE == 0){
             if($this->getBiosSerialNum() != $exp_app['parameter_value']){
@@ -92,7 +91,7 @@ class General_library
                 return false;
             }
         } else {
-            return true;
+            return false;
         }
     }
 
