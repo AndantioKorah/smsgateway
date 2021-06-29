@@ -5,5 +5,6 @@
     <div class="float-right d-none d-sm-block">
         <label><i class="fa fa-stopwatch"></i> <?=formatDate($params_exp_app['parameter_value'])?> (<a class="count_down_exp_app"></a>)</label>
     </div>
-    <strong><?=COPYRIGHT?> <a target="_blank" href="<?=base_url('assets/user_manual/').VERSION.'.pdf'?>">User Manual <?=VERSION?> </a></strong>
+    <strong><?=COPYRIGHT?>
+    <!-- <a target="_blank" href="<?=base_url('assets/user_manual/').VERSION.'.pdf'?>">User Manual <?=VERSION?> </a></strong> -->
 </footer>
