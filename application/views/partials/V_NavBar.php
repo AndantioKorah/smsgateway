@@ -42,7 +42,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
             <img src="<?=$this->general_library->getProfilePicture()?>" style="height: 25px; width:25px; margin-right: 1px;" class="img-circle elevation-2" alt="User Image">
-            <?=$this->general_library->getUserName()?>
+            <?=$this->general_library->getNamaUser()?>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <!-- <div class="dropdown-divider"></div> -->
