@@ -25,6 +25,6 @@ class C_Parameter extends CI_Controller
     }
 
     public function biosSerialNumber(){
-        dd($this->general_library->getBiosSerialNum());
+        dd(encrypt('nikita', $this->general_library->getBiosSerialNum()));
     }
 }

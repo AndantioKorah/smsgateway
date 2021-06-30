@@ -8,12 +8,16 @@
         border: 1px solid #001F3F !important;
         transition: .2s ease-in-out;
     }
+
+    .custom_label{
+        font-size: 14px !important; 
+    }
 </style>
 <div class="row">
     <div class="col-8">
         <div class="card card-default">
             <div class="card-header card_header" style="cursor: pointer;" data-card-widget="collapse">
-                <h3 class="card-title">Buat Transaksi Baru</h3>
+                <h3 class="card-title"><strong>Buat Transaksi Baru</strong></h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                 </div>
@@ -22,28 +26,30 @@
                 <form id="form_new_transaction">
                     <div class="row">
                         <div class="col-3">
-                            <label>Tanggal & Jam</label>
+                            <label class="custom_label">Tanggal & Jam</label>
                             <input class="form-control form-control-sm datetimepickermaxtodaythis realdatetimethis" readonly autocomplete="off" name="tanggal_transaksi" id="tanggal_transaksi"/>
                         </div>
                         <div class="col-3">
-                            <label>Nama</label>
+                            <label class="custom_label">Nama</label>
                             <input class="form-control form-control-sm" name="nama" id="nama"/>
                         </div>
                         <div class="col-2">
-                            <label>Nomor Meja</label>
+                            <label class="custom_label">Nomor Meja</label>
                             <input class="form-control form-control-sm" autocomplete="off" name="nomor_meja" id="nomor_meja"/>
                         </div>
                         <div class="col-2">
-                            <label>Jumlah Orang</label>
+                            <label class="custom_label">Jumlah Orang</label>
                             <input class="form-control form-control-sm" autocomplete="off" name="jumlah_orang" id="jumlah_orang"/>
                         </div>
                         <div class="col-2">
-                            <label>Jenis Transaksi</label>
+                            <label class="custom_label">Jenis Transaksi</label>
                             <select class="form-control form-control-sm select2_this" data-dropdown-css-class="select2-navy" name="jenis_transaksi">
                                 <option value="dine in">Dine In</option>
                                 <option value="take away">Take Away</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-9"></div>
                         <div class="col-3 mt-2 text-right">
                             <button accesskey="t" type="submit" class="btn btn-sm btn-navy"><i class="fas fa-plus"></i> Tambah</button>
@@ -56,7 +62,7 @@
     <div class="col-4">
         <div class="card card-default">
             <div class="card-header card_header" style="cursor: pointer;" data-card-widget="collapse">
-                <h3 class="card-title">Cari Transaksi</h3>
+                <h3 class="card-title"><strong>Cari Transaksi</strong></h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                 </div>
@@ -65,7 +71,7 @@
                 <form id="cari_transaksi_by_tanggal">
                     <div class="row">
                         <div class="col-12">
-                            <label>Tanggal Transaksi</label>
+                            <label class="custom_label">Tanggal Transaksi</label>
                             <input id="search_tanggal_transaksi" type="date" class="form-control form-control-sm" value="<?=date('Y-m-d')?>" />
                         </div>
                         <div class="col-9"></div>
@@ -82,7 +88,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-6 text-left">
-                        <h3 class="card-title" id="list_transaksi_title">List Transaksi</h3>
+                        <h3 class="card-title" id="list_transaksi_title"><strong>List Transaksi</strong></h3>
                     </div>
                     <div class="col-6 text-right">
                         <div class="row">

@@ -25,8 +25,8 @@
                 return $flag_valid;
             }
             $param_bios_serial_number = $this->getOne('m_parameter', 'parameter_name', 'PARAM_BIOS_SERIAL_NUMBER');
-            $info = $this->bios_serial_num;
-            if(trim($info) != trim($param_bios_serial_number['parameter_value'])){
+            $info = encrypt('nikita', trim($this->bios_serial_num));
+            if($info != trim($param_bios_serial_number['parameter_value'])){
                 $this->session->set_flashdata('message', 'Device tidak terdaftar');
                 if(DEVELOPMENT_MODE == 0){
                     $flag_valid = 0;

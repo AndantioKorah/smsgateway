@@ -36,6 +36,7 @@
                             ->where('YEAR(tanggal_transaksi)', $year)
                             ->where('MONTH(tanggal_transaksi)', $month)
                             ->where('DAY(tanggal_transaksi)', $date)
+                            ->order_by('status')
                             ->order_by('created_date', 'desc')
                             ->get()->result_array();
         }

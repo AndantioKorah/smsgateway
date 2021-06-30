@@ -1,6 +1,6 @@
 <?php if($result){ ?>
     <div class="col-12">
-        <table class="table table-striped table-hover data_table_this">
+        <table class="table table-striped table-sm table-hover data_table_this">
             <thead>
                 <th class="text-center">No</th>
                 <th class="text-left">Item</th>

@@ -11,11 +11,11 @@
 
     .label_p{
         color: black;
-        font-size: 15px !important;
+        font-size: 12px !important;
     }
 
-    .custom_label{
-        font-size: 35px;
+    .custom_label_biaya{
+        font-size: 35px !important;
     }
 
     .card-success{
@@ -30,11 +30,11 @@
 <?php
     if($transaksi){ 
         foreach($transaksi as $t){
-        $card_header_style = 'card-default';
-        $card_header_text = '';
+        $card_header_style = 'card-success';
+        $card_header_text = 'text-white';
         if($t['status'] == '2'){
-            $card_header_style = 'card-success';
-            $card_header_text = 'text-white';
+            $card_header_style = 'card-default';
+            $card_header_text = 'text-default';
         } else if ($t['status'] == '3'){
             $card_header_style = 'card-danger';
             $card_header_text = 'text-white';
@@ -48,7 +48,11 @@
                     <div class="card-header <?=$card_header_style?>">
                         <div class="row">
                             <div class="col-9">
-                                <h3 class="card-title change_this_text <?=$card_header_text?>"><?=strtoupper(getStatusTransaksi($t['status'])).' / '?><?=strtoupper($t['jenis_transaksi'])?></h3>
+                                <h3 class="card-title change_this_text <?=$card_header_text?>">
+                                    <strong>
+                                        <?=strtoupper(getStatusTransaksi($t['status'])).' / '?><?=strtoupper($t['jenis_transaksi'])?>
+                                    </strong>
+                                </h3>
                             </div>
                             <div class="col-3 text-right">
                                 <!-- <?php if($t['status'] != 2){ 
@@ -66,7 +70,7 @@
                         <div class="row">
                             <div class="col-6 d-inline-flex" style="padding-top: 22px;">
                                 <label class="change_this_text">Rp</label>
-                                <label class="custom_label change_this_text"><?=formatCurrencyWithoutRp($t['total_biaya'])?></label>
+                                <label class="custom_label_biaya change_this_text"><?=formatCurrencyWithoutRp($t['total_biaya'])?></label>
                             </div>
                             <div class="col-6 text-right">
                                 <label class="change_this_text" style="height: 0px; font-weight: bold"><?=$t['nama']?></label><br>

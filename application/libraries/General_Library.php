@@ -83,11 +83,10 @@ class General_library
     }
 
     public function isNotThisDevice(){
-        $exp_app = $this->getParams('PARAM_BIOS_SERIAL_NUMBER');
+        $param_bios = $this->getParams('PARAM_BIOS_SERIAL_NUMBER');
         if(DEVELOPMENT_MODE == 0){
-            echo ($exp_app['parameter_value']);
-            dd($this->getBiosSerialNum());
-            if($this->getBiosSerialNum() != $exp_app['parameter_value']){
+            $info = encrypt('nikita', trim($this->getBiosSerialNum()));
+            if($info != trim($param_bios['parameter_value'])){
                 return true;
             } else {
                 return false;
