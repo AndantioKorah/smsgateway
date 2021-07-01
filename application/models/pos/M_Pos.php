@@ -553,6 +553,7 @@
                 ]);
 
                 $this->db->where('id_t_transaksi', $merge['id'])
+                ->where('flag_merge', 0)
                 ->update('t_transaksi_detail', [
                     'flag_active' => 1,
                     'updated_by' => $this->general_library->getId(),
