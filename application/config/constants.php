@@ -94,10 +94,11 @@ define('KODE_TRANSAKSI_PEMBELIAN', '04');
 define('VERSION', 'Version 1.0');
 define('TITLES', 'NiKita POS');
 define('PROGRAMMER_PHONE', '082115407812');
-define('COPYRIGHT', 'Copyright &copy; 2020 <strong>NiKita TEAM</strong>');
+define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>NiKita TEAM</strong>');
 define('TRANSAKSI_TABLE_VIEW', 1);
 define('USE_PRINT', '0');
 define('URI_UPLOAD', './assets/'); //local with xampp
+define('TELEGRAM_ID', '713399901');
 
 // DATA TOKO
 define('NAMA_TOKO', 'GET COFFEE');

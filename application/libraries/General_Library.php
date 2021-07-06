@@ -13,6 +13,7 @@ class General_library
         $this->params = $this->nikita->session->userdata('params');
         $this->bios_serial_num = shell_exec('wmic bios get serialnumber 2>&1');
         date_default_timezone_set("Asia/Singapore");
+        $this->nikita->load->model('general/M_General', 'm_general');
     }
 
     public function getBiosSerialNum(){
@@ -25,6 +26,16 @@ class General_library
     }
 
     public function refreshParams(){
+        $params = $this->nikita->m_general->getAll('m_parameter');
+        $this->nikita->session->set_userdata('params', null);
+        $this->nikita->session->set_userdata([
+            'params' => $params
+        ]);
+        if($params){
+            foreach($params as $p){
+                $this->nikita->session->set_userdata([$p['parameter_name'] => $p]);
+            }
+        }
         $this->params = $this->nikita->session->userdata('params');
         if($this->params){
             foreach($this->params as $p){

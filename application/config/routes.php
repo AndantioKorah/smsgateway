@@ -90,4 +90,9 @@ $route['laporan/pembayaran'] = 'laporan/C_Laporan/laporanPembayaran';
 $route['laporan/rekap/harian'] = 'laporan/C_Laporan/rekapHarian';
 
 $route['apps/setting'] = 'parameter/C_Parameter/settingApps';
+$route['apps/setting/expdate'] = 'parameter/C_Parameter/extendExpireDate';
 $route['bios'] = 'parameter/C_Parameter/biosSerialNumber';
+
+$route['merchant'] = 'merchant/C_Merchant/merchant';
+
+$route['telegram/bot'] = 'telegram/C_Telegram/bot';

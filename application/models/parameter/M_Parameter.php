@@ -11,7 +11,7 @@
             $this->db->insert($tablename, $data);
         }
 
-        public function updateExpDateApp($data){
+        public function updateAppSetting($data){
             $user = $this->db->select('*, a.nama as nama_user, b.nama as nama_role')
                             ->from('m_user a')
                             ->join('m_role b', 'a.id_m_role = b.id')
@@ -40,6 +40,9 @@
                     if($data['parameter_value'] < $data['old_parameter_value']){
                         return ['message' => 'Tidak boleh kurang dari Last Login sebelumnya'];
                     }
+                    $this->db->where('parameter_name', $data['parameter_name'])
+                            ->update('m_parameter', ['parameter_value' => $data['parameter_value'], 'updated_by' => $this->general_library->getId()]);
+                } else if($data['parameter_name'] == 'PARAM_MERCHANT_CODE'){
                     $this->db->where('parameter_name', $data['parameter_name'])
                             ->update('m_parameter', ['parameter_value' => $data['parameter_value'], 'updated_by' => $this->general_library->getId()]);
                 }
