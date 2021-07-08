@@ -5,7 +5,7 @@ class C_Login extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('general/m_general');
+        $this->load->model('general/M_General', 'm_general');
     }
 
     public function login(){

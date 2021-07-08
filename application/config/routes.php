@@ -95,4 +95,5 @@ $route['bios'] = 'parameter/C_Parameter/biosSerialNumber';
 
 $route['merchant'] = 'merchant/C_Merchant/merchant';
 
-$route['telegram/bot'] = 'telegram/C_Telegram/bot';
+//webservice
+$route['code/validate'] = 'webservice/C_Webservice/codeValidation';

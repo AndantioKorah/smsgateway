@@ -8,6 +8,9 @@ class C_Merchant extends CI_Controller
         $this->load->model('general/M_General', 'general');
         $this->load->model('merchant/M_Merchant', 'merchant');
         $this->load->library('telegramlib');
+        if($this->general_library->getRole() != 'programmer' && $this->general_library->getUserName() != 'prog' && !$this->general_library->isSessionExpired()){
+            redirect('logout');
+        };
     }
 
     public function merchant(){
@@ -37,5 +40,5 @@ class C_Merchant extends CI_Controller
         $res = $this->merchant->createNewCode($this->input->post());
         echo json_encode($res);
     }
-    
+
 }

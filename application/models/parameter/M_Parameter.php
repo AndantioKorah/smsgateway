@@ -66,5 +66,20 @@
             }
             return ['message' => 'Terjadi Kesalahan'];
         }
+
+        public function extendExpireDate($data){
+            $code = 0;
+            if($data){
+                $this->db->where('parameter_name', 'PARAM_EXP_APP')
+                        ->update('m_parameter',
+                        [
+                            'parameter_value' => $data['exp_date'],
+                            'updated_by' => $this->general_library->getId()
+                        ]);
+            } else {
+                $code = 1;
+            }
+            return $code;
+        }
 	}
 ?>

@@ -6,6 +6,7 @@
             parent::__construct();
             $this->db = $this->load->database('main', true);
             $this->load->library('telegramlib');
+            date_default_timezone_set("Asia/Singapore");
         }
 
         public function insert($tablename, $data){
@@ -34,9 +35,9 @@
                                             ->where('id', $data['id_m_merchant'])
                                             ->where('flag_active', 1)
                                             ->get()->row_array();
-
-                $data_telegram['message'] = 'Generated Code untuk '.$resp['merchant']['nama_merchant'].' adalah '.$insert_data['generate_code'].
-                                            ' diperpanjang sampai '.formatDateOnly($insert_data['exp_date']);
+                $data_telegram['message'] = '['.$resp['merchant']['nama_merchant'].'] - Generated Code: '.$insert_data['generate_code'].' ('.formatDateOnly($insert_data['exp_date']).')';
+                // $data_telegram['message'] = 'Generated Code untuk '.$resp['merchant']['nama_merchant'].' adalah '.$insert_data['generate_code'].
+                //                             ' diperpanjang sampai '.formatDateOnly($insert_data['exp_date']);
                 $req = $this->telegramlib->send_curl_exec('GET', 'sendMessage', TELEGRAM_ID, $data_telegram);
                 
                 if(!$req['result']){

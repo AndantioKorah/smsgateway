@@ -5,8 +5,8 @@ class C_User extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('general/m_general', 'general');
-        $this->load->model('user/m_user', 'user');
+        $this->load->model('general/M_General', 'general');
+        $this->load->model('user/M_User', 'user');
         if(!$this->general_library->isLoggedIn(['kasir'])){
             redirect('logout');
         };
