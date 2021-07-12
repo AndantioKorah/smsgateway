@@ -46,6 +46,20 @@
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <!-- <div class="dropdown-divider"></div> -->
+            <a href="<?=base_url('apps/setting/expdate')?>" class="dropdown-item">
+                <i class="fa fa-clock mr-2"></i> Extend Expire Date
+            </a>
+            <div class="dropdown-divider"></div>
+            <?php if($this->general_library->getRole() == 'programmer' && $this->general_library->getNamaUser() == 'tiokors'){ ?>
+              <a href="<?=base_url('apps/setting')?>" class="dropdown-item">
+                  <i class="fa fa-cogs mr-2"></i> Pengaturan
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="<?=base_url('merchant')?>" class="dropdown-item">
+                  <i class="fa fa-store mr-2"></i> Merchant
+              </a>
+            <?php } ?>
+            <div class="dropdown-divider"></div>
               <a href="<?=base_url('user/setting')?>" class="dropdown-item">
                   <i class="fa fa-users mr-2"></i> Account
               </a>
