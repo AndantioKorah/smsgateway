@@ -1,2 +1,2 @@
-# pos
-NiKita POS
+# LAB
+NiKita LAB
