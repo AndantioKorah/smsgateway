@@ -167,7 +167,7 @@ class General_library
 
     public function encrypt($username, $password)
     {
-        $key = 'nikita_sakobar';
+        $key = 'nikitalab';
         $userKey = substr($username, -3);
         $passKey = substr($password, -3);
         $generatedForHash = strtoupper($userKey).$username.$key.strtoupper($passKey).$password;

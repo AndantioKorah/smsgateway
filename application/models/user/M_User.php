@@ -12,9 +12,8 @@
         }
 
         public function getAllUsers(){
-            return $this->db->select('*, a.nama as nama_user, b.nama as nama_role')
+            return $this->db->select('*, a.nama as nama_user')
                             ->from('m_user a')
-                            ->join('m_role b', 'a.id_m_role = b.id')
                             ->where('a.flag_active', 1)
                             ->order_by('a.nama')
                             ->get()->result_array();
@@ -36,23 +35,55 @@
                 return ['message' => 'Username sudah digunakan'];
             }
             unset($data['konfirmasi_password']);
-            $role = explode(';', $data['id_m_role']);
-            $data['id_m_role'] = $role[0];
             $data['password'] = $this->general_library->encrypt($data['username'], $data['password']);
             $this->db->insert('m_user', $data);
             return ['message' => '0'];
         }
 
         public function deleteUser($id_m_user){
-            $user = $this->db->select('*')
-                            ->from('m_user a')
+            $this->db->where('id', $id_m_user)
+                ->update('m_user', ['flag_active' => 0, 'updated_by' => $this->general_library->getId()]);
+        }
+
+        public function getUserRole($id_m_user){
+            return $this->db->select('a.*, b.nama as nama_role, b.keterangan, b.role_name as role')
+                            ->from('m_user_role a')
                             ->join('m_role b', 'a.id_m_role = b.id')
+                            ->where('a.id_m_user', $id_m_user)
                             ->where('a.flag_active', 1)
+                            ->order_by('b.nama')
+                            ->get()->result_array();
+        }
+
+        public function addRoleForUser($data){
+            $rs['code'] = 0;
+            $rs['message'] = 'OK';
+
+            $this->db->trans_begin();
+
+            $exist = $this->db->select('*')
+                            ->from('m_user_role')
+                            ->where('id_m_user', $data['id_m_user'])
+                            ->where('id_m_role', $data['id_m_role'])
+                            ->where('flag_active', 1)
                             ->get()->row_array();
-            if($user['role_name'] != 'programmer'){
-                $this->db->where('id', $id_m_user)
-                    ->update('m_user', ['flag_active' => 0, 'updated_by' => $this->general_library->getId()]);
+            if(!$exist){
+                $data['created_by'] = $this->general_library->getId();
+                $this->db->insert('m_user_role', $data);
+            } else {
+                $rs['code'] = 1;
+                $rs['message'] = 'User sudah memiliki Role tersebut';
             }
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+                $rs['code'] = 1;
+                $rs['message'] = 'Terjadi Kesalahan';
+            } else {
+                $this->db->trans_commit();
+            }
+
+            return $rs;
         }
 
         public function changePassword($data){
@@ -60,9 +91,8 @@
                 return ['message' => 'Password Baru dan Konfirmasi Password Baru tidak sama'];
             }
             $password_lama = $this->general_library->encrypt($this->general_library->getUserName(), $data['password_lama']);
-            $user = $this->db->select('*, a.nama as nama_user, b.nama as nama_role')
+            $user = $this->db->select('*, a.nama as nama_user')
                                 ->from('m_user a')
-                                ->join('m_role b', 'a.id_m_role = b.id')
                                 ->where('a.username', $this->general_library->getUserName())
                                 ->where('a.password', $password_lama)
                                 ->get()->result_array();

@@ -185,7 +185,7 @@ function get_client_ip() {
 }
 
 function encrypt($string1, $string2){
-    $key = 'nikitapos'.DEVELOPER;
+    $key = 'nikitalab'.DEVELOPER;
     $userKey = substr($string1, -3);
     $passKey = substr($string2, -3);
     $generatedForHash = strtoupper($userKey).$string1.$key.strtoupper($passKey).$string2;

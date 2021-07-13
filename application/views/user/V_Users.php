@@ -7,33 +7,23 @@
             <div class="row">
                 <div class="col-3">
                     <div class="form-group">
-                        <label class="bmd-label-floating">Role</label>
-                        <select class="form-control select2_this" data-dropdown-css-class="select2-navy" autocomplete="off" name="id_m_role" id="id_m_role">
-                            <?php if($roles){ foreach($roles as $r){ ?>
-                                <option value="<?=$r['id'].';'.$r['role_name']?>"><?=$r['nama']?></option>
-                            <?php } } ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
                         <label class="bmd-label-floating">Nama</label>
                         <input required class="form-control" autocomplete="off" name="nama" id="nama"/>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-3">
                     <div class="form-group">
                         <label class="bmd-label-floating">Username</label>
                         <input required class="form-control" autocomplete="off" name="username" id="username"/>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-3">
                     <div class="form-group">
                         <label class="bmd-label-floating">Password</label>
                         <input required class="form-control" autocomplete="off" type="password" name="password" id="password"/>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-3">
                     <div class="form-group">
                         <label class="bmd-label-floating">Konfirmasi Password</label>
                         <input required class="form-control" autocomplete="off" type="password" name="konfirmasi_password" id="konfirmasi_password"/>
@@ -114,17 +104,18 @@
         })
     })
 
+    // $('#form_tambah_user').on('submit', function(e){
+    //     e.preventDefault();
+    //     let role = $('#id_m_role').val().split(';')
+    //     if(role[1] == 'programmer'){
+    //         $('#modal_auth').modal()
+    //     } else {
+    //         createUser()
+    //     }
+    // })
+
     $('#form_tambah_user').on('submit', function(e){
         e.preventDefault();
-        let role = $('#id_m_role').val().split(';')
-        if(role[1] == 'programmer'){
-            $('#modal_auth').modal()
-        } else {
-            createUser()
-        }
-    })
-
-    function createUser(){
         $.ajax({
             url: '<?=base_url("user/C_User/createUser")?>',
             method: 'post',
@@ -144,5 +135,5 @@
                 errortoast('Terjadi Kesalahan')
             }
         })
-    }
+    })
 </script>

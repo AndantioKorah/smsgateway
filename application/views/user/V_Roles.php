@@ -1,20 +1,20 @@
 <div class="card card-default">
-    <div class="card-header"  style="display: none;">
+    <div class="card-header"  style="display: block;">
         <h3 class="card-title">TAMBAH ROLE</h3>
     </div>
-    <div class="card-body" style="display: none;">
+    <div class="card-body" style="display: block;">
         <form id="form_tambah_role">
             <div class="row">
                 <div class="col-4">
                     <div class="form-group">
-                        <label class="bmd-label-floating">Role</label>
-                        <input class="form-control" autocomplete="off" name="role_name" id="role_name"/>
+                        <label class="bmd-label-floating">Nama Role</label>
+                        <input class="form-control" autocomplete="off" name="nama" id="nama"/>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label class="bmd-label-floating">Nama Role</label>
-                        <input class="form-control" autocomplete="off" name="nama" id="nama"/>
+                        <label class="bmd-label-floating">Role</label>
+                        <input class="form-control" autocomplete="off" name="role_name" id="role_name"/>
                     </div>
                 </div>
                 <div class="col-4">
@@ -58,12 +58,13 @@
     $('#form_tambah_role').on('submit', function(e){
         e.preventDefault();
         $.ajax({
-            url: '<?=base_url("admin/C_Admin/insert_kategori_barang")?>',
+            url: '<?=base_url("user/C_User/createRole")?>',
             method: 'post',
             data: $(this).serialize(),
             success: function(){
                 loadRoles()
                 $('#role_name').val('')
+                $('#nama').val('')
                 $('#keterangan').val('')
             }, error: function(e){
                 errortoast('Terjadi Kesalahan')

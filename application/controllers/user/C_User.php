@@ -16,14 +16,38 @@ class C_User extends CI_Controller
         render('user/V_Roles', 'user_management', 'roles', null);
     }
 
+    public function createRole(){
+        $this->user->insert('m_role', $this->input->post());
+    }
+
     public function loadRoles(){
         $data['result'] = $this->general->getAllWithOrder('m_role', 'nama', 'asc');
         $this->load->view('user/V_RolesItem', $data);
     }
 
     public function users(){
+        // $data['roles'] = $this->general->getAllWithOrder('m_role', 'nama', 'asc');
+        render('user/V_Users', 'user_management', 'users', null);
+    }
+
+    public function openAddRoleModal($id_m_user){
+        $data['user'] = $this->general->getOne('m_user', 'id', $id_m_user, 1);
         $data['roles'] = $this->general->getAllWithOrder('m_role', 'nama', 'asc');
-        render('user/V_Users', 'user_management', 'users', $data);
+        $this->load->view('user/V_AddRoleModal', $data);
+    }
+
+    public function loadRoleForUser($id_m_user){
+        $data['list_user_role'] = $this->user->getUserRole($id_m_user);
+        $data['id_m_user'] = $id_m_user;
+        $this->load->view('user/V_RoleItemModal', $data);
+    }
+
+    public function deleteRoleForUser($id_m_user){
+        $this->general->delete('id', $id_m_user, 'm_user_role');
+    }
+
+    public function addRoleForUser(){
+        echo json_encode($this->user->addRoleForUser($this->input->post()));
     }
 
     public function loadUsers(){
@@ -72,209 +96,5 @@ class C_User extends CI_Controller
         $message = $this->user->deleteProfilePict();
         $this->session->set_flashdata('message', $message['message']);
         redirect('user/setting');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function needPassword(){
-        $data = $this->input->post();
-        if($data['password'] != '742141189Programmer.'){
-            $response = ['message'=>'false'];
-        } else {
-            $response = ['message'=>'true'];
-        }
-        echo json_encode($response);
-    }
-
-    public function developer(){
-        echo DEVELOPER.'<br>';
-        echo $this->general_library->test().'<br>';
-        echo $this->session->userdata('test');
     }
 }
