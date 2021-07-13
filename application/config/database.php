@@ -73,9 +73,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$hostname = 'localhost';
+$hostname = 'nikita-lab.cdr6jjvx9o1t.ap-southeast-1.rds.amazonaws.com';
 $username = 'root';
-$password = encrypt('nikita', DEVELOPER);
+$password = 'rootnikitalab';
 $database = 'db_pos';
 
 $db['default'] = array(

@@ -9,7 +9,9 @@ class General_library
     public function __construct()
     {
         $this->nikita = &get_instance();
-        $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in')[0];
+        if($this->nikita->session->userdata('user_logged_in')){
+            $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in')[0];
+        }
         $this->params = $this->nikita->session->userdata('params');
         $this->bios_serial_num = shell_exec('wmic bios get serialnumber 2>&1');
         date_default_timezone_set("Asia/Singapore");

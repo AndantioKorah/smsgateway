@@ -10,7 +10,9 @@ class Webservicelib extends CI_Model{
 
     public function __construct(){
         $this->nikita = &get_instance();
-        $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in')[0];
+        if($this->nikita->session->userdata('user_logged_in')){
+            $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in')[0];
+        }
         $this->params = $this->nikita->session->userdata('params');
         $this->nikita->load->model('general/M_General', 'm_general');
         date_default_timezone_set("Asia/Singapore");

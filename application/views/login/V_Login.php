@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<?=base_url('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')?>">
     <style>
         .login-page {
-            background-image: url('../assets/img/login.jpg');
+            background-image: url('assets/img/login.jpg');
             background-size: 100%;
         }
 
