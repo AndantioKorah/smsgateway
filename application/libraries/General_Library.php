@@ -134,7 +134,7 @@ class General_library
             $this->nikita->session->set_userdata(['apps_error' => 'Device tidak terdaftar']);
             return null;
         }
-        if(count($exclude_role > 1) && in_array($this->getRole(), $exclude_role)){
+        if(count($exclude_role) > 1 && in_array($this->getRole(), $exclude_role)){
             $this->nikita->session->set_userdata(['apps_error' => 'Role User tidak diizinkan untuk masuk ke menu tersebut']);
             return null;
         }

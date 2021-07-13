@@ -1,4 +1,6 @@
 <?php
+require_once 'tio.php';
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
@@ -58,42 +60,3 @@ $route['logout'] = 'login/C_Login/logout';
 
 // admin
 $route['welcome'] = 'login/C_Login/welcomePage';
-$route['admin'] = 'admin/C_Admin/index';
-$route['admin/dashboard'] = 'admin/C_Admin/dashboard';
-$route['admin/barang'] = 'admin/C_Admin/barang';
-$route['admin/barang/kategori'] = 'admin/C_Admin/kategori_barang';
-$route['admin/barang/sub-kategori'] = 'admin/C_Admin/sub_kategori_barang';
-$route['admin/barang/item'] = 'admin/C_Admin/item_barang';
-$route['admin/barang/stock'] = 'admin/C_Admin/stock_barang';
-
-//master transaksi
-$route['master/transaksi/pengeluaran'] = 'admin/C_Admin/masterPengeluaran';
-$route['master/transaksi/pembelian'] = 'admin/C_Admin/masterPembelian';
-
-$route['transaksi/pengeluaran'] = 'admin/C_Admin/transaksiPengeluaran';
-$route['transaksi/pengeluaran/detail/(:any)'] = 'admin/C_Admin/detailPengeluaran/$1';
-$route['transaksi/pembelian'] = 'admin/C_Admin/transaksiPembelian';
-$route['transaksi/pembelian/detail/(:any)'] = 'admin/C_Admin/detailPembelian/$1';
-
-// pos
-$route['kasir'] = 'pos/C_Pos/pos';
-
-$route['roles'] = 'user/C_User/roles';
-$route['users'] = 'user/C_User/users';
-$route['user/setting'] = 'user/C_User/userSetting';
-
-$route['developer'] = 'user/C_User/developer';
-
-$route['laporan/transaksi'] = 'laporan/C_Laporan/laporanTransaksi';
-$route['laporan/penjualan'] = 'laporan/C_Laporan/laporanPenjualan';
-$route['laporan/pembayaran'] = 'laporan/C_Laporan/laporanPembayaran';
-$route['laporan/rekap/harian'] = 'laporan/C_Laporan/rekapHarian';
-
-$route['apps/setting'] = 'parameter/C_Parameter/settingApps';
-$route['apps/setting/expdate'] = 'parameter/C_Parameter/extendExpireDate';
-$route['bios'] = 'parameter/C_Parameter/biosSerialNumber';
-
-$route['merchant'] = 'merchant/C_Merchant/merchant';
-
-//webservice
-$route['code/validate'] = 'webservice/C_Webservice/codeValidation';
