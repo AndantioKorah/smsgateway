@@ -8,9 +8,6 @@
     /* margin-top: 50px; */
   }
 </style>
-<?php
-  $role = $this->general_library->getRole();
-?>
 
 <aside class="main-sidebar elevation-4 sidebar-light-navy">
   <!-- Brand Logo -->
@@ -31,4 +28,37 @@
         <a href="<?=base_url('user/setting')?>" class="d-block"><?=$this->general_library->getNamaUser();?></a>
       </div>
     </div>
+    <?php 
+    $list_menu = $this->general_library->getListMenu();
+    if($list_menu){  
+    ?>
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+        <?php foreach($list_menu as $l){ 
+        ?>
+          <li class="nav-item">
+            <a href="<?=$l['url'] == '#' || $l['url'] == '' ? '#' : base_url($l['url'])?>" class="nav-link">
+              <i class="<?=$l['icon']?> nav-icon"></i>
+              <p>
+                <?=$l['nama_menu']?>
+                <?=$l['child'] ? '<i class="fas fa-angle-left right"></i>' : '' ?>
+              </p>
+            </a>
+            <?php if($l['child']){ ?>
+              <ul class="nav nav-treeview">
+                <?php foreach($l['child'] as $ch){ ?>
+                  <li class="nav-item">
+                    <a href="<?=base_url($ch['url'])?>" class="nav-link">
+                      <i class="<?=$ch['icon'] != '' ? $ch['icon'] : 'far fa-circle'?> nav-icon"></i>
+                      <p><?=$ch['nama_menu']?></p>
+                    </a>
+                  </li>
+                <?php } ?> 
+              </ul>
+            <?php } ?>
+          </li>
+        <?php } ?>
+      </ul>
+    </nav>
+    <?php } ?>
 </aside>

@@ -95,9 +95,9 @@ define('VERSION', 'Version 1.0');
 define('TITLES', 'NiKita LAB');
 define('PROGRAMMER_PHONE', '082115407812');
 define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>NiKita TEAM</strong>');
+// define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>PATRA LAB</strong>');
 define('TRANSAKSI_TABLE_VIEW', 1);
 define('USE_PRINT', '0');
 define('URI_UPLOAD', './assets/'); //local with xampp
 
-define('SECOND_PASSWORD', '0fcf6dbd170586782459c74601cd6001');
 define('DEVELOPER', 'nikita');

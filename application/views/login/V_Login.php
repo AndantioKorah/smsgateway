@@ -19,6 +19,10 @@
         .login-page {
             background-image: url('assets/img/login.jpg');
             background-size: 100%;
+            width: 100%;
+            background-attachment: scroll;
+            background-size: cover;
+            background-repeat: repeat;
         }
 
         .btn-navy{

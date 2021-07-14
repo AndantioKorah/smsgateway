@@ -402,7 +402,7 @@ body {
   <div class="error__title">404</div>
   <div class="error__subtitle">Hmmm...</div>
   <div class="error__description">Seems like you're out of track</div>
-  <button class="error__button error__button--active" href="#" onclick="history.go(-1)">OKAY, BRING ME BACK</button>
+  <button class="error__button error__button--active" href="#" onclick="window.location='login'">OKAY, BRING ME TO LOGIN</button>
   <!-- <button class="error__button">REPORT TO DEVELOPER</button> -->
 </div>
 

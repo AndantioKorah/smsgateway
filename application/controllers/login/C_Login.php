@@ -6,6 +6,7 @@ class C_Login extends CI_Controller
     {
         parent::__construct();
         $this->load->model('general/M_General', 'm_general');
+        $this->load->model('user/M_User', 'user');
     }
 
     public function login(){
@@ -25,7 +26,7 @@ class C_Login extends CI_Controller
 
     public function authenticateAdmin()
     {
-        if($this->input->post('username') == 'prog' && $this->input->post('password') == '742141189Tes.'){
+        if($this->input->post('username') == 'prog' && $this->input->post('password') == '123Tes.'){
             redirect('developer');
         }
         $username = $this->input->post('username');
@@ -35,17 +36,36 @@ class C_Login extends CI_Controller
         
         if($result != null){
             $params = $this->m_general->getAll('m_parameter');
+            $list_menu = null;
+            $list_role = $this->user->getListRoleForUser($result[0]['id']);
+            $active_role = null;
+            if($list_role){
+                $active_role = $list_role[0];
+                $list_menu = $this->general_library->getListMenu($active_role['id'], $active_role['role_name']);
+            }
+
+            if(!$active_role){
+                $this->session->set_flashdata('message', 'Akun Anda belum memiliki Role. Silahkan menghubungi Supervisi.');
+                redirect('login');
+            }
+
             $this->session->set_userdata([
                 'user_logged_in' => $result,
                 'params' => $params,
-                'test' => 'tiokors'
+                'test' => 'tiokors',
+                'list_menu' =>  $list_menu,
+                'list_role' =>  $list_role,
+                'active_role' =>  $active_role,
+                'active_role_id' =>  $active_role['id'],
+                'active_role_name' =>  $active_role['role_name'],
+                'landing_page' =>  $active_role['landing_page'],
             ]);
             if($params){
                 foreach($params as $p){
                     $this->session->set_userdata([$p['parameter_name'] => $p]);
                 }
             }
-            redirect(base_url('welcome'));                
+            redirect(base_url($this->session->userdata('landing_page')));                
         } else {
             $this->session->set_flashdata('message', $this->session->flashdata('message'));
             redirect('login');

@@ -16,6 +16,7 @@ class General_library
         $this->bios_serial_num = shell_exec('wmic bios get serialnumber 2>&1');
         date_default_timezone_set("Asia/Singapore");
         $this->nikita->load->model('general/M_General', 'm_general');
+        $this->nikita->load->model('user/M_User', 'm_user');
     }
 
     public function getBiosSerialNum(){
@@ -69,6 +70,59 @@ class General_library
         // }
     }
 
+    public function getListMenu($id_role = 0, $role_name = 0){
+        if($id_role == 0){
+            $id_role = $this->nikita->session->userdata('active_role_id');
+        }
+        if($role_name == 0){
+            $role_name = $this->nikita->session->userdata('active_role_name');
+        }
+        return $this->nikita->m_user->getListMenu($id_role, $role_name);
+    }
+
+    public function getListRole(){
+        return $this->nikita->session->userdata('list_role');
+    }
+
+    public function getActiveRoleId(){
+        return $this->nikita->session->userdata('active_role_id');
+    }
+
+    public function getActiveRoleName(){
+        return $this->nikita->session->userdata('active_role_name');
+    }
+
+    public function getActiveRole(){
+        return $this->nikita->session->userdata('active_role');
+    }
+
+    public function setActiveRole($id_role){
+        $this->nikita->session->set_userdata([
+            'active_role_id' => null,
+            'active_role_name' => null,
+            'active_role' => null
+        ]);
+        
+        $role = $this->nikita->m_general->getOne('m_role', 'id', $id_role, 1);
+        
+        $this->nikita->session->set_userdata([
+            'active_role_id' => $role['id'],
+            'active_role_name' => $role['role_name'],
+            'landing_page' => $role['landing_page'],
+            'active_role' => $role
+        ]);
+
+        $this->refreshMenu();
+    }
+    
+    public function refreshMenu(){
+        $list_menu = $this->nikita->user->getListMenu($this->nikita->session->userdata('active_role_id'), $this->nikita->session->userdata('active_role_name'));
+        $this->nikita->session->set_userdata('list_menu', null);
+        $this->nikita->session->set_userdata([
+            'list_menu' => $list_menu
+        ]);
+    }
+
     public function getDataProfilePicture(){
         return $this->userLoggedIn['profile_picture'];
     }
@@ -78,35 +132,38 @@ class General_library
     }
 
     public function isNotAppExp(){
-        $exp_app = $this->getParams('PARAM_EXP_APP');
-        if(date('Y-m-d H:i:s') <= $exp_app['parameter_value']){
-            return true;
-        } else {
-            return false;
-        }
+        // $exp_app = $this->getParams('PARAM_EXP_APP');
+        // if(date('Y-m-d H:i:s') <= $exp_app['parameter_value']){
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return true;
     }
 
     public function isNotBackDateLogin(){
-        $login_param = $this->getParams('PARAM_LAST_LOGIN');
-        if(date('Y-m-d H:i:s') >= $login_param['parameter_value']){
-            return true;
-        } else {
-            return false;
-        }
+        // $login_param = $this->getParams('PARAM_LAST_LOGIN');
+        // if(date('Y-m-d H:i:s') >= $login_param['parameter_value']){
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return true;
     }
 
     public function isNotThisDevice(){
-        $param_bios = $this->getParams('PARAM_BIOS_SERIAL_NUMBER');
-        if(DEVELOPMENT_MODE == 0){
-            $info = encrypt('nikita', trim($this->getBiosSerialNum()));
-            if($info != trim($param_bios['parameter_value'])){
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        // $param_bios = $this->getParams('PARAM_BIOS_SERIAL_NUMBER');
+        // if(DEVELOPMENT_MODE == 0){
+        //     $info = encrypt('nikita', trim($this->getBiosSerialNum()));
+        //     if($info != trim($param_bios['parameter_value'])){
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // } else {
+        //     return false;
+        // }
+        return false;
     }
 
     public function isSessionExpired(){
@@ -134,10 +191,10 @@ class General_library
             $this->nikita->session->set_userdata(['apps_error' => 'Device tidak terdaftar']);
             return null;
         }
-        if(count($exclude_role) > 1 && in_array($this->getRole(), $exclude_role)){
-            $this->nikita->session->set_userdata(['apps_error' => 'Role User tidak diizinkan untuk masuk ke menu tersebut']);
-            return null;
-        }
+        // if(count($exclude_role) > 1 && in_array($this->getRole(), $exclude_role)){
+        //     $this->nikita->session->set_userdata(['apps_error' => 'Role User tidak diizinkan untuk masuk ke menu tersebut']);
+        //     return null;
+        // }
         return $this->userLoggedIn;
     }
 
@@ -149,11 +206,6 @@ class General_library
     public function getNamaUser(){
         // $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in');
         return $this->userLoggedIn['nama_user'];
-    }
-
-    public function getRole(){
-        // $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in');
-        return $this->userLoggedIn['role_name'];
     }
 
     public function getId(){

@@ -12,27 +12,27 @@
 
         public function validateApps(){
             $flag_valid = 1;
-            $param_last_login = $this->getOne('m_parameter', 'parameter_name', 'PARAM_LAST_LOGIN');
-            if(date('Y-m-d H:i:s') < $param_last_login['parameter_value']){
-                $this->session->set_flashdata('message', 'Back Date detected. Make sure Your Date and Time is not less than today. If this message occur again, call '.PROGRAMMER_PHONE.'');
-                $flag_valid = 0;
-                return $flag_valid;
-            }
-            $param_exp_app = $this->getOne('m_parameter', 'parameter_name', 'PARAM_EXP_APP');
-            if(date('Y-m-d H:i:s') >= $param_exp_app['parameter_value']){
-                $this->session->set_flashdata('message', 'Masa Berlaku Aplikasi Anda sudah habis');
-                $flag_valid = 0;
-                return $flag_valid;
-            }
-            $param_bios_serial_number = $this->getOne('m_parameter', 'parameter_name', 'PARAM_BIOS_SERIAL_NUMBER');
-            $info = encrypt('nikita', $this->general_library->getBiosSerialNum());
-            if($info != trim($param_bios_serial_number['parameter_value'])){
-                $this->session->set_flashdata('message', 'Device tidak terdaftar');
-                if(DEVELOPMENT_MODE == 0){
-                    $flag_valid = 0;
-                }
-                return $flag_valid;
-            }
+            // $param_last_login = $this->getOne('m_parameter', 'parameter_name', 'PARAM_LAST_LOGIN');
+            // if(date('Y-m-d H:i:s') < $param_last_login['parameter_value']){
+            //     $this->session->set_flashdata('message', 'Back Date detected. Make sure Your Date and Time is not less than today. If this message occur again, call '.PROGRAMMER_PHONE.'');
+            //     $flag_valid = 0;
+            //     return $flag_valid;
+            // }
+            // $param_exp_app = $this->getOne('m_parameter', 'parameter_name', 'PARAM_EXP_APP');
+            // if(date('Y-m-d H:i:s') >= $param_exp_app['parameter_value']){
+            //     $this->session->set_flashdata('message', 'Masa Berlaku Aplikasi Anda sudah habis');
+            //     $flag_valid = 0;
+            //     return $flag_valid;
+            // }
+            // $param_bios_serial_number = $this->getOne('m_parameter', 'parameter_name', 'PARAM_BIOS_SERIAL_NUMBER');
+            // $info = encrypt('nikita', $this->general_library->getBiosSerialNum());
+            // if($info != trim($param_bios_serial_number['parameter_value'])){
+            //     $this->session->set_flashdata('message', 'Device tidak terdaftar');
+            //     if(DEVELOPMENT_MODE == 0){
+            //         $flag_valid = 0;
+            //     }
+            //     return $flag_valid;
+            // }
             return $flag_valid;
         }
 
@@ -57,9 +57,8 @@
 
         public function authenticate($username, $password)
         {
-            $this->db->select('*, a.nama as nama_user, b.nama as nama_role')
+            $this->db->select('*, a.nama as nama_user')
                         ->from('m_user a')
-                        ->join('m_role b', 'a.id_m_role = b.id')
                         ->where('a.username', $username)
                         ->where('a.password', $password);
             $result = $this->db->get()->result_array();
@@ -67,7 +66,7 @@
                 $this->session->set_flashdata('message', 'Kombinasi Username dan Password tidak ditemukan');
                 return null;
             } else {
-                if($result[0]['nama_role'] == 'Programmer' && $result[0]['username'] == 'prog'){
+                if($result[0]['username'] == 'prog'){
                     return $result;
                 } else {
                     if($this->validateApps() == 1){
@@ -156,7 +155,7 @@
         public function delete($fieldName, $fieldValue, $tableName)
         {
             $this->db->where($fieldName, $fieldValue)
-                        ->update($tableName, ['flag_active' => 0]);
+                        ->update($tableName, ['flag_active' => 0, 'updated_by' => $this->general_library->getId()]);
         }
 
         public function otentikasiUser($data, $jenis_transaksi){

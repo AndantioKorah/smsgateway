@@ -97,4 +97,62 @@ class C_User extends CI_Controller
         $this->session->set_flashdata('message', $message['message']);
         redirect('user/setting');
     }
+
+    public function menu(){
+        $this->general_library->refreshMenu();
+        $data['list_menu'] = $this->general->getAllWithOrder('m_menu', 'nama_menu', 'asc');
+        render('user/V_Menu', 'user_management', 'menu', $data);
+    }
+
+    public function createMenu(){
+        echo json_encode($this->user->createMenu($this->input->post()));
+        $this->general_library->refreshMenu();
+    }
+
+    public function loadMenu(){
+        $data['result'] = $this->user->loadAllMenu();
+        $this->load->view('user/V_MenuItem', $data);
+    }
+
+    public function deleteMenu($id_m_menu){
+        $this->general->delete('id', $id_m_menu, 'm_menu');
+        $this->general_library->refreshMenu();
+    }
+
+    public function addRoleForMenu($id){
+        $data['menu'] = $this->general->getOne('m_menu', 'id', $id, 1);
+        $data['roles'] = $this->general->getAllWithOrder('m_role', 'nama', 'asc');
+        $this->load->view('user/V_AddRoleForMenu', $data);
+    }
+
+    public function loadRoleForMenu($id){
+        $data['list_menu_role'] = $this->user->getMenuRole($id);
+        $data['id_menu'] = $id;
+        $this->load->view('user/V_RoleForMenuItem', $data);
+    }
+
+    public function getListMenu(){
+        dd($this->user->getListMenu());
+    }
+
+    public function insertRoleForMenu(){
+        echo json_encode($this->user->insertRoleForMenu($this->input->post()));
+    }
+
+    public function deleteRoleForMenu($id){
+        $this->general->delete('id', $id, 'm_menu_role');
+    }
+
+    public function setDefaultRoleForUser($id_role, $id_m_user){
+        echo json_encode($this->user->setDefaultRoleForUser($id_role, $id_m_user));
+    }
+
+    public function setActiveRole($id_role){
+        $this->general_library->setActiveRole($id_role);
+        echo (base_url($this->session->userdata('landing_page')));
+    }
+
+    public function deleteRole($id){
+        echo json_encode($this->user->deleteRole($id));
+    }
 }

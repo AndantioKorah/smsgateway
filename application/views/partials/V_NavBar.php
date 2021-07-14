@@ -1,3 +1,14 @@
+<?php
+  $list_role = $this->general_library->getListRole();
+  $active_role = $this->general_library->getActiveRole();
+?>
+<style>
+  .dropdown-item:hover{
+    cursor: pointer !important;
+    background-color: #001f3f !important;
+    color: white !important;
+  }
+</style>
 <nav class="main-header navbar navbar-expand navbar-dark navbar-navy">
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -41,6 +52,20 @@
       </li> -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-id-badge"></i>
+          <?=$active_role['nama']?>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <?php foreach($list_role as $lr){ ?>
+              <a onclick="setActiveRole('<?=$lr['id']?>')" class="dropdown-item">
+                  <?=$lr['id'] == $this->session->userdata('active_role_id') ? '<i class="fa fa-check-circle"></i> '.$lr['nama'] : $lr['nama']?>
+              </a>
+              <div class="dropdown-divider"></div>
+            <?php } ?>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
             <img src="<?=$this->general_library->getProfilePicture()?>" style="height: 25px; width:25px; margin-right: 1px;" class="img-circle elevation-2" alt="User Image">
             <?=$this->general_library->getNamaUser()?>
         </a>
@@ -49,7 +74,7 @@
               <a href="<?=base_url('user/setting')?>" class="dropdown-item">
                   <i class="fa fa-users mr-2"></i> Account
               </a>
-            <div class="dropdown-divider"></div>
+              <div class="dropdown-divider"></div>
               <a href="<?=base_url('logout')?>" class="dropdown-item">
                   <i class="fa fa-sign-out-alt mr-2"></i> Keluar
               </a>
@@ -57,3 +82,17 @@
       </li>
     </ul>
   </nav>
+  <script>
+    function setActiveRole(id){
+      $.ajax({
+          url: '<?=base_url("user/C_User/setActiveRole")?>'+'/'+id,
+          method: 'post',
+          data: $(this).serialize(),
+          success: function(data){
+              window.location=data.trim()
+          }, error: function(e){
+              errortoast('Terjadi Kesalahan')
+          }
+      })
+    }
+  </script>
