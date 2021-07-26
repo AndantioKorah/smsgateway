@@ -62,7 +62,7 @@
 
       <form action="<?=base_url('login/C_Login/authenticateAdmin')?>" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" onclick="hideError()" name="username" placeholder="Username" value="prog">
+          <input type="text" class="form-control" onclick="hideError()" name="username" placeholder="Username">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -70,7 +70,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" onclick="hideError()" name="password" placeholder="Password" value="742141189Nikita.">
+          <input type="password" class="form-control" onclick="hideError()" name="password" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
