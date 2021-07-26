@@ -55,17 +55,15 @@
     }
 
     $('#btn_pendaftaran_baru').on('click', function(){
-        if(confirm('Buat Pendaftaran baru?')){
-            $.ajax({
-                url: '<?=base_url("pendaftaran/C_Pendaftaran/fillIdPasienPendaftaran").'/'.$pasien['id']?>',
-                method: 'post',
-                success: function(datares){
-                    window.location="<?=base_url('pendaftaran')?>"
-                }, error: function(e){
-                    errortoast('Terjadi Kesalahan')
-                }
-            })
-        }
+        $.ajax({
+            url: '<?=base_url("pendaftaran/C_Pendaftaran/fillIdPasienPendaftaran").'/'.$pasien['id']?>',
+            method: 'post',
+            success: function(datares){
+                window.location="<?=base_url('pendaftaran')?>"
+            }, error: function(e){
+                errortoast('Terjadi Kesalahan')
+            }
+        })
     })
 </script>
 <?php } else { ?>
