@@ -419,5 +419,18 @@
 
             return $rs;
         }
+
+        public function getListUrl($id_role){
+            $this->db->select('a.url')
+                    ->from('m_menu a')
+                    ->join('m_menu_role b', 'b.id_m_menu = a.id')
+                    ->where('b.id_m_role', $id_role)    
+                    ->where('a.flag_active', 1)
+                    ->where('b.flag_active', 1)    
+                    ->order_by('a.nama_menu', 'asc')
+                    ->group_by('a.id');
+                    
+            return $this->db->get()->result_array();
+        }
 	}
 ?>

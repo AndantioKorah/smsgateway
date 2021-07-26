@@ -14,6 +14,16 @@ function render($pageContent, $parent_active, $active, $data)
     $CI->load->view('base/V_BaseLayout', $data);
 }
 
+function generateNorm($last_norm){
+    if($last_norm){
+        $cur_count_norm = ltrim($last_norm, '0');
+        $cur_count_norm = floatval($cur_count_norm) + 1;
+    } else {
+        $cur_count_norm = 1;
+    }
+    return str_pad($cur_count_norm, 7, '0', STR_PAD_LEFT);
+}
+
 function explodeRangeDate($date){
     $tanggal = explode("-", $date);
     $awal = explode("/", $tanggal[0]);    
@@ -75,6 +85,12 @@ function formatDateOnly($data)
 {
     $date1 = strtr($data, '/', '-');
     return date("d/m/Y", strtotime($date1));
+}
+
+function formatDateOnlyForEdit2($data)
+{
+    $date1 = strtr($data, '/', '-');
+    return date("d-m-Y", strtotime($date1));
 }
 
 function formatDate($data)

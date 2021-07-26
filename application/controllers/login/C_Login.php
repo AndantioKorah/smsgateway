@@ -42,6 +42,7 @@ class C_Login extends CI_Controller
             if($list_role){
                 $active_role = $list_role[0];
                 $list_menu = $this->general_library->getListMenu($active_role['id'], $active_role['role_name']);
+                $list_url = $this->general_library->getListUrl($active_role['id']);
             }
 
             if(!$active_role){
@@ -55,10 +56,12 @@ class C_Login extends CI_Controller
                 'test' => 'tiokors',
                 'list_menu' =>  $list_menu,
                 'list_role' =>  $list_role,
+                'list_url' =>  $list_url,
                 'active_role' =>  $active_role,
                 'active_role_id' =>  $active_role['id'],
                 'active_role_name' =>  $active_role['role_name'],
                 'landing_page' =>  $active_role['landing_page'],
+                'ID_PENDAFTARAN_PASIEN' =>  null,
             ]);
             if($params){
                 foreach($params as $p){
