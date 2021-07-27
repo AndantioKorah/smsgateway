@@ -25,13 +25,15 @@ class C_Login extends CI_Controller
     }
 
     public function authenticateAdmin()
-    {
+    { 
+       
         if($this->input->post('username') == 'prog' && $this->input->post('password') == '123Tes.'){
             redirect('developer');
         }
         $username = $this->input->post('username');
         $password = $this->general_library->encrypt($username, $this->input->post('password'));
-
+        // var_dump($password);
+        // die();
         $result = $this->m_general->authenticate($username, $password);
         
         if($result != null){

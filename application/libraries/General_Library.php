@@ -223,6 +223,7 @@ class General_library
         $userKey = substr($username, -3);
         $passKey = substr($password, -3);
         $generatedForHash = strtoupper($userKey).$username.$key.strtoupper($passKey).$password;
+       
         return md5($generatedForHash);
     }
 

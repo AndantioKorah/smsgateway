@@ -58,5 +58,6 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'login/C_Login/login';
 $route['logout'] = 'login/C_Login/logout';
 
+
 // admin
 $route['welcome'] = 'login/C_Login/welcomePage';
