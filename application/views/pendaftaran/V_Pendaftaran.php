@@ -274,8 +274,8 @@
                 errortoast('Terjadi Kesalahan')
             }
         })
-        $('#button_loading').show()
-        $('#button_submit_pendaftaran').hide()
+        // $('#button_loading').show()
+        // $('#button_submit_pendaftaran').hide()
     })
 
     $('#dokter_pengirim').on('change', function(){

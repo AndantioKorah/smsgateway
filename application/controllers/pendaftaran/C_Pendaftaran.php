@@ -89,10 +89,11 @@ class C_Pendaftaran extends CI_Controller
         $this->load->view('pendaftaran/V_ListPendaftaranPasien', $data);
     }
 
-    public function editDataPendaftaran($id_t_pendaftaran, $callback){
+    public function editDataPendaftaran($id_t_pendaftaran, $callback, $key_callback){
         $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_t_pendaftaran);
         $data['callback'] = $callback;
+        $data['key_callback'] = $key_callback;
         $this->load->view('pendaftaran/V_EditDataPendaftaran', $data);
     }
 
@@ -108,5 +109,10 @@ class C_Pendaftaran extends CI_Controller
         $this->session->set_userdata([
             'ID_PENDAFTARAN_PASIEN' => $id_m_pasien
         ]);
+    }
+
+    public function loadDetailPendaftaran($id_t_pendaftaran){
+        $data['pendaftaran'] = $this->pendaftaran->getDetailPendaftaran($id_t_pendaftaran);
+        $this->load->view('pendaftaran/V_DetailPendaftaranLeft', $data);
     }
 }

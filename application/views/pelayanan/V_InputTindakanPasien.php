@@ -1,7 +1,4 @@
-<div class="row p-2" style="border-radius: 10px; border: 1px solid #001f3f; background-color: white; font-color: #001f3f;">
-        <div class="col-12" style="border-bottom: 1px solid #001f3f;">
-            <span style="font-size: 20px; font-weight: bold;"> INPUT TINDAKAN PASIEN</span>
-        </div>
+
         <div class="col-12 mt-2">
         <form id="form_input_tindakan">
         <input  class="col-12" type='hidden' placeholder="Cari Tindakan..." id='id_pendaftaran' value=<?php echo $id_pendaftaran;?>>
@@ -24,7 +21,7 @@
     
 
     <br>
-<div id="tabel_tindakan_pasien" class="row p-2" style=" border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
+<div id="tabel_tindakan_pasien" class="row p-2" style="border-radius: 10px; border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
         <div class="col-12" style="border-bottom: 1px solid #001f3f;">
             <span style="font-size: 15px; font-weight: bold;">TINDAKAN PASIEN</span>
         </div>
@@ -55,7 +52,7 @@
 
     
 </div>
-</div>
+
 
 <script>
 

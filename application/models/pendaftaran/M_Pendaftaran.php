@@ -182,7 +182,7 @@
         }
 
         public function getListPendaftaranPasienById($id_m_pasien){
-            return $this->db->select('a.*, c.*, a.id as id_t_pendaftaran')
+            return $this->db->select('a.*, c.status_tagihan, a.id as id_t_pendaftaran, c.id_m_status_tagihan')
                             ->from('t_pendaftaran a')
                             ->join('m_pasien b', 'a.norm = b.norm')
                             ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
@@ -350,6 +350,17 @@
             }
 
             return $res;
+        }
+
+        public function getDetailPendaftaran($id_t_pendaftaran){
+            return $this->db->select('a.*, b.status_tagihan, b.id_m_status_tagihan')
+                            ->from('t_pendaftaran a')
+                            ->join('t_tagihan b', 'a.id = b.id_t_pendaftaran')
+                            ->where('a.flag_active', 1)
+                            ->where('b.flag_active', 1)
+                            ->where('a.id', $id_t_pendaftaran)
+                            ->limit(1)
+                            ->get()->row_array();
         }
 
         public function editDataPasien(){
