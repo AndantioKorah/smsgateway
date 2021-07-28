@@ -81,7 +81,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>Ketik "<i><b>hapus</b></i>" sebagai konfirmasi untuk menghapus pendaftaran ini</label>
-                            <input class="form-control form-control-sm" id="confirmation" />
+                            <input autocomplete="off" class="form-control form-control-sm" id="confirmation" />
                         </div>
                         <div class="col-md-12 mt-2 text-right">
                             <button class="btn btn-sm btn-danger" type="submit" disabled id="btn_delete_pendaftaran"><i class="fa fa-trash"></i> Hapus</button>
