@@ -80,6 +80,19 @@ class General_library
         return $this->nikita->m_user->getListMenu($id_role, $role_name);
     }
 
+    public function getListUrl($id_role){
+        if($id_role == 0){
+            $id_role = $this->nikita->session->userdata('active_role_name');
+        }
+
+        return $this->nikita->m_user->getListUrl($id_role);
+    }
+
+    public function getRole(){
+        // $this->userLoggedIn = $this->nikita->session->userdata('user_logged_in');
+        return $this->nikita->session->userdata('active_role_name');
+    }
+
     public function getListRole(){
         return $this->nikita->session->userdata('list_role');
     }
@@ -121,6 +134,23 @@ class General_library
         $this->nikita->session->set_userdata([
             'list_menu' => $list_menu
         ]);
+    }
+
+    public function isNotMenu(){
+        //return true, logic belum jalan for ni menu
+        return true;
+        $res = 0;
+        if($this->isSessionExpired()){
+            $current_url = substr($_SERVER["REDIRECT_QUERY_STRING"], 1, strlen($_SERVER["REDIRECT_QUERY_STRING"])-1);
+            $list_url = $this->nikita->session->userdata('list_url');
+            foreach($list_url as $lu){
+                if($current_url == $lu['url']){
+                    $res = 1;
+                    break;
+                }
+            }
+        }
+        return $res == 0 ? false : true;
     }
 
     public function getDataProfilePicture(){

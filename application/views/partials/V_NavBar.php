@@ -8,16 +8,66 @@
     background-color: #001f3f !important;
     color: white !important;
   }
+
+  #search_navbar{
+    color: white !important;
+    font-weight: bold !important;
+  }
+
+  #search_navbar:focus{
+    color: white !important;
+    background-color: rgb(255, 255, 255, .3) !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    font-family: Arial !important;
+  }
+
+  #div_search_result{
+    position: fixed;
+    width: 300px;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 10;
+    top: 5%;
+    box-shadow: 5px 10px 20px #888888;
+    max-height: 300px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  #div_search_result::-webkit-scrollbar {
+    display: none;
+  }
 </style>
 <nav class="main-header navbar navbar-expand navbar-dark navbar-navy">
+    <form class="form-inline ml-3">
+      <div class="row">
+        <div class="input-group input-group-sm" style="width: 300px">
+          <input id="search_navbar" autocomplete="off" class="form-control form-control-navbar" type="text" placeholder="Cari Pasien" aria-label="Search">
+          </datalist>
+          <div class="input-group-append">
+            <button id="button_fa_search" class="btn btn-navbar" type="button">
+              <i class="fas fa-search"></i>
+            </button>
+            <button style="display: none;" id="button_fa_loading" class="btn btn-navbar" type="button">
+              <i class="fas fa-spin fa-spinner"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="div_search_result">
+      </div>
+    </form>
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a style="font-weight: bold;" id="live_date_time" class="nav-link"></a>
       </li>
     </ul>
+
     <ul class="navbar-nav ml-auto">
       <!-- <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -83,6 +133,19 @@
     </ul>
   </nav>
   <script>
+    $(document).mouseup(function(e) 
+    {
+        var container = $("#search_navbar");
+
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0) 
+        {
+          $('#div_search_result').hide()
+        } else {
+          $('#div_search_result').show()
+        }
+    });
+
     function setActiveRole(id){
       $.ajax({
           url: '<?=base_url("user/C_User/setActiveRole")?>'+'/'+id,
@@ -95,4 +158,29 @@
           }
       })
     }
+
+    $('#search_navbar').on('input', function(){
+      $('#div_search_result').html('')
+      if($(this).val() != ''){
+        $('#button_fa_search').hide()
+        $('#button_fa_loading').show()
+        $.ajax({
+            url: '<?=base_url("pendaftaran/C_Pendaftaran/searchPasien")?>',
+            method: 'post',
+            data: {
+              search_param: $(this).val()
+            },
+            success: function(datares){
+                $('#div_search_result').html('')
+                $('#div_search_result').append(datares)
+                $('#button_fa_search').show()
+                $('#button_fa_loading').hide()
+            }, error: function(e){
+                errortoast('Terjadi Kesalahan')
+            }
+        })
+      }
+    })
+
+    
   </script>

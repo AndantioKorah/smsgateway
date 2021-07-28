@@ -29,7 +29,7 @@
       </div>
     </div>
     <?php 
-    $list_menu = $this->general_library->getListMenu();
+    $list_menu = $this->session->userdata('list_menu');
     if($list_menu){  
     ?>
     <nav class="mt-2">

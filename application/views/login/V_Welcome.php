@@ -22,7 +22,10 @@
   }
 }
 </style>
-<div class="row" style="margin: auto; width: 50%;">
+<div class="row" style="position: fixed;
+  top: 50%;
+  left: 53%;
+  transform: translate(-50%, -50%);">
     <div class="col-12 text-center">
         <h3>Welcome to <?=TITLES?></h3>
         <h4><strong><?=$this->general_library->getNamaUser();?></strong></h4>

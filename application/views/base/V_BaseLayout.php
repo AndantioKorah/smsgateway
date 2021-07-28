@@ -23,7 +23,8 @@
 
 	<script src="<?=base_url('plugins/jquery/jquery.js')?>"></script>
 	<script src="<?=base_url('plugins/jquery-ui/jquery-ui.js')?>"></script>
-
+  <script src="<?=base_url('plugins/inputmask/inputmask/inputmask.js')?>"></script>
+  <script src="<?=base_url('plugins/inputmask/inputmask/jquery.inputmask.js')?>"></script>
 
   <link href="<?=base_url('assets/css/select2.min.css')?>" rel="stylesheet" />
   <script src="<?=base_url('assets/js/select2.min.js')?>"></script>
@@ -98,6 +99,34 @@
   <?php $this->load->view('partials/V_Footer')?>
   <aside class="control-sidebar control-sidebar-dark">
   </aside>
+</div>
+<div class="modal fade" id="edit_data_pasien" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div id="modal-dialog" class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">EDIT DATA PASIEN</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div id="edit_data_pasien_content">
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="edit_data_pendaftaran" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div id="modal-dialog" class="modal-dialog modal-xl">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title">EDIT DATA PENDAFTARAN</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div id="edit_data_pendaftaran_content">
+          </div>
+      </div>
+  </div>
 </div>
 <script>
   var live_date_time = ''
@@ -317,6 +346,52 @@
   $('.datetimepickermaxtodaythis').on('click', function (ev) {
       $(this).addClass('realdatetimethis')
   });
+
+  function select2ajax(elementid, url, value, label, minInputText = 2){
+    $("#"+elementid).select2({
+        tokenSeparators: [',', ' '],
+        minimumInputLength: minInputText,
+        minimumResultsForSearch: 10,
+        ajax: {
+            url: url,
+            dataType: "json",
+            type: "POST",
+            data: function (params) {
+
+                var queryParameters = {
+                    search_param: params.term
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.label,
+                            id: item.value
+                        }
+                    })
+                };
+            }
+        }
+    });
+  }
+
+  function openModalEditPasien(norm = 0, callback = 0){
+    $('#edit_data_pasien_content').html('')
+    $('#edit_data_pasien_content').append(divLoaderNavy)
+    $('#edit_data_pasien_content').load('<?=base_url("pendaftaran/C_Pendaftaran/editDataPasienForm")?>'+'/'+norm+'/'+callback, function(){
+      $('#loader').hide()
+    })
+  }
+
+  function openModalEditPendaftaran(id = 0, callback = 0){
+    $('#edit_data_pendaftaran_content').html('')
+    $('#edit_data_pendaftaran_content').append(divLoaderNavy)
+    $('#edit_data_pendaftaran_content').load('<?=base_url("pendaftaran/C_Pendaftaran/editDataPendaftaran")?>'+'/'+id+'/'+callback, function(){
+      $('#loader').hide()
+    })
+  }
 
   $.widget.bridge('uibutton', $.ui.button)
 </script>

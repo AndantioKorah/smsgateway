@@ -7,7 +7,7 @@ class C_User extends CI_Controller
         parent::__construct();
         $this->load->model('general/M_General', 'general');
         $this->load->model('user/M_User', 'user');
-        if(!$this->general_library->isLoggedIn(['kasir'])){
+        if(!$this->general_library->isNotMenu()){
             redirect('logout');
         };
     }
