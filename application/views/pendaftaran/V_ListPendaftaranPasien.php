@@ -9,7 +9,6 @@
         cursor: pointer;
         background-color: #e8e8e8;
         color: black;
-        border-radius: 5px;
     }
 
     .span_status_tagihan{
