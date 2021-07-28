@@ -1,26 +1,65 @@
 <div class="row">
     <div class="col-3 pl-4 pr-3" id="div_data_pasien"></div>
-    <div class="col-9 pl-3" id="content_div_transaksi"></div>
+    <div class="col-9 pl-3">
+        <div class="card card-default">
+            <div class="card-header">
+                <span id="label_card_header" style="font-size: 20px; font-weight: bold;">LIST PENDAFTARAN</span>
+                <button onclick="loadListPendaftaranPasien()" id="btn_list_pendaftaran" style="display: none;" class="btn btn-sm btn-navy float-right"><i class="fa fa-list"></i> LIST PENDAFTARAN</button>
+            </div>
+            <div class="card-body" id="content_div_transaksi">
+            </div>
+        </div>
+    </div>
 </div>
 <script>
+    let id_m_pasien = '<?=$id_m_pasien?>'
+
     $(function(){
-        loadProfilPasien('<?=$id_m_pasien?>')
-        loadListPendaftaranPasien('<?=$id_m_pasien?>')
+        loadProfilPasien()
+        loadListPendaftaranPasien()
     })
 
-    function loadProfilPasien(id){
+    function loadProfilPasien(){
         $('#div_data_pasien').html('')
         $('#div_data_pasien').append(divLoaderNavy)
-        $('#div_data_pasien').load('<?=base_url("pendaftaran/C_Pendaftaran/loadProfilPasien")?>'+'/'+id, function(){
+        $('#div_data_pasien').load('<?=base_url("pendaftaran/C_Pendaftaran/loadProfilPasien")?>'+'/'+id_m_pasien, function(){
             $('#loader').hide()
         })
     }
 
-    function loadListPendaftaranPasien(id){
+    function loadListPendaftaranPasien(){
+        $('#label_card_header').html('LIST PENDAFTARAN')
+        $('#btn_list_pendaftaran').hide()
+
+        $('#div_detail_pendaftaran').html('')
+        $('#div_detail_pendaftaran').hide()
+
         $('#content_div_transaksi').html('')
         $('#content_div_transaksi').append(divLoaderNavy)
-        $('#content_div_transaksi').load('<?=base_url("pendaftaran/C_Pendaftaran/loadListPendaftaranPasien")?>'+'/'+id, function(){
+        $('#content_div_transaksi').load('<?=base_url("pendaftaran/C_Pendaftaran/loadListPendaftaranPasien")?>'+'/'+id_m_pasien, function(){
             $('#loader').hide()
         })
     }
+    
+    function loadDetailPendaftaran(id_pendaftaran){
+        $('#div_detail_pendaftaran').show()
+        $('#div_detail_pendaftaran').html('')
+        $('#div_detail_pendaftaran').append(divLoaderNavy)
+        $('#div_detail_pendaftaran').load('<?=base_url("pendaftaran/C_Pendaftaran/loadDetailPendaftaran")?>'+'/'+id_pendaftaran, function(){
+            $('#loader').hide()
+        })
+    }
+
+    function setHeader(title = ''){
+        $('#btn_list_pendaftaran').show()
+        $('#label_card_header').html(title.toUpperCase())
+    }
+
+    function openTagihan(id_t_pendaftaran){
+        setHeader('tagihan')
+        $('[data-tooltip="tooltip_detail_pendaftaran_left"]').tooltip('hide')
+        loadDetailPendaftaran(id_t_pendaftaran)
+        $('#content_div_transaksi').html('')
+    }
+
 </script>

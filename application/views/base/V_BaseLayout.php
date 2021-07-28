@@ -59,6 +59,19 @@
       background-color: #05519e !important;
       text-decoration: none;
     }
+
+    .btn-outline-navy{
+      color: #001f3f;
+      background-color: white !important;
+      text-decoration: none;
+      border-color: #001f3f;
+    }
+
+    .btn-outline-navy:hover{
+      color: white;
+      background-color: #001f3f !important;
+      text-decoration: none;
+    }
     
     .content-header{
       padding: 8px !important;
@@ -385,10 +398,10 @@
     })
   }
 
-  function openModalEditPendaftaran(id = 0, callback = 0){
+  function openModalEditPendaftaran(id = 0, callback = 0, key_callback = 'id_m_pasien'){
     $('#edit_data_pendaftaran_content').html('')
     $('#edit_data_pendaftaran_content').append(divLoaderNavy)
-    $('#edit_data_pendaftaran_content').load('<?=base_url("pendaftaran/C_Pendaftaran/editDataPendaftaran")?>'+'/'+id+'/'+callback, function(){
+    $('#edit_data_pendaftaran_content').load('<?=base_url("pendaftaran/C_Pendaftaran/editDataPendaftaran")?>'+'/'+id+'/'+callback+'/'+key_callback, function(){
       $('#loader').hide()
     })
   }

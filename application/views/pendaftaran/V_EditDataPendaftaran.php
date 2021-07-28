@@ -114,7 +114,7 @@
     })
 
     $('#form_delete_pendaftaran').on('submit', function(e){
-        e.prefentDefault()
+        e.preventDefault()
         if(confirm('Apakah Anda yakin ingin menghapus pendaftaran ini?')){
             $.ajax({
                 url: '<?=base_url("pendaftaran/C_Pendaftaran/deletePendaftaranLab")?>'+'/'+'<?=$pendaftaran['id_t_pendaftaran']?>',
@@ -124,10 +124,7 @@
                     let res = JSON.parse(datares)
                     if(res.code == 0){
                         successtoast('Data Berhasil Dihapus')
-                        <?php if($callback != '0') { ?>
-                            $('#edit_data_pendaftaran').modal('hide')
-                            <?=$callback.'('.$pendaftaran['id_m_pasien'].')'?>
-                        <?php } ?>
+                        window.location=""
                     } else {
                         errortoast(res.message)
                     }
@@ -152,7 +149,9 @@
                     successtoast('Data Berhasil Disimpan')
                     <?php if($callback != '0') { ?>
                         $('#edit_data_pendaftaran').modal('hide')
-                        <?=$callback.'('.$pendaftaran['id_m_pasien'].')'?>
+                        <?=$callback.'('.$pendaftaran[$key_callback].')'?>
+                    <?php } else { ?>
+                        window.location=""
                     <?php } ?>
                 } else {
                     errortoast(res.message)

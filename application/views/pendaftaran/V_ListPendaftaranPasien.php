@@ -1,50 +1,75 @@
-<div class="row p-2" style="border-radius: 10px; border: 1px solid #001f3f; background-color: white; font-color: #001f3f;">
-    <?php if($list_pendaftaran){ ?>
-        <div class="col-12" style="border-bottom: 1px solid #001f3f;">
-            <span style="font-size: 20px; font-weight: bold;">LIST PENDAFTARAN</span>
+<style>
+    .item_pendaftaran{
+        cursor: pointer;
+        border-bottom: 1px solid #001f3f;
+        transition: .2s;
+    }
+
+    .item_pendaftaran:hover{
+        cursor: pointer;
+        background-color: #e8e8e8;
+        color: black;
+        border-radius: 5px;
+    }
+
+    .span_status_tagihan{
+        padding: 3px;
+        border-radius: 3px;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+    }
+</style>
+<?php if($list_pendaftaran){ ?>
+    <div class="col-12">
+        <div class="row" style="border-bottom: 1px solid #001f3f;">
+            <div class="col-1 text-center">No</div>
+            <div class="col-4 text-center">Nomor Pendaftaran</div>
+            <div class="col-4 text-center">Tanggal Pendaftaran</div>
+            <div class="col-3 text-center">Status Tagihan</div>
         </div>
-        <div class="col-12 mt-2">
-            <table class="table table-sm table-hover table-striped data_table_this">
-                <thead>
-                    <th class="text-center">No</th>
-                    <th class="text-left">Tanggal Pendaftaran</th>
-                    <th class="text-left">Nomor Pendaftaran</th>
-                    <th class="text-left">Status Tagihan</th>
-                    <th>Pilihan</th>
-                </thead>
-                <?php $no = 1; foreach($list_pendaftaran as $l){ ?>
-                    <tr style="cursor: pointer;">
-                        <td class="text-center align-middle"><?=$no++;?></td>
-                        <td class="text-left align-middle"><?=formatDate($l['tanggal_pendaftaran'])?></td>
-                        <td class="text-left align-middle"><?=$l['nomor_pendaftaran']?></td>
-                        <td class="text-left align-middle"><?=$l['status_tagihan']?></td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button id="option_button" type="button" class="btn btn-navy btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Pilihan
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="option_button">
-                                <!-- taruh sini yor for menu-menu. iko format di bawah -->
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#edit_data_pendaftaran" data-toggle="modal"
-                                onclick="openModalEditPendaftaran('<?=$l['id_t_pendaftaran']?>', 'loadListPendaftaranPasien')"><i class="fa fa-edit"></i> Edit Pendaftaran</a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </table>
-        </div>
-        <script>
-            $(function(){
-                $('.data_table_this').DataTable({
-                    responsive: false
-                });
-            })
-        </script>
-    <?php } else { ?>
-        <div class="col-12 text-center">
-            <h5><i class="fa fa-exclamation"></i> PASIEN BELUM MELAKUKAN PENDAFTARAN</h5>
-        </div>
-    <?php } ?>
-</div>
+        <?php $no = 1; foreach($list_pendaftaran as $l){
+             $bg_color = '#ce0000';
+             if($l['id_m_status_tagihan'] == 2){
+                 $bg_color = '#001f3f';
+             }
+             ?>
+            <div data-id_pendaftaran="<?=$l['id_t_pendaftaran']?>" class="item_pendaftaran row pt-2 pb-2" id="div_item_pendaftaran_<?=$l['id_t_pendaftaran']?>">
+                <div class="col-1 text-center"><strong><?=$no++;?></strong></div>
+                <div class="col-4 text-center"><strong><?=$l['nomor_pendaftaran']?></strong></div>
+                <div class="col-4 text-center"><strong><?=formatDate($l['tanggal_pendaftaran'])?></strong></div>
+                <div class="col-3 text-center"><strong class="span_status_tagihan" style="background-color: <?=$bg_color?>"><?=$l['status_tagihan']?></strong></div>
+                <div class="col-12 mt-2 text-center div_button" id="div_button_<?=$l['id_t_pendaftaran']?>" style="display: none;">
+                    <button href="#edit_data_pendaftaran" data-toggle="modal" class="btn btn-sm btn-navy"
+                    onclick="openModalEditPendaftaran('<?=$l['id_t_pendaftaran']?>', 'loadListPendaftaranPasien')">
+                    <i class="fa fa-edit"></i> Edit Pendaftaran</button>
+                    <button class="btn btn-sm btn-navy" onclick="openTagihan('<?=$l['id_t_pendaftaran']?>')">
+                    <i class="fa fa-cash-register"></i> Tagihan</button>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+<?php } else { ?>
+    <div class="col-12 text-center">
+        <h5><i class="fa fa-exclamation"></i> PASIEN BELUM MELAKUKAN PENDAFTARAN</h5>
+    </div>
+<?php } ?>  
+<script>
+    $(document).mouseup(function(e) 
+    {
+        var container = $(".item_pendaftaran");
+
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0) 
+        {
+          $('.div_button').hide()
+        } else {
+          $('.div_button').show()
+        }
+    });
+
+    $('.item_pendaftaran').on('click', function(){
+        $('.div_button').hide()
+        $('#div_button_'+$(this).data('id_pendaftaran')).show()
+    })
+</script>
