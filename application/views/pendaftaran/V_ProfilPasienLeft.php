@@ -52,7 +52,7 @@
             <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-phone"></i> <?=$nomor_telepon?></span>
         </div>
         <div class="col-12 text-center p-2">
-            <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Edit Pasien" onclick="editPasien()" 
+            <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Edit Data Pasien" onclick="editPasien()" 
             class="btn btn-sm btn-outline-navy"><i class="fa fa-user-edit"></i></button>
 
             <button id="btn_pendaftaran_baru" class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Pendaftaran Baru">
