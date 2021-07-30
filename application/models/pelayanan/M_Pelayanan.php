@@ -111,7 +111,8 @@
 
                 $data = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
-                    'id_m_nm_tindakan' => $id_tindakan
+                    'id_m_nm_tindakan' => $id_tindakan,
+                    'created_by' => $this->general_library->getId()
                 );
                 $this->db->insert('t_tindakan', $data);
                 $last_id_tindakan = $this->db->insert_id();
@@ -123,6 +124,7 @@
                     'jenis_tagihan' => "Tindakan",
                     'nama_tagihan' => $dataTindakan['0']->nama_tindakan,
                     'biaya' => $dataTindakan['0']->biaya,
+                    'created_by' => $this->general_library->getId()
                 );
                 $this->db->insert('t_tagihan_detail', $dataTagihan);
             }
