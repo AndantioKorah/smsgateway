@@ -45,6 +45,10 @@
 
             <button class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_detail_pendaftaran_left" data-placement="top" title="Tagihan" onclick="openTagihan('<?=$pendaftaran['id']?>')">
             <i class="fa fa-cash-register"></i></button>
+
+            <button class="btn btn-sm btn-outline-navy" data-tooltip="tooltip_detail_pendaftaran_left" data-placement="top" title="Input Tindakan" onclick="LoadViewInputTindakan('<?=$pendaftaran['id']?>')">
+            <i class="fa fa-user-md"></i></button>
+
         </div>
     </div>
     <script>
