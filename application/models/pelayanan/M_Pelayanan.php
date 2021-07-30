@@ -193,7 +193,7 @@
     }
 
     public function getTagihan($id_pendaftaran){
-        $this->db->select('a.id')
+        $this->db->select('*')
         ->from('t_tagihan as a')
         ->where('a.id_t_pendaftaran', $id_pendaftaran)
         ->where('a.flag_active', '1');

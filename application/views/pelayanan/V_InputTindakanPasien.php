@@ -1,15 +1,20 @@
 
         <div class="col-12 mt-2">
         <form id="form_input_tindakan">
+        <input  class="col-12" type='hidden'  id='id_m_status_tagihan' value=<?php echo $id_tagihan['0']->id_m_status_tagihan;?>>
         <input  class="col-12" type='hidden'  id='id_tagihan' value=<?php echo $id_tagihan['0']->id;?>>
         <input  class="col-12" type='hidden'  id='id_pendaftaran' value=<?php echo $id_pendaftaran;?>>
         <input  class="col-12" type='hidden' placeholder="Cari Tindakan..." autocomplete="off" id='input' onkeyup='searchTable()'>
-        <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
-   
-        <button id="button_submit_input_tindakan " type="submit" class="btn btn-navy btn-sm col-12 mt-2"> Simpan </button>
-        </form>
+        
+        <?php if($id_tagihan['0']->id_m_status_tagihan == 1){ ?>
+            <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
+             <button id="button_submit_input_tindakan " type="submit" class="btn btn-navy btn-sm col-12 mt-2"> Simpan </button>
+        <?php }?>
+
+    
+    </form>
             
-  
+       
         <div id="tabel_tindakan_pasien" class="row p-2 mt-4" style="border-radius: 10px; border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
                 <div class="col-12" style="border-bottom: 1px solid #001f3f;">
                     <span style="font-size: 15px; font-weight: bold;">TINDAKAN PASIEN</span>
@@ -160,6 +165,7 @@ function searchTable() {
 function tampilTindakan()
     {            
         var id_pendaftaran = $('#id_pendaftaran').val();
+        var id_m_status_tagihan = $('#id_m_status_tagihan').val();
        
         $.ajax({
             url:"<?=base_url("pelayanan/C_Pelayanan/getTindakanPasien")?>",
@@ -174,7 +180,7 @@ function tampilTindakan()
                 if (data != 0){                    
                     $.each(data, function (i, item){
                 //   console.log()
-                        if(data[i].status == 1){
+                        if(id_m_status_tagihan == 2){
                             style="style='display:none;'";
                         } else {
                             style="";
@@ -186,7 +192,7 @@ function tampilTindakan()
                                 '<td>'+no+'</td>'+
                                 '<td>'+data[i].nm_jns_tindakan+'</td>'+
                                 '<td>'+data[i].nama_tindakan+'</td>'+
-                                '<td '+style+'><button title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="'+data[i].id+'"><i class="fa fa-trash fa-sm"></i></button></td>'+
+                                '<td><button '+style+'  title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="'+data[i].id+'"><i class="fa fa-trash fa-sm"></i></button></td>'+
                             '</tr>'
                         );
                         no++;
