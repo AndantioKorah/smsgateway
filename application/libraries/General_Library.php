@@ -138,7 +138,7 @@ class General_library
 
     public function isNotMenu(){
         //return true, logic belum jalan for ni menu
-        return true;
+        return $this->isSessionExpired();
         $res = 0;
         if($this->isSessionExpired()){
             $current_url = substr($_SERVER["REDIRECT_QUERY_STRING"], 1, strlen($_SERVER["REDIRECT_QUERY_STRING"])-1);

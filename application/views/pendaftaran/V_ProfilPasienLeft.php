@@ -20,7 +20,7 @@
 </style>
 <div class="card card-default">
     <div class="card-header text-center">
-        <span style="font-size: 20px; font-weight: bold;"><?=$pasien['nama_pasien']?></span>
+        <span id="span_nama_pasien" style="font-size: 20px; font-weight: bold;"><?=$pasien['nama_pasien']?></span>
     </div>
     <div class="card-body">
         <div class="col-12 text-center">
