@@ -68,24 +68,28 @@
                     </div>
                     <div class="row mt-3 text-right">
                         <div class="col-12"><hr></div>
+                        <?php if($tagihan['id_m_status_tagihan'] == 1){ ?>
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
                             <button id="button_submit_edit_pendaftaran" type="submit" class="btn btn-navy btn-sm"><i class="fa fa-save"></i> Simpan</button>
                             <button disabled id="button_loading" style="display:none;" class="btn btn-navy btn-sm"><i class="fa fa-spin fa-spinner"></i> Menyimpan Pendaftaran</button>
                         </div>
+                        <?php } ?>
                     </div>
                 </form>
             </div>
             <div id="delete_tab" class="tab-pane">
                 <form id="form_delete_pendaftaran">
                     <div class="row">
-                        <div class="col-md-12">
-                            <label>Ketik "<i><b>hapus</b></i>" sebagai konfirmasi untuk menghapus pendaftaran ini</label>
-                            <input autocomplete="off" class="form-control form-control-sm" id="confirmation" />
-                        </div>
-                        <div class="col-md-12 mt-2 text-right">
-                            <button class="btn btn-sm btn-danger" type="submit" disabled id="btn_delete_pendaftaran"><i class="fa fa-trash"></i> Hapus</button>
-                        </div>
+                        <?php if($tagihan['id_m_status_tagihan'] == 1){ ?>
+                            <div class="col-md-12">
+                                <label>Ketik "<i><b>hapus</b></i>" sebagai konfirmasi untuk menghapus pendaftaran ini</label>
+                                <input autocomplete="off" class="form-control form-control-sm" id="confirmation" />
+                            </div>
+                            <div class="col-md-12 mt-2 text-right">
+                                <button class="btn btn-sm btn-danger" type="submit" disabled id="btn_delete_pendaftaran"><i class="fa fa-trash"></i> Hapus</button>
+                            </div>
+                        <?php } ?>
                     </div>
                 </form>
             </div>
