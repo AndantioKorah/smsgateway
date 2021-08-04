@@ -13,6 +13,7 @@
 </div>
 <script>
     let id_m_pasien = '<?=$id_m_pasien?>'
+    let diskon_nominal_counter;
 
     $(function(){
         loadProfilPasien()
@@ -60,6 +61,10 @@
         $('[data-tooltip="tooltip_detail_pendaftaran_left"]').tooltip('hide')
         loadDetailPendaftaran(id_t_pendaftaran)
         $('#content_div_transaksi').html('')
+        $('#content_div_transaksi').append(divLoaderNavy)
+        $('#content_div_transaksi').load('<?=base_url("tagihan/C_Tagihan/loadTagihan")?>'+'/'+id_t_pendaftaran, function(){
+            $('#loader').hide()
+        })
     }
 
     function LoadViewInputTindakan(id = 0, callback = 0){

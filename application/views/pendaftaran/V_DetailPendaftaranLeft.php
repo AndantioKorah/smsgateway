@@ -12,7 +12,8 @@
         color: white;
     }
 </style>
-<?php if($pendaftaran){ ?>
+<?php if($pendaftaran){ 
+?>
     <div class="row">
         <div class="col-12 text-center mb-2">
             <span style="font-size: 17px; font-weight: bold;">DATA PENDAFTARAN</span>
@@ -26,6 +27,26 @@
         <div class="col-1 mt-1">:</div>
         <div class="col-7 mt-1">
             <span style="font-size: 14px; font-weight: bold;"><?=formatDate($pendaftaran['tanggal_pendaftaran'])?></span>
+        </div>
+        <div class="col-4"><span class="label_pendaftaran">DPJP</span></div>
+        <div class="col-1">:</div>
+        <div class="col-7">
+            <span style="font-size: 14px; font-weight: bold;"><?=$pendaftaran['nama_dokter_dpjp']?></span>
+        </div>
+        <div class="col-4"><span class="label_pendaftaran">Dokter Pengirim</span></div>
+        <div class="col-1">:</div>
+        <div class="col-7">
+            <span style="font-size: 14px; font-weight: bold;"><?=$pendaftaran['nama_dokter_pengirim']?></span>
+        </div>
+        <div class="col-4"><span class="label_pendaftaran">No. HP</span></div>
+        <div class="col-1">:</div>
+        <div class="col-7">
+            <span style="font-size: 14px; font-weight: bold;"><?=$pendaftaran['nomor_telepon_dokter_pengirim']?></span>
+        </div>
+        <div class="col-4"><span class="label_pendaftaran">Alamat</span></div>
+        <div class="col-1">:</div>
+        <div class="col-7">
+            <span style="font-size: 14px; font-weight: bold;"><?=$pendaftaran['alamat_dokter_pengirim']?></span>
         </div>
         <div class="col-4 mt-1"><span class="label_pendaftaran">Status Tagihan</span></div>
         <div class="col-1 mt-1">:</div>

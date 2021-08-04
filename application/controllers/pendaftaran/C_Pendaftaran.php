@@ -92,6 +92,7 @@ class C_Pendaftaran extends CI_Controller
     public function editDataPendaftaran($id_t_pendaftaran, $callback, $key_callback){
         $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_t_pendaftaran);
+        $data['tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_t_pendaftaran);
         $data['callback'] = $callback;
         $data['key_callback'] = $key_callback;
         $this->load->view('pendaftaran/V_EditDataPendaftaran', $data);

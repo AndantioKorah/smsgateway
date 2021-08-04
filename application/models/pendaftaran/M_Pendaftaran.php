@@ -265,6 +265,9 @@
                 $dokter_pengirim = explode(';', $data_pendaftaran['dokter_pengirim']);
                 $data_pendaftaran['id_m_dokter_pengirim'] = $dokter_pengirim[0];
                 $data_pendaftaran['nama_dokter_pengirim'] = $dokter_pengirim[1];
+            } else {
+                $data_pendaftaran['id_m_dokter_pengirim'] = null;
+                $data_pendaftaran['nama_dokter_pengirim'] = null;
             }
             unset($data_pendaftaran['dokter_pengirim']);
 
@@ -301,7 +304,7 @@
             $last_pendaftaran = $this->db->select('*')
                                         ->from('t_pendaftaran')
                                         ->where('DATE(tanggal_pendaftaran)', $tanggal_pendaftaran[0])
-                                        ->where('flag_active', 1)
+                                        // ->where('flag_active', 1)
                                         ->order_by('tanggal_pendaftaran', 'desc')
                                         ->limit(1)
                                         ->get()->row_array();

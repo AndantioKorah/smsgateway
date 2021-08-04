@@ -8,6 +8,9 @@ class C_Pelayanan extends CI_Controller
         
         $this->load->model('pelayanan/M_Pelayanan', 'pelayanan');
         $this->load->model('pendaftaran/M_Pendaftaran', 'pendaftaran');
+        if(!$this->general_library->isNotMenu()){
+            redirect('logout');
+        };
     }
 
 

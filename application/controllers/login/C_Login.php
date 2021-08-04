@@ -10,7 +10,12 @@ class C_Login extends CI_Controller
     }
 
     public function login(){
-        $this->load->view('login/V_Login', null);
+        $userLoggedIn = $this->session->userdata('user_logged_in');
+        if($userLoggedIn){
+            redirect(base_url($this->session->userdata('landing_page')));
+        } else {
+            $this->load->view('login/V_Login', null);
+        }
     }
 
     public function logout(){

@@ -12,21 +12,29 @@
   #search_navbar{
     color: white !important;
     font-weight: bold !important;
+    width: 300px;
+    transition: .3s;
   }
 
   #search_navbar:focus{
     color: white !important;
-    background-color: rgb(255, 255, 255, .3) !important;
+    background-color: rgb(255, 255, 255, .1) !important;
     font-weight: bold !important;
     font-size: 15px !important;
     font-family: Arial !important;
+    width: 500px !important;
+    transition: .3s;
+    box-shadow: 0 0 10px rgba(255,255,255, 1);
   }
 
   #div_search_result{
     position: fixed;
-    width: 300px;
+    width: 500px;
     background-color: white;
-    border-radius: 5px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     z-index: 10;
     top: 5%;
     box-shadow: 5px 10px 20px #888888;
@@ -43,9 +51,8 @@
 <nav class="main-header navbar navbar-expand navbar-dark navbar-navy">
     <form class="form-inline ml-3">
       <div class="row">
-        <div class="input-group input-group-sm" style="width: 300px">
-          <input id="search_navbar" autocomplete="off" class="form-control form-control-navbar" type="text" placeholder="Cari Pasien" aria-label="Search">
-          </datalist>
+        <div class="input-group input-group-sm div_search_bar">
+          <input id="search_navbar" style="width: 300px" autocomplete="off" class="form-control form-control-navbar" type="text" placeholder="Cari Pasien" aria-label="Search">
           <div class="input-group-append">
             <button id="button_fa_search" class="btn btn-navbar" type="button">
               <i class="fas fa-search"></i>

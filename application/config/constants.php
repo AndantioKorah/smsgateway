@@ -88,8 +88,7 @@ define('DEVELOPMENT_MODE', '1');
 
 define('KODE_TRANSAKSI', '01');
 define('KODE_TRANSAKSI_PEMBAYARAN', '02');
-define('KODE_TRANSAKSI_PENGELUARAN', '03');
-define('KODE_TRANSAKSI_PEMBELIAN', '04');
+define('KODE_TRANSAKSI_UANG_MUKA', '03');
 
 define('VERSION', 'Version 1.0');
 define('TITLES', 'NiKita LAB');
