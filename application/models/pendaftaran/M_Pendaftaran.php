@@ -29,7 +29,7 @@
 
             $last_norm = $this->db->select('MAX(norm) as norm')
                                 ->from('m_pasien')
-                                ->where('flag_active', 1)
+                                // ->where('flag_active', 1)
                                 ->get()->row_array();
 
             $data['norm'] = generateNorm($last_norm['norm']);

@@ -1,6 +1,6 @@
 <style>
     .label_pendaftaran{
-        font-size: 14px;
+        /* font-size: 14px; */
         font-weight: bold;
     }
 
