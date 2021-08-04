@@ -64,6 +64,7 @@
 
     function LoadViewInputTindakan(id = 0, callback = 0){
         setHeader('tindakan')
+        $('[data-tooltip="tooltip_detail_pendaftaran_left"]').tooltip('hide')
         loadDetailPendaftaran(id)
         $('#content_div_transaksi').html('')
         $('#content_div_transaksi').append(divLoaderNavy)
