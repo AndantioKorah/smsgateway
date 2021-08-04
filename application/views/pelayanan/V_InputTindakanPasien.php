@@ -4,7 +4,7 @@
         <input  class="col-12" type='hidden'  id='id_m_status_tagihan' value=<?php echo $id_tagihan['0']->id_m_status_tagihan;?>>
         <input  class="col-12" type='hidden'  id='id_tagihan' value=<?php echo $id_tagihan['0']->id;?>>
         <input  class="col-12" type='hidden'  id='id_pendaftaran' value=<?php echo $id_pendaftaran;?>>
-        <input  class="col-12" type='hidden' placeholder="Cari Tindakan..." autocomplete="off" id='input' onkeyup='searchTable()'>
+        
         
         <?php if($id_tagihan['0']->id_m_status_tagihan == 1){ ?>
             <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
@@ -20,7 +20,22 @@
                     <span style="font-size: 15px; font-weight: bold;">TINDAKAN PASIEN</span>
                 </div>
                 <div class="col-12 mt-2">
-                <table class="table table-sm table-hover table-striped data_table_this">
+                <form>
+
+  <div class="form-group row col-sm-12 float-right" style="background-color:#fffff; ">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4 ">
+    <label for="" style="float: right; margin-top:5px">Search</label>
+    </div>
+    <div class="col-sm-4">
+    <input  class="form-control col-sm-12" type='text'  autocomplete="off" id='input' onkeyup='searchTable()'>
+    </div>
+  </div>
+
+                   
+               
+                <table class="table table-sm table-hover table-striped ">
         <thead>
             <tr>
             <th scope="col">No</th>
@@ -50,6 +65,11 @@ $(function(){
     $('.data_table_this').DataTable({
                     responsive: false
      });
+
+     $('#example').DataTable( {
+        "ajax": '?=base_url("pelayanan/C_Pelayanan/insertTindakan")?>'
+    } );
+
 
 $('#button_cetak_hasil').hide();
 $('#button_batal_selesai_input_tindakan').hide();
