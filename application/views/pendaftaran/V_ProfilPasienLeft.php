@@ -1,5 +1,6 @@
-<?php
-    if($pasien){
+
+<?php                           
+    if($pasien){            
     $tempat_lahir = $pasien['tempat_lahir'] ? $pasien['tempat_lahir'] : '-';
     $tanggal_lahir = $pasien['tanggal_lahir'] ? formatDateOnly($pasien['tanggal_lahir']) : '-';
     $jenis_identitas = $pasien['jenis_identitas'] ? $pasien['jenis_identitas'] : '-';
@@ -17,39 +18,81 @@
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
     }
+
+    .span_data_pasien_left{
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .card_body_profile_pasien_left{
+        padding: 3px !important;
+    }
 </style>
 <div class="card card-default">
     <div class="card-header text-center">
         <span id="span_nama_pasien" style="font-size: 20px; font-weight: bold;"><?=$pasien['nama_pasien']?></span>
     </div>
-    <div class="card-body">
-        <div class="col-12 text-center">
-            <span style="font-size: 17px; font-weight: bold;">NORM: <?=$pasien['norm']?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;">
-            <i class="<?=$pasien['jenis_kelamin'] == 1 ? 'fa fa-mars' : 'fa fa-venus'?>"></i> <?=$pasien['jenis_kelamin'] == 1 ? 'LAKI-LAKI' : 'PEREMPUAN'?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-birthday-cake"></i> <?=$tempat_lahir.', '.$tanggal_lahir?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-id-card"></i> <?='('.$jenis_identitas.') '.$nomor_identitas?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-burn"></i> <?=$golongan_darah?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-map-marked-alt"></i> <?=$alamat?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-briefcase"></i> <?=$nama_pekerjaan?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-flag"></i> <?=$kewarganegaraan?></span>
-        </div>
-        <div class="col-12 text-left">
-            <span style="font-size: 14px; font-weight: bold;"><i class="fa fa-phone"></i> <?=$nomor_telepon?></span>
+    <div class="card-body" class="card_body_profile_pasien_left">
+        <div class="row" style="margin-top: -10px;">
+            <div class="col-12 text-center">
+                <span style="font-weight: bold; font-size: 15px;">NORM: <?=$pasien['norm']?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="<?=$pasien['jenis_kelamin'] == 1 ? 'fa fa-mars' : 'fa fa-venus'?>"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$pasien['jenis_kelamin'] == 1 ? 'LAKI-LAKI' : 'PEREMPUAN'?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-birthday-cake"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$tempat_lahir.', '.$tanggal_lahir?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-id-card"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?='('.$jenis_identitas.') '.$nomor_identitas?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-burn"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$golongan_darah?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-briefcase"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$nama_pekerjaan?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-flag"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$kewarganegaraan?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-phone"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$nomor_telepon?></span>
+            </div>
+            <div class="col-1 text-center">
+                <span class="span_data_pasien_left">
+                <i class="fa fa-map-marked-alt"></i></span>
+            </div>
+            <div class="col-11">
+                <span class="span_data_pasien_left"><?=$alamat?></span>
+            </div>
         </div>
         <div class="col-12 text-center p-2">
             <button href="#edit_data_pasien" data-toggle="modal" data-tooltip="tooltip_profile_pasien" data-placement="top" title="Edit Data Pasien" onclick="editPasien()" 
