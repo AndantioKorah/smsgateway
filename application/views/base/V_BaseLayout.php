@@ -141,6 +141,8 @@
       </div>
   </div>
 </div>
+<div id="print_div" style="display:none;"></div>
+<iframe id="printing-frame" name="print_frame" src="about:blank" style="display:none;"></iframe>
 <script>
   var live_date_time = ''
   var timertoast = 2500

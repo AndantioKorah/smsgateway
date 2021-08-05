@@ -15,7 +15,7 @@
 </style>
 <div class="row">
     <div class="col-12 mt-3 mb-3 text-left">
-        <button class="btn btn-sm btn-navy"><i class="fa fa-print"></i> Cetak Rincian Tagihan</button>
+        <button class="btn btn-sm btn-navy" onclick="cetakRincianTagihan()"><i class="fa fa-print"></i> Cetak Rincian Tagihan</button>
     </div>
     <div class="col-12">
         <table class="table table-sm table-hover">
@@ -58,7 +58,24 @@
                             <td style="width: 30%;" class="text-center"></td>
                         </tr>
                     </tr>
-                <?php } } else { ?>
+                <?php } ?> 
+                <script>
+                    function cetakRincianTagihan() {
+                        $("#print_div").load('<?= base_url('tagihan/C_Tagihan/cetakRincianTagihan/'.$id_pendaftaran)?>',
+                            function () {
+                                printSpace('print_div');
+                            });
+                    }
+
+                    function printSpace(elementId) {
+                        var isi = document.getElementById(elementId).innerHTML;
+                        window.frames["print_frame"].document.title = document.title;
+                        window.frames["print_frame"].document.body.innerHTML = isi;
+                        window.frames["print_frame"].window.focus();
+                        window.frames["print_frame"].window.print();
+                    }
+                </script>
+                <?php } else { ?>
                     <tr>
                         <td colspan="4">BELUM ADA DATA</td>
                     </tr>

@@ -8,6 +8,7 @@ class C_Tagihan extends CI_Controller
         
         $this->load->model('tagihan/M_Tagihan', 'tagihan');
         $this->load->model('general/M_General', 'general');
+        $this->load->model('pendaftaran/M_Pendaftaran', 'pendaftaran');
         if(!$this->general_library->isNotMenu()){
             redirect('logout');
         };
@@ -15,6 +16,7 @@ class C_Tagihan extends CI_Controller
 
     public function loadTagihan($id_pendaftaran){
         $data['id_pendaftaran'] = $id_pendaftaran;
+        $data['pendaftaran'] = $this->general->getOne('t_pendaftaran', 'id', $id_pendaftaran, 1);
         $this->load->view('tagihan/V_Tagihan', $data);
     }
 
@@ -27,8 +29,21 @@ class C_Tagihan extends CI_Controller
     }
 
     public function loadRincianTagihan($id_pendaftaran){
+        $data['id_pendaftaran'] = $id_pendaftaran;
         $data['rincian_tagihan'] = $this->tagihan->getRincianTagihan($id_pendaftaran);
+        $this->session->set_userdata([
+            'data_cetak_rincian_tagihan' => $data['rincian_tagihan']
+        ]);
         $this->load->view('tagihan/V_RincianTagihan', $data);
+    }
+
+    public function cetakRincianTagihan($id_pendaftaran){
+        $data['rincian_tagihan'] = $this->session->userdata('data_cetak_rincian_tagihan');
+        // $this->session->set_userdata([
+        //     'data_cetak_rincian_tagihan' => null
+        // ]);
+        $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
+        $this->load->view('tagihan/V_CetakRincianTagihan', $data);
     }
 
 }

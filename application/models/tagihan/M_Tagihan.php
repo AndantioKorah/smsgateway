@@ -14,13 +14,14 @@
 
             $new_total_tagihan = 0;
             $sisa_harus_bayar = 0;
-            $tagihan = $this->db->select('*')
-                                ->from('t_tagihan')
-                                ->where('id_t_pendaftaran', $id_t_pendaftaran)
-                                ->where('flag_active', 1)
+            $tagihan = $this->db->select('a.*, b.id_m_cara_bayar')
+                                ->from('t_tagihan a')
+                                ->join('t_pendaftaran b', 'a.id_t_pendaftaran = b.id')
+                                ->where('a.id_t_pendaftaran', $id_t_pendaftaran)
+                                ->where('a.flag_active', 1)
                                 ->limit(1)
                                 ->get()->row_array();
-            if($tagihan && $tagihan['id_m_status_tagihan'] == 1){
+            if($tagihan && $tagihan['id_m_status_tagihan'] == 1 && $tagihan['id_m_cara_bayar'] == 1){
                 $detail_tagihan = $this->db->select('*')
                                         ->from('t_tagihan_detail')
                                         ->where('id_t_pendaftaran', $id_t_pendaftaran)

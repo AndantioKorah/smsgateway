@@ -160,7 +160,7 @@
                                 <div class="col-md-12">
                                     <label>Dokter Pengirim</label>
                                     <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
-                                        <option value="0">Pilih Dokter</option>
+                                        <option value="0">Atas Permintaan Sendiri</option>
                                         <?php foreach($dokter as $d){ ?>
                                             <option value="<?=$d['id'].';'.$d['nama_dokter'].';'.$d['alamat'].';'.$d['nomor_telepon']?>"><?=$d['nama_dokter']?></option>
                                         <?php } ?>
@@ -183,6 +183,14 @@
                                 <div class="col-md-12">
                                     <label>Tanggal Pendaftaran</label>
                                     <input readonly class="form-control form-control-sm datetimepickermaxtodaythis realdatetimethis" name="tanggal_pendaftaran" />
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Cara Bayar</label>
+                                    <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" name="cara_bayar">
+                                        <?php foreach($cara_bayar_detail as $cbd){ ?>
+                                            <option <?=$cbd['id'] == 1 ? 'selected' : ''?> value="<?=$cbd['id'].';'.$cbd['nama_cara_bayar_detail']?>"><?=$cbd['nama_cara_bayar_detail']?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                                 <div class="col-md-12">
                                     <label>Dokter Penanggung Jawab</label>

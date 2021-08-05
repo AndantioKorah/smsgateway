@@ -196,7 +196,7 @@
         }
 
         public function getDataPendaftaran($id){
-            return $this->db->select('a.*, b.id as id_m_pasien, a.id as id_t_pendaftaran')
+            return $this->db->select('a.*, b.id as id_m_pasien, a.id as id_t_pendaftaran, b.nama_pasien, b.alamat, b.nomor_telepon, b.tanggal_lahir, b.jenis_kelamin')
                             ->from('t_pendaftaran a')
                             ->join('m_pasien b', 'a.norm = b.norm')
                             ->where('a.id', $id)
@@ -271,6 +271,22 @@
             }
             unset($data_pendaftaran['dokter_pengirim']);
 
+            $cara_bayar = explode(';', $data_pendaftaran['cara_bayar']);
+            $data_pendaftaran['id_m_cara_bayar_detail'] = $cara_bayar[0];
+            $data_pendaftaran['nama_cara_bayar_detail'] = $cara_bayar[1];
+            $data_cara_bayar = $this->db->select('b.*')
+                                        ->from('m_cara_bayar_detail a')
+                                        ->join('m_cara_bayar b', 'a.id_m_cara_bayar = b.id')
+                                        ->where('a.id', $data_pendaftaran['id_m_cara_bayar_detail'])
+                                        ->where('a.flag_active', 1)
+                                        ->limit(1)
+                                        ->get()->row_array();
+            if($data_cara_bayar){
+                $data_pendaftaran['id_m_cara_bayar'] = $data_cara_bayar['id'];
+                $data_pendaftaran['nama_cara_bayar'] = $data_cara_bayar['nama_cara_bayar'];
+            }
+            unset($data_pendaftaran['cara_bayar']);
+
             $data_pendaftaran['updated_by'] = $this->general_library->getId();
             $this->db->where('id', $id_t_pendaftaran)
                     ->update('t_pendaftaran', $data_pendaftaran);
@@ -327,6 +343,22 @@
                 $data_pendaftaran['nama_dokter_pengirim'] = $dokter_pengirim[1];
             }
             unset($data_pendaftaran['dokter_pengirim']);
+
+            $cara_bayar = explode(';', $data_pendaftaran['cara_bayar']);
+            $data_pendaftaran['id_m_cara_bayar_detail'] = $cara_bayar[0];
+            $data_pendaftaran['nama_cara_bayar_detail'] = $cara_bayar[1];
+            $data_cara_bayar = $this->db->select('b.*')
+                                        ->from('m_cara_bayar_detail a')
+                                        ->join('m_cara_bayar b', 'a.id_m_cara_bayar = b.id')
+                                        ->where('a.id', $data_pendaftaran['id_m_cara_bayar_detail'])
+                                        ->where('a.flag_active', 1)
+                                        ->limit(1)
+                                        ->get()->row_array();
+            if($data_cara_bayar){
+                $data_pendaftaran['id_m_cara_bayar'] = $data_cara_bayar['id'];
+                $data_pendaftaran['nama_cara_bayar'] = $data_cara_bayar['nama_cara_bayar'];
+            }
+            unset($data_pendaftaran['cara_bayar']);
 
             $data_pendaftaran['created_by'] = $this->general_library->getId();
 
