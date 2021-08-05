@@ -32,7 +32,7 @@ class C_Pelayanan extends CI_Controller
 
     public function getTindakanPasien()
     {
-        echo json_encode($this->pelayanan->getTindakanPasien());
+        echo json_encode($this->pelayanan->getTindakanPasienOld());
     }
 
     public function select2Tindakan()

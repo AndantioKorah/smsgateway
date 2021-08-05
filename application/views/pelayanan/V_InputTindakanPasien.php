@@ -20,7 +20,7 @@
                     <span style="font-size: 15px; font-weight: bold;">TINDAKAN PASIEN</span>
                 </div>
                 <div class="col-12 mt-2">
-                <form>
+               
 
   <div class="form-group row col-sm-12 float-right" style="background-color:#fffff; ">
     <div class="col-sm-4">
@@ -39,7 +39,7 @@
         <thead>
             <tr>
             <th scope="col">No</th>
-            <th scope="col">Jenis Pemeriksaan</th>
+
             <th scope="col">Tindakan</th>
             <th scope="col"></th>
             </tr>
@@ -210,7 +210,6 @@ function tampilTindakan()
                         $('#daftar_tindakan').append(
                             '<tr>'+
                                 '<td>'+no+'</td>'+
-                                '<td>'+data[i].nm_jns_tindakan+'</td>'+
                                 '<td>'+data[i].nama_tindakan+'</td>'+
                                 '<td><button '+style+'  title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="'+data[i].id+'"><i class="fa fa-trash fa-sm"></i></button></td>'+
                             '</tr>'
@@ -240,7 +239,8 @@ function tampilTindakan()
                     idtindakan : idtindakan, id_pendaftaran:id_pendaftaran
                 }
             )
-            .done(function(data) {                                  
+            .done(function(data) { 
+                                               
             })
             .fail(function(err){
                 $(this).html('<i class="fas fa-trash"></i>')
@@ -250,7 +250,7 @@ function tampilTindakan()
         }
     });
 
-    select2ajax('cari_tindakan', '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>', 'nm_tindakan', 'nm_tindakan',2);
+    select2ajax('cari_tindakan', '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>', 'nama_tindakan', 'nama_tindakan',2);
     function select2ajax(elementid, url, value, label, minInputText = 2){
     $("#"+elementid).select2({
         placeholder: "Cari Tindakan...",
@@ -273,7 +273,7 @@ function tampilTindakan()
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.nm_tindakan,
+                            text: item.nama_tindakan,
                             id: item.id_tindakan
                         }
                     })

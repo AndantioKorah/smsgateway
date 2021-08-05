@@ -76,7 +76,7 @@
             return $res;
         }
 
-        public function insertTindakan(){
+        public function insertTindakanOld2(){
             $res['code'] = 0;
             $res['message'] = 'ok';
             $res['data'] = null;
@@ -128,10 +128,58 @@
                 );
                 $this->db->insert('t_tagihan_detail', $dataTagihan);
             }
+            // $last_id_pendaftaran = $this->db->insert_id();
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
+            }
+
+            return $res;
+        }
 
 
-                
+        public function insertTindakan(){
+            $res['code'] = 0;
+            $res['message'] = 'ok';
+            $res['data'] = null;
+
+           
+            $id_pendaftaran = $this->input->post('id_pendaftaran');
+            $id_tagihan = $this->input->post('id_tagihan');
+            $id_tindakan = $this->input->post('tindakan');
+           
+            $this->db->trans_begin();
+
+            $this->db->select('*')
+                ->from('m_tindakan as a')
+                ->where('a.parent_id', $id_tindakan);
+
+            $cekTindakan =  $this->db->get()->result();
+            if($cekTindakan) {
+                foreach($cekTindakan as $tindakan){
+                    // var_dump($tindakan->id);
+                    //  die();
+                    $data = array(
+                        'id_t_pendaftaran' => $id_pendaftaran,
+                        'id_m_tindakan' => $tindakan->id
+                    );
+                    $this->db->insert('t_tindakan', $data);
+                    $last_id_tindakan = $this->db->insert_id();
+    
+                    
+                }
+
+            } else {
+                $data = array(
+                    'id_t_pendaftaran' => $id_pendaftaran,
+                    'id_m_tindakan' => $id_tindakan
+                );
+                $this->db->insert('t_tindakan', $data);
+            }
             
+
 
             // $last_id_pendaftaran = $this->db->insert_id();
 
@@ -145,7 +193,10 @@
         }
 
 
-        public function getTindakanPasien()
+        
+
+
+        public function getTindakanPasienOld()
     {
         $id_pendaftaran = $this->input->post('id_pendaftaran');
         $this->db->select('a.id, a.id_m_nm_tindakan, b.nama_tindakan, b.biaya, c.nm_jns_tindakan, a.status')
@@ -157,6 +208,19 @@
             ->where('a.flag_active', '1');
         return $this->db->get()->result_array();
     }
+
+    public function getTindakanPasien()
+    {
+        $id_pendaftaran = $this->input->post('id_pendaftaran');
+        $this->db->select('a.id, a.id_m_tindakan, b.*')
+            ->from('t_tindakan as a')
+            ->join('m_tindakan as b', 'b.id = a.id_m_tindakan')
+            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+            ->order_by('a.id', 'asc')
+            ->where('a.flag_active', '1');
+        return $this->db->get()->result_array();
+    }
+
 
     public function delTindakanPasien(){
         $res['code'] = 0;
@@ -203,7 +267,7 @@
     }
 
 
-    public function select2Tindakan(){
+    public function select2TindakanOld(){
         // return $this->db->get('m_nm_tindakan')->result();
         $params = $this->input->post('search_param'); 
         // var_dump($query);
@@ -216,6 +280,17 @@
         ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
         ->like('nama_tindakan',$params)
         ->where('a.flag_active', '1');
+    return $this->db->get()->result();
+    }
+
+    public function select2Tindakan(){
+        $params = $this->input->post('search_param'); 
+        $id = ['1', '2'];
+
+        $this->db->select('a.*,a.id as id_tindakan ')
+        ->from('m_tindakan as a')
+        ->like('nama_tindakan',$params)
+        ->where_in('a.parent_id', $id);
     return $this->db->get()->result();
     }
 
@@ -247,6 +322,7 @@
 
         return $res;
     }
+
 
        
 	}
