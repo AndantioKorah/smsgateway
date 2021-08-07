@@ -149,6 +149,7 @@
             $id_pendaftaran = $this->input->post('id_pendaftaran');
             $id_tagihan = $this->input->post('id_tagihan');
             $id_tindakan = $this->input->post('tindakan');
+        //   dd($id_pendaftaran);
            
             $this->db->trans_begin();
 
@@ -175,18 +176,12 @@
                 $last_id_tindakan = $this->db->insert_id();
 
                 foreach($cekTindakan as $tindakan){
-                   
-                $this->db->select('a.biaya,a.nama_tindakan')
-                ->from('m_tindakan as a')
-                ->where('a.id', $tindakan->id)
-                ->where('a.flag_active', 1);
-                 $dataTindakan2 =  $this->db->get()->result();
-
+                
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
                         'parent_id_tindakan' => $id_tindakan,
-                        'nama_tindakan' => $dataTindakan2[0]->nama_tindakan
+                        'nama_tindakan' => $tindakan->nama_tindakan
                     );
                     $this->db->insert('t_tindakan', $data);
                     $detail_tindakan[] = $tindakan->nama_tindakan;  
@@ -211,14 +206,16 @@
                 ->where('a.id', $id_tindakan)
                 ->where('a.flag_active', 1);
                  $dataTindakan =  $this->db->get()->result();
+                
 
                  $data = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
                     'id_m_nm_tindakan' => $id_tindakan,
-                    'nama_tindakan' => $dataTindakan['0']->nama_tindakan
+                    'nama_tindakan' => $dataTindakan[0]->nama_tindakan
                 );
                 $this->db->insert('t_tindakan', $data);
-                $last_id_tindakan = $this->db->insert_id(); 
+                $last_id_tindakan = $this->db->insert_id();
+                $detail_tindakan[] = $dataTindakan[0]->nama_tindakan;  
                 
                 $dataTagihan = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
@@ -226,7 +223,7 @@
                     'id_t_tagihan' => $id_tagihan,
                     'jenis_tagihan' => "Tindakan",
                     'nama_tagihan' => $dataTindakan['0']->nama_tindakan,
-                    'detail_tindakan' => json_encode($dataTindakan['0']->nama_tindakan),
+                    'detail_tindakan' => json_encode($detail_tindakan),
                     'biaya' => $dataTindakan['0']->biaya,
                     'created_by' => $this->general_library->getId()
                 );
@@ -382,6 +379,7 @@
 
     public function select2Tindakan(){
         $params = $this->input->post('search_param'); 
+       
         $id = ['1', '2'];
 
         $this->db->select('a.*,a.id as id_tindakan ')
@@ -443,7 +441,7 @@
         // die();
 
         if($list_parent_id){
-            $jns_tindakan = $this->db->select('a.id,a.nm_jns_tindakan as nama_tindakan')
+            $jns_tindakan = $this->db->select('a.id,a.nm_jns_tindakan')
                                 ->from('m_jns_tindakan as a')
                                 ->where_in('a.id', $list_parent_id)
                                 // ->where('a.flag_active', 1)

@@ -34,7 +34,7 @@
   </div>
 
                    
-  <form method="plist_idt" id="form_hasil">        
+  <form method="post" id="form_hasil">        
   <table class="table table-sm table-hover" border="0">
             <thead class="thead_rincian_tindakan">
                 <th class="text-center" >No</th>
@@ -50,7 +50,7 @@
                     ?>
                     <tr style="cursor: pointer;">
                         <td class="text-center"><b style="font-size: 18px;"><?=$no++;?></b></td>
-                        <td ><b style="font-size: 18px;"><?=$rt['nama_tindakan']?></b></td>
+                        <td ><b style="font-size: 18px;"><?=$rt['nm_jns_tindakan']?></b></td>
                         <td  class="text-center"></td>
                         
                         <td  class="text-center"></td>
@@ -64,7 +64,11 @@
                         foreach($rt['detail_tindakan'] as $dt){ ?>
                         <tr  style="cursor: pointer;">
                             <td >
-                            <td ><?=$dt['nama_tindakan']?></td>
+                            <td >
+                            <?php $list_id = array(7,8); if (!in_array($dt['parent_id_tindakan'], $list_id)) { echo "<b>"; } ?>
+                            <?=$dt['nama_tindakan']?>
+                            <?php $list_id = array(7,8); if (!in_array($dt['parent_id_tindakan'], $list_id)) { echo "</b>"; } ?>
+                            </td>
                             <td >
                             <input
                             <?php $list_id = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { echo "style='display:none'"; } ?>
@@ -122,7 +126,7 @@ $(function(){
 
 
 
-     var base_url = 'http://localhlist_idt/lab/';
+     var base_url = 'http://localhost/lab/';
 $('#button_cetak_hasil').hide();
 $('#button_batal_selesai_input_tindakan').hide();
 
@@ -140,6 +144,7 @@ $('#form_input_tindakan').on('submit', function(e){
 		// 			}
 		// 		});
         var tindakan = $('#cari_tindakan').val();
+        
       
         if(tindakan == "" || tindakan == null){
             errortoast('  Tindakan Belum dipilih')
@@ -154,7 +159,7 @@ $('#form_input_tindakan').on('submit', function(e){
      $('#daftar_tindakan').append(divLoaderNavy)
 				$.ajax({
 					url:"<?=base_url("pelayanan/C_Pelayanan/insertTindakan")?>",
-					method:"Plist_idT",
+					method:"post",
 					data:{id_pendaftaran:id_pendaftaran,tindakan:tindakan,id_tagihan:id_tagihan},
 					success:function(data){
                         let res = JSON.parse(data)
@@ -180,7 +185,7 @@ $('#form_input_tindakan').on('submit', function(e){
      $('#daftar_tindakan').append(divLoaderNavy)
 				$.ajax({
 					url:"<?=base_url("pelayanan/C_Pelayanan/selesaiTindakan")?>",
-					method:"Plist_idT",
+					method:"post",
 					data:{id_pendaftaran:id_pendaftaran},
 					success:function(data){
                         let res = JSON.parse(data)
@@ -243,7 +248,7 @@ function tampilTindakan()
         $.ajax({
             url:"<?=base_url("pelayanan/C_Pelayanan/getTindakanPasien")?>",
             data : {id_pendaftaran : id_pendaftaran },
-            method : 'plist_idt',
+            method : 'post',
             dataType : 'json',
             success : function (data){ 
                                                 
@@ -281,12 +286,12 @@ function tampilTindakan()
     }
 
     $('#daftar_tindakan').on('click','.tombol_hapus_tindakan',function(){
-        var base_url = 'http://localhlist_idt/lab/';
+        var base_url = 'http://localhost/lab/';
         var id_pendaftaran = $('#id_pendaftaran').val();
          if(confirm('Apakah anda yakin?')){ 
             $(this).html('<i class="fas fa-spinner fa-spin"></i>')
             let idtindakan = $(this).data('idtindakan');
-            $.plist_idt(
+            $.post(
                 base_url+"pelayanan/C_Pelayanan/delTindakanPasien", 
                 { 
                     idtindakan : idtindakan, id_pendaftaran:id_pendaftaran
@@ -303,17 +308,14 @@ function tampilTindakan()
         }
     });
 
-    select2ajax('cari_tindakan', '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>', 'nama_tindakan', 'nama_tindakan',2);
-    function select2ajax(elementid, url, value, label, minInputText = 2){
-    $("#"+elementid).select2({
-        placeholder: "Cari Tindakan...",
+    $("#cari_tindakan").select2({
         tokenSeparators: [',', ' '],
-        minimumInputLength: minInputText,
+        minimumInputLength: 2,
         minimumResultsForSearch: 10,
         ajax: {
-            url: url,
+            url: '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>',
             dataType: "json",
-            type: "Plist_idT",
+            type: "POST",
             data: function (params) {
 
                 var queryParameters = {
@@ -322,7 +324,6 @@ function tampilTindakan()
                 return queryParameters;
             },
             processResults: function (data) {
-               
                 return {
                     results: $.map(data, function (item) {
                         return {
@@ -334,7 +335,8 @@ function tampilTindakan()
             }
         }
     });
-  }
+
+
 
 
   $('#form_hasil').on('submit', function(event){
@@ -352,7 +354,7 @@ function tampilTindakan()
    $.ajax({
 	url:  base_url + "pelayanan/C_Pelayanan/createHasil",
     // url:"insert.php",
-    method:"Plist_idT",
+    method:"post",
 	data:form_data,
 	
     success:function(data)
