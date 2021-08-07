@@ -79,7 +79,7 @@
             $detail_tagihan = $this->db->select('a.*, b.id_m_nm_tindakan, c.id_m_jns_tindakan')
                                     ->from('t_tagihan_detail a')
                                     ->join('t_tindakan b', 'a.id_reference = b.id')
-                                    ->join('m_nm_tindakan c', 'b.id_m_nm_tindakan = c.id')
+                                    ->join('m_tindakan c', 'b.id_m_nm_tindakan = c.id')
                                     ->where('a.id_t_pendaftaran', $id_pendaftaran)
                                     ->where('a.flag_active', 1)
                                     ->where('b.flag_active', 1)
@@ -96,7 +96,7 @@
                 $jns_tindakan = $this->db->select('*')
                                     ->from('m_jns_tindakan')
                                     ->where_in('id', $list_jns_tindakan)
-                                    ->where('flag_active', 1)
+                                    // ->where('flag_active', 1)
                                     ->get()->result_array();
                 if($jns_tindakan){
                     foreach($jns_tindakan as $j){
@@ -105,10 +105,54 @@
                     }
                 }
                 foreach($detail_tagihan as $dt){
+                    $dt['detail_tindakan'] = json_decode($dt['detail_tindakan']);
                     $data[$dt['id_m_jns_tindakan']]['total_biaya'] += $dt['biaya'];
                     $data[$dt['id_m_jns_tindakan']]['detail_tagihan'][] = $dt;
                 }
             }
+            return $data;
+        }
+
+        public function getRincianTagihanBu($id_pendaftaran){
+            $list_parent_id = null;
+            $data = null;
+            $detail_tagihan = $this->db->select('a.*, c.id_m_jns_tindakan')
+                                    ->from('t_tagihan_detail a')
+                                    ->join('t_tindakan b', 'a.id_reference = b.id')
+                                    ->join('m_tindakan c', 'b.id_m_nm_tindakan = c.id')
+                                    ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                                    ->where('a.flag_active', 1)
+                                    ->where('b.flag_active', 1)
+                                    ->order_by('a.id', 'asc')
+                                    ->get()->result_array();
+        
+            if($detail_tagihan){
+                foreach($detail_tagihan as $dt){
+                        $list_parent_id[] = $dt['id_m_jns_tindakan'];  
+                }
+                $list_parent_id = array_unique($list_parent_id);
+            }
+            // var_dump($list_jns_tindakan);
+            // die();
+
+            if($list_parent_id){
+                $jns_tindakan = $this->db->select('a.id, a.nm_jns_tindakan')
+                                    ->from('m_jns_tindakan as a')
+                                    ->where_in('a.id', $list_parent_id)
+                                    // ->where('a.flag_active', 1)
+                                    ->get()->result_array();
+                if($jns_tindakan){
+                    foreach($jns_tindakan as $j){
+                        $data[$j['id']] = $j;
+                        $data[$j['id']]['total_biaya'] = 0;
+                    }
+                }
+                foreach($detail_tagihan as $dt){
+                    $data[$dt['id_m_jns_tindakan']]['total_biaya'][] += floatval($dt['biaya']);
+                    $data[$dt['id_m_jns_tindakan']]['detail_tagihan'][] = $dt;
+                }
+            }
+            dd($data);
             return $data;
         }
 	}

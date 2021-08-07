@@ -101,5 +101,6 @@ define('URI_UPLOAD', './assets/'); //local with xampp
 
 define('DEVELOPER', 'nikita');
 
-define('MARGIN_TOP_CETAKAN', '10px');
-define('FONT_CETAKAN', 'Arial');
+define('MARGIN_TOP_CETAKAN', '150px');
+define('PADDING_CETAKAN', '10px');
+define('FONT_CETAKAN', 'Verdana');

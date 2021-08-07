@@ -137,20 +137,21 @@ class General_library
     }
 
     public function isNotMenu(){
-        //return true, logic belum jalan for ni menu
-        return $this->isSessionExpired();
-        $res = 0;
-        if($this->isSessionExpired()){
-            $current_url = substr($_SERVER["REDIRECT_QUERY_STRING"], 1, strlen($_SERVER["REDIRECT_QUERY_STRING"])-1);
-            $list_url = $this->nikita->session->userdata('list_url');
-            foreach($list_url as $lu){
-                if($current_url == $lu['url']){
-                    $res = 1;
-                    break;
-                }
-            }
-        }
-        return $res == 0 ? false : true;
+        return true;
+        // logic belum jalan for ni menu
+        // return $this->isSessionExpired();
+        // $res = 0;
+        // if($this->isSessionExpired()){
+        //     $current_url = substr($_SERVER["REDIRECT_QUERY_STRING"], 1, strlen($_SERVER["REDIRECT_QUERY_STRING"])-1);
+        //     $list_url = $this->nikita->session->userdata('list_url');
+        //     foreach($list_url as $lu){
+        //         if($current_url == $lu['url']){
+        //             $res = 1;
+        //             break;
+        //         }
+        //     }
+        // }
+        // return $res == 0 ? false : true;
     }
 
     public function getDataProfilePicture(){
