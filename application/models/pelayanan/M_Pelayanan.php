@@ -443,7 +443,7 @@
             $jns_tindakan = $this->db->select('a.id,a.nm_jns_tindakan as nama_tindakan')
                                 ->from('m_jns_tindakan as a')
                                 ->where_in('a.id', $list_parent_id)
-                                ->where('a.flag_active', 1)
+                                // ->where('a.flag_active', 1)
                                 ->get()->result_array();
             if($jns_tindakan){
                 foreach($jns_tindakan as $j){
