@@ -157,8 +157,33 @@
                 ->where('a.parent_id', $id_tindakan);
             $cekTindakan =  $this->db->get()->result();
 
-          
+
+
+         
             if($cekTindakan) {
+
+              
+              
+                foreach($cekTindakan as $tindakan){
+                   
+                $this->db->select('a.biaya,a.nama_tindakan')
+                ->from('m_tindakan as a')
+                ->where('a.id', $tindakan->id)
+                ->where('a.flag_active', 1);
+                 $dataTindakan2 =  $this->db->get()->result();
+
+                    $data = array(
+                        'id_t_pendaftaran' => $id_pendaftaran,
+                        'id_m_nm_tindakan' => $tindakan->id,
+                        'parent_id_tindakan' => $id_tindakan,
+                        'nama_tindakan' => $dataTindakan2[0]->nama_tindakan
+                    );
+                    $this->db->insert('t_tindakan', $data);
+                    $last_id_tindakan = $this->db->insert_id(); 
+                
+                    $detail_tindakan[] = $tindakan->nama_tindakan;  
+                }
+
 
                 $this->db->select('a.biaya,a.nama_tindakan')
                 ->from('m_tindakan as a')
@@ -181,29 +206,13 @@
                     'id_t_tagihan' => $id_tagihan,
                     'jenis_tagihan' => "Tindakan",
                     'nama_tagihan' => $dataTindakan['0']->nama_tindakan,
+                    'detail_tindakan' => json_encode($detail_tindakan),
                     'biaya' => $dataTindakan['0']->biaya,
                     'created_by' => $this->general_library->getId()
                 );
                 $this->db->insert('t_tagihan_detail', $dataTagihan);
 
-                foreach($cekTindakan as $tindakan){
-                   
-                $this->db->select('a.biaya,a.nama_tindakan')
-                ->from('m_tindakan as a')
-                ->where('a.id', $tindakan->id)
-                ->where('a.flag_active', 1);
-                 $dataTindakan2 =  $this->db->get()->result();
-
-                    $data = array(
-                        'id_t_pendaftaran' => $id_pendaftaran,
-                        'id_m_nm_tindakan' => $tindakan->id,
-                        'parent_id_tindakan' => $id_tindakan,
-                        'nama_tindakan' => $dataTindakan2[0]->nama_tindakan
-                    );
-                    $this->db->insert('t_tindakan', $data);
-                    $last_id_tindakan = $this->db->insert_id(); 
-                }
-               
+              
 
             } else {
               
@@ -318,7 +327,14 @@
                 ->update('t_tindakan', [
                     'updated_by' => $this->general_library->getId(),
                     'flag_active' => 0
-                ]);   
+                ]); 
+                
+                $this->db->where('id_reference', $id_tindakan)
+                ->where('id_t_pendaftaran', $id_pendaftaran)
+               ->update('t_tagihan_detail', [
+                   'updated_by' => $this->general_library->getId(),
+                   'flag_active' => 0
+               ]);
             }  
            
         } else {
@@ -330,15 +346,12 @@
             ]);
         }
         
-
-         
-
-        // $this->db->where('id_reference', $id_tindakan)
-        //          ->where('id_t_pendaftaran', $id_pendaftaran)
-        //         ->update('t_tagihan_detail', [
-        //             'updated_by' => $this->general_library->getId(),
-        //             'flag_active' => 0
-        //         ]);
+        $this->db->where('id_reference', $id_tindakan)
+                 ->where('id_t_pendaftaran', $id_pendaftaran)
+                ->update('t_tagihan_detail', [
+                    'updated_by' => $this->general_library->getId(),
+                    'flag_active' => 0
+                ]);
 
         if($this->db->trans_status() == FALSE){
             $this->db->trans_rollback();
