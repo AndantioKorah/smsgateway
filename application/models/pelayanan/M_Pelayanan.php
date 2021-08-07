@@ -494,7 +494,7 @@
                 $data[$ltp['id']] = $ltp;
             }
             foreach($list_parent as $lp){
-                $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']][] = $lp;
+                $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']] = $lp;
                 $i = 0;
                 foreach($tindakan as $t){
                     if($t['parent_id_tindakan'] == $lp['id_m_nm_tindakan']){
