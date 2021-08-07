@@ -465,7 +465,7 @@
         $list_parent = null;
         $list_id_top_parent = null;
         $list_top_parent = null;
-        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan')
+        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan')
                                     ->from('t_tindakan a')
                                     ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                                     ->where('a.id_t_pendaftaran', $id_pendaftaran)
@@ -495,18 +495,18 @@
             }
             foreach($list_parent as $lp){
                 $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']] = $lp;
-                $i = 0;
+                $j = 0;
                 foreach($tindakan as $t){
                     if($t['parent_id_tindakan'] == $lp['id_m_nm_tindakan']){
-                        $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']]['detail_tindakan'][] = $lp;
-                        array_splice($tindakan, $i, 1);
-                        $i -= 1;
+                        $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']]['detail_tindakan'][] = $t;
+                        array_splice($tindakan, $j, 1);
+                        $j -= 1;
                     }
-                    $i++;
+                    $j++;
                 }
             }
         }
-        dd($data);
+        // dd($data);
         // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
     }
