@@ -68,10 +68,10 @@
                             <td >
                             <input
                             <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
-                             name="hasil[]"  class="col-12 hsl" type='text'  value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
+                             name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'  value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <td ><input name="nilai_normal[]"
+                            <td ><input name="nilai_normal[]" 
                              <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
                               class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
                             <td ><input name="satuan[]"
@@ -97,7 +97,10 @@
                 <?php } ?>
             </tbody>
         </table> 
-        <button  class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>
+        <?php if($rincian_tindakan){ ?>
+                     <button  class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>
+        <?php } ?>
+       
        </form>
 
         <div id="selesai_input_tindakan">
