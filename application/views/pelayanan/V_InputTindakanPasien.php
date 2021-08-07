@@ -59,36 +59,27 @@
                         
                       <!-- tes -->
                       <?php $nmr=1; 
-                        if(isset($rt['detail_tindakan'])){
+                        if(isset($rt['tindakan'])){
+                           
                         
-                        foreach($rt['detail_tindakan'] as $dt){ ?>
+                        foreach($rt['tindakan'] as $dt){  dd($dt['detail_tindakan']);  ;?>
+                        
                         <tr  style="cursor: pointer;">
                             <td >
+                            <td ><?=$dt[0]['nama_tindakan']?></td>
                             <td >
-                            <?php $list_id = array(7,8); if (!in_array($dt['parent_id_tindakan'], $list_id)) { echo "<b>"; } ?>
-                            <?=$dt['nama_tindakan']?>
-                            <?php $list_id = array(7,8); if (!in_array($dt['parent_id_tindakan'], $list_id)) { echo "</b>"; } ?>
+                            <input name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text' >
+                            <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt[0]['id']?>" />
                             </td>
+                            <td ><input name="nilai_normal[]" class="col-12" type='text' value="<?=$dt[0]['nilai_normal']?>" readonly></td>
+                            <td ><input name="satuan[]" class="col-12" type='text' value="<?=$dt[0]['satuan']?>" readonly></td>
                             <td >
-                            <input
-                            <?php $list_id = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { echo "style='display:none'"; } ?>
-                             name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'  value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
-                            <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
-                            </td>
-                            <td ><input name="nilai_normal[]" 
-                             <?php $list_id = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { echo "style='display:none'"; } ?>
-                              class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
-                            <td ><input name="satuan[]"
-                             <?php $list_id = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { echo "style='display:none'"; } ?>
-                              class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
-                            <td >
-                            <input
-                            <?php $list_id = array(7,8); if (in_array($dt['parent_id_tindakan'], $list_id)) { echo "style='display:none'"; } ?>
-                             type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>
+                            <input type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt[0]['id']?>"  value="Hapus"></td>
                             
                         </td>
                           
                         </tr>
+                        
                        
                         <?php } } ?>
                         <!-- tes -->
