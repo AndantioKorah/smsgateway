@@ -419,7 +419,7 @@
     }
 
 
-    public function getRincianTindakan($id_pendaftaran){
+    public function getRincianTindakanBu($id_pendaftaran){
         $list_parent_id = null;
         $data = null;
         $detail_tindakan = $this->db->select('a.*, b.nilai_normal, b.satuan, b.id_m_jns_tindakan, b.id as id_m_tindakan, b.parent_id, b.nama_tindakan')
@@ -455,6 +455,57 @@
                 $data[$dt['id_m_jns_tindakan']]['detail_tindakan'][] = $dt;
             }
         }
+        return $data;
+    }
+
+    public function getRincianTindakan($id_pendaftaran){
+        $data = null;
+        $list_parent = null;
+        $list_id_top_parent = null;
+        $list_top_parent = null;
+        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan')
+                                    ->from('t_tindakan a')
+                                    ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                                    ->where('a.id_t_pendaftaran', $id_pendaftaran)
+                                    ->where('a.flag_active', 1)
+                                    ->group_by('a.id')
+                                    ->get()->result_array();
+        if($tindakan){
+            $i = 0;
+            foreach($tindakan as $t){
+                if($t['parent_id_tindakan'] == 0){
+                    $list_id_top_parent[] = $t['id_m_jns_tindakan'];
+                    $list_parent[] = $t; 
+                    array_splice($tindakan, $i, 1);
+                    $i -= 1;
+                }
+                $i++;
+            }
+            $list_id_top_parent = array_unique($list_id_top_parent);
+        }
+        $list_top_parent = $this->db->select('*')
+                                    ->from('m_jns_tindakan')
+                                    ->where_in('id', $list_id_top_parent)
+                                    ->get()->result_array();
+        if($list_top_parent){
+            foreach($list_top_parent as $ltp){
+                $data[$ltp['id']] = $ltp;
+            }
+            foreach($list_parent as $lp){
+                $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']][] = $lp;
+                $i = 0;
+                foreach($tindakan as $t){
+                    if($t['parent_id_tindakan'] == $lp['id_m_nm_tindakan']){
+                        $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']]['detail_tindakan'][] = $lp;
+                        array_splice($tindakan, $i, 1);
+                        $i -= 1;
+                    }
+                    $i++;
+                }
+            }
+        }
+        dd($data);
+        // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
     }
 
