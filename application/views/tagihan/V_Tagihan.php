@@ -17,6 +17,7 @@
 <div class="row" id="div_tagihan_header">
 </div>
 <div class="row">
+    <input style="display: none;" id="id_m_cara_bayar_hidden" value="<?=$pendaftaran['id_m_cara_bayar']?>" />
     <div class="col-12"><hr></div>
     <div class="col-12">
         <ul class="nav nav-tabs">

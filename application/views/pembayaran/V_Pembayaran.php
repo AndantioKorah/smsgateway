@@ -67,7 +67,7 @@
                     <div class="col-4"><label class="label_pembayaran">Total Tagihan</span></div>
                     <div class="col-8"><input autocomplete="off" readonly id="total_tagihan_input" class="form_pembayaran_custom form-control form-control-sm"/></div>
                 </div>
-                <div class="row">
+                <div class="row" id="div_row_diskon">
                     <div class="col-4"><label class="label_pembayaran" id="diskon_label_pembayaran" style="cursor: pointer;">Diskon (Rp)</span></div>
                     <div class="col-8">
                         <div class="row">
@@ -113,6 +113,10 @@
     <script>
         $(function(){
             diskon_nominal_counter = 1
+            if($('#id_m_cara_bayar_hidden').val() == 2){
+                $('#jumlah_pembayaran').prop('readonly', true)
+                $('#div_row_diskon').hide()
+            }
 
             $('.select2_pembayaran').select2()
 
@@ -191,7 +195,7 @@
             }
             $('#kembalian').val(rupiahkan(0))
             $('#jumlah_pembayaran').val(rupiahkan(sisa_harus_bayar))
-            $('#sisa_harus_bayar_input').val(rupiahkan(sisa_harus_bayar))
+            $('#sisa_harus_bayar_input').val(rupiahkan(0))
         }
 
         function countKembalian(){
@@ -199,23 +203,30 @@
             let sisa_harus_bayar = 0
             let total_tagihan = $('#total_tagihan_input').val().split('.').join("")
             let jumlah_pembayaran = $('#jumlah_pembayaran').val().split('.').join("")
-            diskon = $('#diskon_nominal').val().split('.').join("")
-            if(diskon == ''){
-                diskon = 0
-            }
-            if(jumlah_pembayaran == ''){
-                jumlah_pembayaran = 0
-            }
-
-            kembalian = (parseInt(jumlah_pembayaran) + parseInt(diskon)) - parseInt(total_tagihan)
-            if(parseInt(kembalian) < 0){
-                kembalian = 0
-            }
-
-            sisa_harus_bayar = parseInt(total_tagihan) - (parseInt(jumlah_pembayaran) + parseInt(diskon))
-            if(parseInt(sisa_harus_bayar) < 0){
+            
+            if($('#id_m_cara_bayar_hidden').val() == 2){
                 sisa_harus_bayar = 0
+                kembalian = jumlah_pembayaran
+            } else {
+                diskon = $('#diskon_nominal').val().split('.').join("")
+                if(diskon == ''){
+                    diskon = 0
+                }
+                if(jumlah_pembayaran == ''){
+                    jumlah_pembayaran = 0
+                }
+
+                kembalian = (parseInt(jumlah_pembayaran) + parseInt(diskon)) - parseInt(total_tagihan)
+                if(parseInt(kembalian) < 0){
+                    kembalian = 0
+                }
+
+                sisa_harus_bayar = parseInt(total_tagihan) - (parseInt(jumlah_pembayaran) + parseInt(diskon))
+                if(parseInt(sisa_harus_bayar) < 0){
+                    sisa_harus_bayar = 0
+                }
             }
+
             $('#sisa_harus_bayar_input').val(rupiahkan(sisa_harus_bayar))
             $('#kembalian').val(rupiahkan(kembalian))
         }

@@ -18,6 +18,7 @@ class C_Pendaftaran extends CI_Controller
             'ID_PENDAFTARAN_PASIEN' => null
         ]);
         $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
+        $data['cara_bayar_detail'] = $this->general->getAllWithOrder('m_cara_bayar_detail', 'nama_cara_bayar_detail', 'asc');
         render('pendaftaran/V_Pendaftaran', '', 'pendaftaran', $data);
     }
 
@@ -93,6 +94,7 @@ class C_Pendaftaran extends CI_Controller
         $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_t_pendaftaran);
         $data['tagihan'] = $this->general->getOne('t_tagihan', 'id_t_pendaftaran', $id_t_pendaftaran);
+        $data['cara_bayar_detail'] = $this->general->getAllWithOrder('m_cara_bayar_detail', 'nama_cara_bayar_detail', 'asc');
         $data['callback'] = $callback;
         $data['key_callback'] = $key_callback;
         $this->load->view('pendaftaran/V_EditDataPendaftaran', $data);

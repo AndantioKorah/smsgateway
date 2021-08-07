@@ -23,7 +23,7 @@
                                 <div class="col-md-12">
                                     <label>Dokter Pengirim</label>
                                     <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
-                                        <option value="0">Pilih Dokter</option>
+                                        <option <?=$pendaftaran['id_m_dokter_pengirim'] == 0 ? 'selected' : ''?> value="0">Atas Permintaan Sendiri</option>
                                         <?php foreach($dokter as $d){ ?>
                                             <option <?=$pendaftaran['id_m_dokter_pengirim'] == $d['id'] ? 'selected' : ''?> 
                                             value="<?=$d['id'].';'.$d['nama_dokter'].';'.$d['alamat'].';'.$d['nomor_telepon']?>"><?=$d['nama_dokter']?></option>
@@ -54,6 +54,14 @@
                                     <label>Tanggal Pendaftaran</label>
                                     <input value="<?=$pendaftaran['tanggal_pendaftaran']?>" readonly class="form-control form-control-sm" id="tanggal_pendaftaran"
                                     name="tanggal_pendaftaran" />
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Cara Bayar</label>
+                                    <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" name="cara_bayar">
+                                        <?php foreach($cara_bayar_detail as $cbd){ ?>
+                                            <option <?=$cbd['id'] == $pendaftaran['id_m_cara_bayar_detail'] ? 'selected' : ''?> value="<?=$cbd['id'].';'.$cbd['nama_cara_bayar_detail']?>"><?=$cbd['nama_cara_bayar_detail']?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                                 <div class="col-md-12">
                                     <label>Dokter Penanggung Jawab</label>
@@ -153,7 +161,11 @@
                     successtoast('Data Berhasil Disimpan')
                     <?php if($callback != '0') { ?>
                         $('#edit_data_pendaftaran').modal('hide')
-                        <?=$callback.'('.$pendaftaran[$key_callback].')'?>
+                        <?php if($callback == 'loadDetailPendaftaran'){ ?>
+                                <?=$callback.'('.$pendaftaran[$key_callback].', 1)'?>
+                        <?php } else { ?>
+                                <?=$callback.'('.$pendaftaran[$key_callback].')'?>
+                        <?php } ?>
                     <?php } else { ?>
                         window.location=""
                     <?php } ?>

@@ -43,13 +43,16 @@
         })
     }
     
-    function loadDetailPendaftaran(id_pendaftaran){
+    function loadDetailPendaftaran(id_pendaftaran, is_refresh_tagihan = 0){
         $('#div_detail_pendaftaran').show()
         $('#div_detail_pendaftaran').html('')
         $('#div_detail_pendaftaran').append(divLoaderNavy)
         $('#div_detail_pendaftaran').load('<?=base_url("pendaftaran/C_Pendaftaran/loadDetailPendaftaran")?>'+'/'+id_pendaftaran, function(){
             $('#loader').hide()
         })
+        if($('#label_card_header').html() == 'TAGIHAN' && is_refresh_tagihan == 1){
+            openTagihan(id_pendaftaran)
+        }
     }
 
     function setHeader(title = ''){
