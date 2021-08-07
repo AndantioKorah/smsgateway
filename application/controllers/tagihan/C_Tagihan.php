@@ -28,6 +28,7 @@ class C_Tagihan extends CI_Controller
 
     public function loadRincianTagihan($id_pendaftaran){
         $data['rincian_tagihan'] = $this->tagihan->getRincianTagihan($id_pendaftaran);
+        
         $this->load->view('tagihan/V_RincianTagihan', $data);
     }
 

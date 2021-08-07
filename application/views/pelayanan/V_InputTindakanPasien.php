@@ -22,10 +22,10 @@
                 <div class="col-12 mt-2">
                
 
-  <div class="form-group row col-sm-12 float-right" style="background-color:#fffff; ">
+  <div class="form-group row col-sm-12 float-right" style="display:none">
     <div class="col-sm-4">
     </div>
-    <div class="col-sm-4 ">
+    <div class="col-sm-4" >
     <label for="" style="float: right; margin-top:5px">Search</label>
     </div>
     <div class="col-sm-4">
@@ -34,20 +34,71 @@
   </div>
 
                    
+  <form method="post" id="form_hasil">        
+  <table class="table table-sm table-hover" border="0">
+            <thead class="thead_rincian_tindakan">
+                <th class="text-center" >No</th>
+                <th style="width: 25%;" >Tindakan</th>
+                <th  class="text-left">Hasil</th>
+                <th  class="text-left">Nilai Normal</th>
+                <th  class="text-left">Satuan</th>
+                <th style="width: 10%;"  class="text-left"></th>
                
-                <table class="table table-sm table-hover table-striped ">
-        <thead>
-            <tr>
-            <th scope="col">No</th>
-
-            <th scope="col">Tindakan</th>
-            <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody id="daftar_tindakan">
-        </tbody>
-        </table>
-            
+            </thead>
+            <tbody class="tbody_rincian_tindakan">
+                <?php if($rincian_tindakan){ $no=1; foreach($rincian_tindakan as $rt){ 
+                    ?>
+                    <tr style="cursor: pointer;">
+                        <td class="text-center"><b style="font-size: 18px;"><?=$no++;?></b></td>
+                        <td ><b style="font-size: 18px;"><?=$rt['nama_tindakan']?></b></td>
+                        <td  class="text-center"></td>
+                        
+                        <td  class="text-center"></td>
+                        <td  class="text-center"></td>
+                        <td  class="text-center"></td>
+                        
+                      <!-- tes -->
+                      <?php $nmr=1; 
+                        if(isset($rt['detail_tindakan'])){
+                        
+                        foreach($rt['detail_tindakan'] as $dt){ ?>
+                        <tr  style="cursor: pointer;">
+                            <td >
+                            <td ><?=$dt['nama_tindakan']?></td>
+                            <td >
+                            <input
+                            <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
+                             name="hasil[]"  class="col-12 hsl" type='text'  value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
+                            <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
+                            </td>
+                            <td ><input
+                             <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
+                              class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
+                            <td ><input
+                             <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
+                              class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
+                            <td >
+                            <input
+                            <?php $os = array(7,8); if (in_array($dt['parent_id_tindakan'], $os)) { echo "style='display:none'"; } ?>
+                             type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm " value="Hapus"></td>
+                            
+                        </td>
+                          
+                        </tr>
+                       
+                        <?php } } ?>
+                        <!-- tes -->
+                      
+                    </tr>
+                <?php } } else { ?>
+                    <tr>
+                        <td colspan="4">BELUM ADA DATA</td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table> 
+        <button  class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>
+       </form>
 
         <div id="selesai_input_tindakan">
         <!-- <button id="button_selesai_input_tindakan" type="submit" class="btn btn-navy btn-sm col-12 mt-2"> Selesai </button> -->
@@ -60,17 +111,15 @@
 <script>
 
 $(function(){
-    tampilTindakan()
+    // tampilTindakan()
     })
     $('.data_table_this').DataTable({
                     responsive: false
      });
 
-     $('#example').DataTable( {
-        "ajax": '?=base_url("pelayanan/C_Pelayanan/insertTindakan")?>'
-    } );
 
 
+     var base_url = 'http://localhost/lab/';
 $('#button_cetak_hasil').hide();
 $('#button_batal_selesai_input_tindakan').hide();
 
@@ -109,7 +158,8 @@ $('#form_input_tindakan').on('submit', function(e){
                         if(res.code == 1){
                          errortoast(res.message)
                         } 
-                        tampilTindakan()
+                        LoadViewInputTindakan(id_pendaftaran)
+                        // tampilTindakan()
 						// $('#result').html(data);
 					} , error: function(e){
                 errortoast('Terjadi Kesalahan')
@@ -282,5 +332,39 @@ function tampilTindakan()
         }
     });
   }
+
+
+  $('#form_hasil').on('submit', function(event){
+	$('.simpan').html('Loading <i class="fas fa-spinner fa-spin"></i>');
+	event.preventDefault();
+	var id_pendaftaran = $('#id_pendaftaran').val();
+    var count_data = 0;
+  $('.hsl').each(function(){
+   count_data = count_data + 1;
+  });
+  console.log(count_data)
+  if(count_data > 0)
+  {
+   var form_data = $(this).serialize();
+   $.ajax({
+	url:  base_url + "pelayanan/C_Pelayanan/createHasil",
+    // url:"insert.php",
+    method:"POST",
+	data:form_data,
+	
+    success:function(data)
+    {
+			// $('.simpan').html('Simpan');
+            LoadViewInputTindakan(id_pendaftaran)
+    	// $('#action_alert').html('<h4>Berhasil</h4>')
+    }
+   })
+  }
+  else
+  {
+   $('#action_alert').html('<p>Please Add atleast one data</p>');
+   $('#action_alert').dialog('open');
+  }
+ });
 
 </script>

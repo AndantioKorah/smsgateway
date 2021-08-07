@@ -8,6 +8,7 @@ class C_Pelayanan extends CI_Controller
         
         $this->load->model('pelayanan/M_Pelayanan', 'pelayanan');
         $this->load->model('pendaftaran/M_Pendaftaran', 'pendaftaran');
+        $this->load->model('tagihan/M_Tagihan', 'tagihan');
         if(!$this->general_library->isNotMenu()){
             redirect('logout');
         };
@@ -16,11 +17,14 @@ class C_Pelayanan extends CI_Controller
 
     public function loadViewInputTindakan($id_pendaftaran){
         $data['list_tindakan'] = $this->pelayanan->getListTindakan();
-       
+        $data['tindakan_pasien'] = $this->pelayanan->getTindakanPasien($id_pendaftaran);
         $data['id_tagihan'] = $this->pelayanan->getTagihan($id_pendaftaran);
-        //  var_dump($data['id_tagihan']);
-        // die();
+       
         $data['id_pendaftaran'] = $id_pendaftaran;
+        $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakan($id_pendaftaran);
+        // var_dump($data['rincian_tindakan']);
+        // die();
+        // $this->load->view('pelayanan/V_tes', $data);
         $this->load->view('pelayanan/V_InputTindakanPasien', $data);
     }
 
@@ -49,6 +53,24 @@ class C_Pelayanan extends CI_Controller
     public function selesaiTindakan()
     {
         echo json_encode($this->pelayanan->selesaiTindakan());
+    }
+
+
+    public function createHasil()
+    {
+
+        for ($count = 0; $count < count($_POST['hasil']); $count++) {
+            $id_t_tindakan = $_POST['id_t_tindakan'][$count];
+            $data = array(
+                'hasil' => $_POST['hasil'][$count],
+            );
+            // var_dump($data);
+            // die();
+            $this->pelayanan->createHasil($id_t_tindakan, $data);
+
+        }
+
+        echo json_encode($data);
     }
 
 }
