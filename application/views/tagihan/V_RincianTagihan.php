@@ -46,9 +46,9 @@
                         foreach($rt['detail_tagihan'] as $dt){ ?>
                         <tr style="cursor: pointer;">
                             <td style="width: 5%;">
-                            <td style="width: 50%;"><?=$dt['nama_tagihan']?></td>
-                            <td style="width: 15%;" class="text-left"><?=formatCurrency($dt['biaya'])?></td>
-                            <td style="width: 30%;" class="text-center"><?=formatDate($dt['created_date'])?></td>
+                            <td style="width: 50%;"><b><?=$dt['nama_tagihan']?></b></td>
+                            <td style="width: 15%;" class="text-left"><b><?=formatCurrency($dt['biaya'])?></b></td>
+                            <td style="width: 30%;" class="text-center"><b><?=formatDate($dt['created_date'])?></b></td>
                         </tr>
                         <?php } } ?>
                         <tr>
