@@ -29,8 +29,8 @@
                 <?php if($rincian_tagihan){ $no=1; foreach($rincian_tagihan as $rt){ 
                     ?>
                     <tr style="cursor: pointer;">
-                        <td style="width: 5%;" class="text-center"><b style="font-size: 18px;"><?=$no++;?></b></td>
-                        <td style="width: 50%;"><b style="font-size: 18px;"><?=$rt['nm_jns_tindakan']?></b></td>
+                        <td style="width: 5%;" class="text-center"><b style=""><?=$no;?></b></td>
+                        <td style="width: 50%;"><b style=""><?=$rt['nm_jns_tindakan']?></b></td>
                         <td style="width: 15%;" class="text-left"></td>
                         <td style="width: 30%;" class="text-center"></td>
                         <?php
@@ -43,22 +43,27 @@
                                 }
                                 return $ad > $bd ? -1 : 1;
                             });
-                        foreach($rt['detail_tagihan'] as $dt){ ?>
+                        $no_detail_tagihan = 1; foreach($rt['detail_tagihan'] as $dt){ ?>
                         <tr style="cursor: pointer;">
-                            <td style="width: 5%;">
+                            <td style="width: 5%;" class="text-center"><b><?=$no.'.'.$no_detail_tagihan;?></b></td>
                             <td style="width: 50%;"><b><?=$dt['nama_tagihan']?></b></td>
                             <td style="width: 15%;" class="text-left"><b><?=formatCurrency($dt['biaya'])?></b></td>
                             <td style="width: 30%;" class="text-center"><b><?=formatDate($dt['created_date'])?></b></td>
                         </tr>
-                        <?php } } ?>
+                        <?php if($dt['detail_tindakan']){ foreach($dt['detail_tindakan'] as $d) { ?>
                         <tr>
-                            <td style="width: 5%;">
+                            <td style="width: 5%;"></td>
+                            <td colspan=2 style="width: 95%;"><?=$d?></td>
+                        </tr>
+                        <?php } } $no_detail_tagihan++; } } ?>
+                        <tr>
+                            <td style="width: 5%;"></td>
                             <td style="width: 50%;" class="text-right"><b style="font-size: 18px;">TOTAL <?=$rt['nm_jns_tindakan']?> :</b></td>
                             <td style="width: 15%;" class="text-left"><b style="font-size: 18px;"><?=formatCurrency($rt['total_biaya'])?></b></td>
                             <td style="width: 30%;" class="text-center"></td>
                         </tr>
                     </tr>
-                <?php } ?> 
+                <?php $no++; } ?> 
                 <script>
                     function cetakRincianTagihan() {
                         $("#print_div").load('<?= base_url('tagihan/C_Tagihan/cetakRincianTagihan/'.$id_pendaftaran)?>',

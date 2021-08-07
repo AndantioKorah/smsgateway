@@ -105,6 +105,7 @@
                     }
                 }
                 foreach($detail_tagihan as $dt){
+                    $dt['detail_tindakan'] = json_decode($dt['detail_tindakan']);
                     $data[$dt['id_m_jns_tindakan']]['total_biaya'] += $dt['biaya'];
                     $data[$dt['id_m_jns_tindakan']]['detail_tagihan'][] = $dt;
                 }
