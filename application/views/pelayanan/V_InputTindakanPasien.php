@@ -45,7 +45,7 @@
                 <th style="width: 10%;"  class="text-left"></th>
                
             </thead>
-            <tbody class="tbody_rincian_tindakan">
+            <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
                 <?php if($rincian_tindakan){ $no=1; foreach($rincian_tindakan as $rt){ 
                     ?>
                     <tr style="cursor: pointer;">
@@ -71,16 +71,16 @@
                              name="hasil[]"  class="col-12 hsl" type='text'  value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <td ><input
+                            <td ><input name="nilai_normal[]"
                              <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
                               class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
-                            <td ><input
+                            <td ><input name="satuan[]"
                              <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
                               class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
                             <td >
                             <input
                             <?php $os = array(7,8); if (in_array($dt['parent_id_tindakan'], $os)) { echo "style='display:none'"; } ?>
-                             type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm " value="Hapus"></td>
+                             type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>
                             
                         </td>
                           
@@ -290,7 +290,7 @@ function tampilTindakan()
                 }
             )
             .done(function(data) { 
-                                               
+                LoadViewInputTindakan(id_pendaftaran)                               
             })
             .fail(function(err){
                 $(this).html('<i class="fas fa-trash"></i>')

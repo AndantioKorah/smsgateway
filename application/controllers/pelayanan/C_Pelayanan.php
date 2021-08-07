@@ -63,6 +63,8 @@ class C_Pelayanan extends CI_Controller
             $id_t_tindakan = $_POST['id_t_tindakan'][$count];
             $data = array(
                 'hasil' => $_POST['hasil'][$count],
+                'nilai_normal' => $_POST['nilai_normal'][$count],
+                'satuan' => $_POST['satuan'][$count],
             );
             // var_dump($data);
             // die();
