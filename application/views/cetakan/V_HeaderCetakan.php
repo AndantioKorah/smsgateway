@@ -1,8 +1,20 @@
+<html>
+<head>
 <style>
+    @page{
+        size: A4;
+        margin-top: 150px;
+    }
+
+    
     .header_cetakan{
         width: 50%;
         font-weight: normal;
         text-align: left;
+        .c
+    }
+    .header_cetakan > page_number{
+        content: counter(page)
     }
     .header_penanggung_jawab{
         font-style: italic;
@@ -19,7 +31,10 @@
         vertical-align: top;
         font-size: 14px;
     }
+    
 </style>
+</head>
+<body id="body_cetakan">
 <table style="width: 100%;" class="table_header">
     <thead>
         <th class="header_cetakan">
@@ -61,7 +76,7 @@
                 <tr>
                     <td style="width: 35%;" class="header_label">Halaman</td>
                     <td style="width: 5%;" class="header_label">:</td>
-                    <td style="width: 60%;" class="header_content"></td>
+                    <td style="width: 60%;" class="header_content"><span class="page_number"></span></td>
                 </tr>
             </table>
         </th>        
@@ -109,4 +124,20 @@
             </table>
         </th>
     </thead>
+    <tbody>
+        <tr>
+            <td colspan=2>
+                <?php
+                    // $data['rincian_tagihan'] = $rincian_tagihan;
+                    $this->load->view($page, $data);
+                ?>
+            </td>
+        </tr>
+    </tbody>
 </table>
+</body>
+</html>
+<span id="content"></span>
+<script>
+    
+</script>

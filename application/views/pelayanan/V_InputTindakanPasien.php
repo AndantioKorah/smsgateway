@@ -1,5 +1,4 @@
-
-        <div class="col-12 mt-2">
+<div class="col-12 mt-2">
         <form id="form_input_tindakan">
         <input  class="col-12" type='hidden'  id='id_m_status_tagihan' value=<?php echo $id_tagihan['0']->id_m_status_tagihan;?>>
         <input  class="col-12" type='hidden'  id='id_tagihan' value=<?php echo $id_tagihan['0']->id;?>>
@@ -13,102 +12,115 @@
 
     
     </form>
-            
+    <button
+        <?php if($id_tagihan[0]->id_m_status_tagihan == 1) echo "style='display:none'" ;?>
+        onclick="cetakHasil()" class="btn btn-sm btn-navy mt-2" ><i class="fa fa-print"></i> Cetak Hasil</button> 
        
         <div id="tabel_tindakan_pasien" class="row p-2 mt-4" style="border-radius: 10px; border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
                 <div class="col-12" style="border-bottom: 1px solid #001f3f;">
                     <span style="font-size: 15px; font-weight: bold;">TINDAKAN PASIEN</span>
                 </div>
                 <div class="col-12 mt-2">
-               
-
-  <div class="form-group row col-sm-12 float-right" style="display:none">
-    <div class="col-sm-4">
-    </div>
-    <div class="col-sm-4" >
-    <label for="" style="float: right; margin-top:5px">Search</label>
-    </div>
-    <div class="col-sm-4">
-    <input  class="form-control col-sm-12" type='text'  autocomplete="off" id='input' onkeyup='searchTable()'>
-    </div>
-  </div>
-
-                   
+                          
   <form method="post" id="form_hasil">        
   <table class="table table-sm table-hover" border="0">
             <thead class="thead_rincian_tindakan">
-                <th class="text-center" >No</th>
+                <th style="width: 5%;" class="text-center" >No</th>
                 <th style="width: 25%;" >Tindakan</th>
-                <th  class="text-left">Hasil</th>
-                <th  class="text-left">Nilai Normal</th>
-                <th  class="text-left">Satuan</th>
-                <th style="width: 10%;"  class="text-left"></th>
+                <th  style="width: 15%;"  class="text-left">Hasil</th>
+                <th  style="width: 15%;"  class="text-left">Nilai Normal</th>
+                <th  style="width: 10%;"  class="text-left">Satuan</th>
+                <th  style="width: 25%;"  class="text-left">Keterangan</th>
+                <th style="width: 5%;"  class="text-left"></th>
                
             </thead>
             <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
-                <?php if($rincian_tindakan){ $no=1; foreach($rincian_tindakan as $rt){ 
+                <?php if(isset($rincian_tindakan)){ 
+                    $no=1; 
+                  
+                    foreach($rincian_tindakan as $rt){ 
                     ?>
                     <tr style="cursor: pointer;">
-                        <td class="text-center"><b style="font-size: 18px;"><?=$no++;?></b></td>
-                        <td ><b style="font-size: 18px;"><?=$rt['nama_tindakan']?></b></td>
-                        <td  class="text-center"></td>
-                        
+                        <td class="text-center"><b style="font-size: 18px;"><?=$no;?></b></td>
+                        <td ><b style="font-size: 18px;"><?=$rt['nm_jns_tindakan']?></b></td>
                         <td  class="text-center"></td>
                         <td  class="text-center"></td>
                         <td  class="text-center"></td>
-                        
+                        <td  class="text-center"></td>
+                        <td  class="text-center"></td>
                       <!-- tes -->
-                      <?php $nmr=1; 
-                        if(isset($rt['detail_tindakan'])){
-                        
-                        foreach($rt['detail_tindakan'] as $dt){ ?>
+                      <?php 
+                      
+                        if(isset($rt['tindakan'])){  
+                            $nmr=1;
+                            $styleTagihan = null;
+                            if($id_tagihan['0']->id_m_status_tagihan == 2) $styleTagihan="style='display:none;'"; else $styleTagihan="style=''";  
+                            foreach($rt['tindakan'] as $dt){   
+                            $list_id = array(7,8,31); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { $style="style='display:none;'"; } else {$style="style=''";} 
+                          ;?>
                         <tr  style="cursor: pointer;">
+                            <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>
+                            <td ><b><?=$dt['nama_tindakan']?></b></td>
                             <td >
-                            <td ><?=$dt['nama_tindakan']?></td>
-                            <td >
-                            <input
-                            <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
-                             name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'  value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
+                            <input <?=$style;?> name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <td ><input name="nilai_normal[]" 
-                             <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
-                              class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
-                            <td ><input name="satuan[]"
-                             <?php $os = array(7,8); if (in_array($dt['id_m_nm_tindakan'], $os)) { echo "style='display:none'"; } ?>
-                              class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
+                            <td ><input <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
+                            <td ><input <?=$style;?> name="satuan[]" class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
+                            <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
                             <td >
-                            <input
-                            <?php $os = array(7,8); if (in_array($dt['parent_id_tindakan'], $os)) { echo "style='display:none'"; } ?>
-                             type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>
-                            
-                        </td>
-                          
+                            <input <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>  
+                        </td> 
                         </tr>
-                       
-                        <?php } } ?>
+                    
+                        <?php  if(isset($dt['detail_tindakan'])){ foreach($dt['detail_tindakan'] as $d) { ?>
+                        <tr>
+                            <td ></td>
+                            <td ><?=$d['nama_tindakan']?></td>
+                            <td> <input name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
+                              <input type="hidden" name="id_t_tindakan[]"  value="<?=$d['id']?>" />
+                            </td>
+                            <td><input name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" readonly></td>
+                            <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td>
+                            <td ><input name="keterangan[]" class="col-12" type='text' value="<?=$d['keterangan']?>" ></td>
+                            <td></td>
+                        </tr>
+                        <?php } } $nmr++; } } ?>
                         <!-- tes -->
                       
                     </tr>
+                    <?php $no++; ?> 
+                    <script>
+                    function cetakHasil() {
+                        alert()
+                        $("#print_div").load('<?= base_url('pelayanan/C_Pelayanan/cetakHasil/'.$id_pendaftaran)?>',
+                            function () {
+                                printSpace('print_div');
+                            });
+                    }
+
+                    function printSpace(elementId) {
+                        var isi = document.getElementById(elementId).innerHTML;
+                        window.frames["print_frame"].document.title = document.title;
+                        window.frames["print_frame"].document.body.innerHTML = isi;
+                        window.frames["print_frame"].window.focus();
+                        window.frames["print_frame"].window.print();
+                    }
+                </script>
                 <?php } } else { ?>
                     <tr>
                         <td colspan="4">BELUM ADA DATA</td>
                     </tr>
-                <?php } ?>
+                <?php   } ?>
             </tbody>
         </table> 
         <?php if($rincian_tindakan){ ?>
-                     <button  class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>
+            <button 
+            <?php if($id_tagihan[0]->id_m_status_tagihan == 1) echo "style='display:none'" ;?> 
+            class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>        
         <?php } ?>
-       
        </form>
-
-        <div id="selesai_input_tindakan">
-        <!-- <button id="button_selesai_input_tindakan" type="submit" class="btn btn-navy btn-sm col-12 mt-2"> Selesai </button> -->
-        <!-- <button id="button_batal_selesai_input_tindakan"  class="btn btn-danger btn-sm col-6 mt-2"> Batal Selesai </button> -->
-        <!-- <button id="button_cetak_hasil"  class="btn btn-navy btn-sm col-6 mt-2 float-right"> Cetak Hasil </button> -->
-        </div>
-</div>
+       </div>
 
 
 <script>
@@ -122,39 +134,29 @@ $(function(){
 
 
 
-     var base_url = 'http://localhost/lab/';
-$('#button_cetak_hasil').hide();
-$('#button_batal_selesai_input_tindakan').hide();
-
+var base_url = 'http://localhost/lab/';
 
 $('#form_input_tindakan').on('submit', function(e){
         e.preventDefault() 
-       
+
         var id_pendaftaran = $('#id_pendaftaran').val();
         var id_tagihan = $('#id_tagihan').val();
-        // var tindakan = [];
-		// 		$('.value1').each(function(){
-		// 			if($(this).is(":checked"))
-		// 			{
-		// 				tindakan.push($(this).val());
-		// 			}
-		// 		});
         var tindakan = $('#cari_tindakan').val();
-      
+        
         if(tindakan == "" || tindakan == null){
             errortoast('  Tindakan Belum dipilih')
             $('#button_submit_input_tindakan').show('fast')
             return false
         }  
-        $('#button_loading').show()
-        $('#button_submit_input_tindakan').hide('fast')     
+        // $('#button_loading').show()
+        // $('#button_submit_input_tindakan').hide('fast')     
            
-	// tindakan = tindakan.toString();
-     $('#daftar_tindakan').html('');
-     $('#daftar_tindakan').append(divLoaderNavy)
+            // tindakan = tindakan.tlist_idtring();
+            //  $('#daftar_tindakan').html('');
+            //  $('#daftar_tindakan').append(divLoaderNavy)
 				$.ajax({
 					url:"<?=base_url("pelayanan/C_Pelayanan/insertTindakan")?>",
-					method:"POST",
+					method:"post",
 					data:{id_pendaftaran:id_pendaftaran,tindakan:tindakan,id_tagihan:id_tagihan},
 					success:function(data){
                         let res = JSON.parse(data)
@@ -171,38 +173,7 @@ $('#form_input_tindakan').on('submit', function(e){
         $('#button_submit_input_tindakan').show('fast')
     })
 
-    $(document).on('click','#button_selesai_input_tindakan',function(){
-    
-        var id_pendaftaran = $('#id_pendaftaran').val();
-         
-    
-     $('#daftar_tindakan').html('');
-     $('#daftar_tindakan').append(divLoaderNavy)
-				$.ajax({
-					url:"<?=base_url("pelayanan/C_Pelayanan/selesaiTindakan")?>",
-					method:"POST",
-					data:{id_pendaftaran:id_pendaftaran},
-					success:function(data){
-                        let res = JSON.parse(data)
-                        $('#form_input_tindakan').hide('fast')     
-                        $('#button_selesai_input_tindakan').hide('fast');
-                        $('#button_cetak_hasil').show('fast');
-                        $('#button_batal_selesai_input_tindakan').show('fast');
-                        $('.tombol_hapus_tindakan').hide();
-                        tampilTindakan()
-					} , error: function(e){
-                errortoast('Terjadi Kesalahan')
-            }
-		})
-    })
 
-    $(document).on('click','#button_batal_selesai_input_tindakan',function(){
-       $('#button_cetak_hasil').hide('fast');
-       $('#button_batal_selesai_input_tindakan').hide('fast');
-       $('#button_selesai_input_tindakan').show('fast');
-       $('#form_input_tindakan').show('fast')  
-       $('.tombol_hapus_tindakan').show(); 
-    });
 
 function searchTable() {
    
@@ -299,19 +270,16 @@ function tampilTindakan()
                 $(this).html('<i class="fas fa-trash"></i>')
                 customAlert(err.status);
             });
-            $(this).closest("tr").fadeOut();    
+            $(this).cllist_idest("tr").fadeOut();    
         }
     });
 
-    select2ajax('cari_tindakan', '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>', 'nama_tindakan', 'nama_tindakan',2);
-    function select2ajax(elementid, url, value, label, minInputText = 2){
-    $("#"+elementid).select2({
-        placeholder: "Cari Tindakan...",
+    $("#cari_tindakan").select2({
         tokenSeparators: [',', ' '],
-        minimumInputLength: minInputText,
+        minimumInputLength: 2,
         minimumResultsForSearch: 10,
         ajax: {
-            url: url,
+            url: '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>',
             dataType: "json",
             type: "POST",
             data: function (params) {
@@ -322,7 +290,6 @@ function tampilTindakan()
                 return queryParameters;
             },
             processResults: function (data) {
-               
                 return {
                     results: $.map(data, function (item) {
                         return {
@@ -334,7 +301,8 @@ function tampilTindakan()
             }
         }
     });
-  }
+
+
 
 
   $('#form_hasil').on('submit', function(event){
@@ -352,7 +320,7 @@ function tampilTindakan()
    $.ajax({
 	url:  base_url + "pelayanan/C_Pelayanan/createHasil",
     // url:"insert.php",
-    method:"POST",
+    method:"post",
 	data:form_data,
 	
     success:function(data)

@@ -149,16 +149,31 @@
             $id_pendaftaran = $this->input->post('id_pendaftaran');
             $id_tagihan = $this->input->post('id_tagihan');
             $id_tindakan = $this->input->post('tindakan');
+        //   dd($id_pendaftaran);
            
             $this->db->trans_begin();
+
+            $this->db->select('*')
+            ->from('t_tindakan as a')
+            ->where('a.id_m_nm_tindakan', $id_tindakan)
+            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+            ->where('a.flag_active', 1);
+             $cekTindakanDouble =  $this->db->get()->result();
+
+             if($cekTindakanDouble){
+                $res['code'] = 1;
+                $res['message'] = 'Tindakan Sudah ada';
+                return $res;
+             }
 
             $this->db->select('*')
                 ->from('m_tindakan as a')
                 ->where('a.parent_id', $id_tindakan);
             $cekTindakan =  $this->db->get()->result();
 
-            if($cekTindakan) {
+            
 
+            if($cekTindakan) {
                 $this->db->select('a.biaya,a.nama_tindakan')
                 ->from('m_tindakan as a')
                 ->where('a.id', $id_tindakan)
@@ -175,18 +190,12 @@
                 $last_id_tindakan = $this->db->insert_id();
 
                 foreach($cekTindakan as $tindakan){
-                   
-                $this->db->select('a.biaya,a.nama_tindakan')
-                ->from('m_tindakan as a')
-                ->where('a.id', $tindakan->id)
-                ->where('a.flag_active', 1);
-                 $dataTindakan2 =  $this->db->get()->result();
-
+                
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
                         'parent_id_tindakan' => $id_tindakan,
-                        'nama_tindakan' => $dataTindakan2[0]->nama_tindakan
+                        'nama_tindakan' => $tindakan->nama_tindakan
                     );
                     $this->db->insert('t_tindakan', $data);
                     $detail_tindakan[] = $tindakan->nama_tindakan;  
@@ -211,14 +220,16 @@
                 ->where('a.id', $id_tindakan)
                 ->where('a.flag_active', 1);
                  $dataTindakan =  $this->db->get()->result();
+                
 
                  $data = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
                     'id_m_nm_tindakan' => $id_tindakan,
-                    'nama_tindakan' => $dataTindakan['0']->nama_tindakan
+                    'nama_tindakan' => $dataTindakan[0]->nama_tindakan
                 );
                 $this->db->insert('t_tindakan', $data);
-                $last_id_tindakan = $this->db->insert_id(); 
+                $last_id_tindakan = $this->db->insert_id();
+                $detail_tindakan[] = $dataTindakan[0]->nama_tindakan;  
                 
                 $dataTagihan = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
@@ -226,7 +237,7 @@
                     'id_t_tagihan' => $id_tagihan,
                     'jenis_tagihan' => "Tindakan",
                     'nama_tagihan' => $dataTindakan['0']->nama_tindakan,
-                    'detail_tindakan' => json_encode($dataTindakan['0']->nama_tindakan),
+                    'detail_tindakan' => json_encode($detail_tindakan),
                     'biaya' => $dataTindakan['0']->biaya,
                     'created_by' => $this->general_library->getId()
                 );
@@ -293,8 +304,8 @@
          ->where('a.flag_active', 1);
           $cekTindakan =  $this->db->get()->result();
 
-        $id = array(7,8); // You can set multiple check conditions here
-        if (in_array($cekTindakan[0]->id_m_nm_tindakan, $id)) //Founds a match !
+        $id = array(7,8,41); 
+        if (in_array($cekTindakan[0]->id_m_nm_tindakan, $id)) 
         {
            
             $this->db->select('*')
@@ -382,7 +393,8 @@
 
     public function select2Tindakan(){
         $params = $this->input->post('search_param'); 
-        $id = ['1', '2'];
+       
+        $id = ['1', '2','38'];
 
         $this->db->select('a.*,a.id as id_tindakan ')
         ->from('m_tindakan as a')
@@ -443,7 +455,7 @@
         // die();
 
         if($list_parent_id){
-            $jns_tindakan = $this->db->select('a.id,a.nm_jns_tindakan as nama_tindakan')
+            $jns_tindakan = $this->db->select('a.id,a.nm_jns_tindakan')
                                 ->from('m_jns_tindakan as a')
                                 ->where_in('a.id', $list_parent_id)
                                 // ->where('a.flag_active', 1)
@@ -465,13 +477,15 @@
         $list_parent = null;
         $list_id_top_parent = null;
         $list_top_parent = null;
-        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan')
+        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, b.nilai_normal')
                                     ->from('t_tindakan a')
                                     ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                                     ->where('a.id_t_pendaftaran', $id_pendaftaran)
                                     ->where('a.flag_active', 1)
                                     ->group_by('a.id')
                                     ->get()->result_array();
+                                    // dd($tindakan);
+       
         if($tindakan){
             $i = 0;
             foreach($tindakan as $t){
@@ -484,7 +498,8 @@
                 $i++;
             }
             $list_id_top_parent = array_unique($list_id_top_parent);
-        }
+        // }
+        
         $list_top_parent = $this->db->select('*')
                                     ->from('m_jns_tindakan')
                                     ->where_in('id', $list_id_top_parent)
@@ -506,7 +521,8 @@
                 }
             }
         }
-        dd($data);
+    }
+        // dd($data);
         // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
     }
