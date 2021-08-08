@@ -67,7 +67,7 @@
                             </td>
                             <td ><input <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
                             <td ><input <?=$style;?> name="satuan[]" class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
-                            <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['ketarangan']?>" ></td>
+                            <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
                             <td >
                             <input <?= $styleTagihan;?> type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>  
                         </td> 
