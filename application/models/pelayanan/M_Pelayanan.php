@@ -506,7 +506,7 @@
                 }
             }
         }
-        // dd($data);
+        dd($data);
         // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
     }
