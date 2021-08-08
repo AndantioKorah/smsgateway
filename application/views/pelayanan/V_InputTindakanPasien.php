@@ -82,7 +82,7 @@
                             </td>
                             <td><input name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" readonly></td>
                             <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td>
-                            <td ><input name="keterangan[]" class="col-12" type='text' value="<?=$d['ketarangan']?>" ></td>
+                            <td ><input name="keterangan[]" class="col-12" type='text' value="<?=$d['keterangan']?>" ></td>
                             <td></td>
                         </tr>
                         <?php } } $nmr++; } } ?>

@@ -54,9 +54,9 @@
                             <td style="width: 30%;" class="text-center"><b><?=formatDate($dt['created_date'])?></b></td>
                         </tr>
                         <?php if($dt['detail_tindakan']){ foreach($dt['detail_tindakan'] as $d) { ?>
-                        <tr>
+                        <tr class="tr_detail_tindakan_<?=$no_detail_tagihan?>">
                             <td style="width: 5%;"></td>
-                            <td colspan=2 style="width: 95%;"><?=$d?></td>
+                            <td colspan=3 style="width: 95%;"><?=$d?></td>
                         </tr>
                         <?php } } $no_detail_tagihan++; } } ?>
                         <tr>
