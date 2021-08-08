@@ -27,11 +27,7 @@
         border: 0;
     }
 </style>
-<div class="main_cetakan_tagihan" style="font-family: <?=FONT_CETAKAN?>; margin-top: <?=MARGIN_TOP_CETAKAN?>;">
-    <?php
-        $data['pendaftaran'] = $pendaftaran;
-        $this->load->view('cetakan/V_HeaderCetakan', $data);
-    ?>
+<div class="main_cetakan_tagihan" style="width: 100%;">
     <div class="div_table_rincian_taghian">
         <table class="table_content_cetak_rincian_tagihan" style="width: 100%;">
             <thead class="tr_content_cetak_rincian_tagihan">
@@ -78,3 +74,5 @@
         <?= "<div class='page-break' style='page-break-after:always;'></div>"?>
     </div>
 </div>
+
+

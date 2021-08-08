@@ -38,12 +38,14 @@ class C_Tagihan extends CI_Controller
     }
 
     public function cetakRincianTagihan($id_pendaftaran){
-        $data['rincian_tagihan'] = $this->session->userdata('data_cetak_rincian_tagihan');
+        $data['data']['rincian_tagihan'] = $this->session->userdata('data_cetak_rincian_tagihan');
+        $data['page'] = 'tagihan/V_CetakRincianTagihan';
         // $this->session->set_userdata([
         //     'data_cetak_rincian_tagihan' => null
         // ]);
         $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
-        $this->load->view('tagihan/V_CetakRincianTagihan', $data);
+        // $this->load->view('tagihan/V_CetakRincianTagihan', $data);
+        $this->load->view('cetakan/V_HeaderCetakan', $data);
     }
 
 }
