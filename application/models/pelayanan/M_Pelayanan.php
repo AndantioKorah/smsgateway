@@ -154,12 +154,26 @@
             $this->db->trans_begin();
 
             $this->db->select('*')
+            ->from('t_tindakan as a')
+            ->where('a.id_m_nm_tindakan', $id_tindakan)
+            ->where('a.id_t_pendaftaran', $id_pendaftaran)
+            ->where('a.flag_active', 1);
+             $cekTindakanDouble =  $this->db->get()->result();
+
+             if($cekTindakanDouble){
+                $res['code'] = 1;
+                $res['message'] = 'Tindakan Sudah ada';
+                return $res;
+             }
+
+            $this->db->select('*')
                 ->from('m_tindakan as a')
                 ->where('a.parent_id', $id_tindakan);
             $cekTindakan =  $this->db->get()->result();
 
-            if($cekTindakan) {
+            
 
+            if($cekTindakan) {
                 $this->db->select('a.biaya,a.nama_tindakan')
                 ->from('m_tindakan as a')
                 ->where('a.id', $id_tindakan)
@@ -290,8 +304,8 @@
          ->where('a.flag_active', 1);
           $cekTindakan =  $this->db->get()->result();
 
-        $id = array(7,8); // You can set multiple check conditions here
-        if (in_array($cekTindakan[0]->id_m_nm_tindakan, $id)) //Founds a match !
+        $id = array(7,8,41); 
+        if (in_array($cekTindakan[0]->id_m_nm_tindakan, $id)) 
         {
            
             $this->db->select('*')
@@ -380,7 +394,7 @@
     public function select2Tindakan(){
         $params = $this->input->post('search_param'); 
        
-        $id = ['1', '2'];
+        $id = ['1', '2','38'];
 
         $this->db->select('a.*,a.id as id_tindakan ')
         ->from('m_tindakan as a')
@@ -463,13 +477,15 @@
         $list_parent = null;
         $list_id_top_parent = null;
         $list_top_parent = null;
-        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan')
+        $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, b.nilai_normal')
                                     ->from('t_tindakan a')
                                     ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
                                     ->where('a.id_t_pendaftaran', $id_pendaftaran)
                                     ->where('a.flag_active', 1)
-                                    // ->group_by('a.id')
+                                    ->group_by('a.id')
                                     ->get()->result_array();
+                                    // dd($tindakan);
+       
         if($tindakan){
             $i = 0;
             foreach($tindakan as $t){
@@ -482,7 +498,8 @@
                 $i++;
             }
             $list_id_top_parent = array_unique($list_id_top_parent);
-        }
+        // }
+        
         $list_top_parent = $this->db->select('*')
                                     ->from('m_jns_tindakan')
                                     ->where_in('id', $list_id_top_parent)
@@ -504,6 +521,7 @@
                 }
             }
         }
+    }
         // dd($data);
         // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
         return $data;
