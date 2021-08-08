@@ -1,20 +1,17 @@
 <style>
-	@media print {
-		@page {
-			margin: 0
-		}
-
-		p {
-			font-size: 7pt;
-			font-family: sans-serif
-		}
-
-		span {
-			font-size: 7pt;
-			font-family: sans-serif
-		}
-	}
-
+    .tbody_rincian_tagihan {
+        display:block;
+        max-height:350px;
+        overflow:auto;
+    }
+    .thead_rincian_tagihan, .tbody_rincian_tagihan tr {
+        display:table;
+        width:100%;
+        table-layout:fixed;
+    }
+    .thead_rincian_tagihan {
+        width: calc( 100% - 1em )
+    }
 </style>
 <div class="row">
     <div class="col-12 mt-3 mb-3 text-left">
