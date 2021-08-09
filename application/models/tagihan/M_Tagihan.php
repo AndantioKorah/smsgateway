@@ -76,6 +76,7 @@
         public function getRincianTagihan($id_pendaftaran){
             $list_jns_tindakan = null;
             $data = null;
+            $temp_data = null;
             $detail_tagihan = $this->db->select('a.*, b.id_m_nm_tindakan, c.id_m_jns_tindakan')
                                     ->from('t_tagihan_detail a')
                                     ->join('t_tindakan b', 'a.id_reference = b.id')
@@ -110,7 +111,99 @@
                     $data[$dt['id_m_jns_tindakan']]['detail_tagihan'][] = $dt;
                 }
             }
+            // $temp_data = $this->makeAllParent($data);
+            // $pages = intval((count($temp_data) / CETAK_TAGIHAN_ROW_PER_PAGE) + 1);
+            // dd($temp_data);
             return $data;
+        }
+
+        public function buildDataRincianTagihan($data){
+            $result = null;
+            $i = 0;
+            foreach($data as $d){
+                $result[$i] = $d;
+                $result[$i]['page'] = 1;
+                if($d['detail_tagihan']){
+                    unset($result[$i]['detail_tagihan']);
+                    $i++;
+                    foreach($d['detail_tagihan'] as $dtag){
+                        $result[$i] = $dtag;
+                        $result[$i]['page'] = 1;
+                        if($dtag['detail_tindakan']){
+                            unset($result[$i]['detail_tindakan']);
+                            $i++;
+                            foreach($dtag['detail_tindakan'] as $dtin){
+                                $result[$i]['nama_tindakan'] = $dtin;
+                                $result[$i]['page'] = 1;
+                                $i++;
+                            }
+                        }
+                    }
+                }
+            }
+            // $pages = intval((count($temp_data) / CETAK_TAGIHAN_ROW_PER_PAGE) + 1);
+            $i = 0;
+            $last_parent_index = 0;
+            $last_jns_index = 0;
+            $final_result = null;
+            foreach($result as $rs){
+                if(isset($result[$i]['nm_jns_tindakan'])){
+                    $last_jns_index = $i;
+                }
+                if(isset($result[$i]['id_t_tagihan'])){
+                    $last_parent_index = $i;
+                }
+                //hitung sekarang page berapa
+                $result[$i]['page'] = intval(($i / CETAK_TAGIHAN_ROW_PER_PAGE) + 1);
+                $current_page = $result[$i]['page'];
+                //masukkan data ke index final_result dimana index == page 
+                $final_result[$current_page][] = $result[$i];
+                //jika halaman data current index != data current index sebelumnya, samakan halaman data ini dengan parent dari data ini
+                if(isset($result[$i-1]) && 
+                    (intval($result[$i]['page']) != intval($result[$i-1]['page']))
+                ){
+                    $final_result[$current_page] = null;
+                    //jika data sebelum parent ini adalah data jns, samakan halaman data jns dengan data parent ini  
+                    if(($last_parent_index - 1) == $last_jns_index){
+                        $result[$last_jns_index]['page'] = $current_page;
+                        $final_result[$current_page][] = $result[$last_jns_index];
+                        //hapus data jns di halaman sebelumnya
+                        unset($final_result[$current_page-1][$last_jns_index]);
+                    }
+                    //ambil data parent, dan samakan halaman dengan data ini
+                    for($j = $last_parent_index; $j <= $i; $j++){
+                        $result[$j]['page'] = $result[$i]['page'];
+                        $final_result[$current_page][] = $result[$j];
+                        //hapus data parent di halaman sebelumnya
+                        unset($final_result[$current_page-1][$j]);
+                    }
+                }
+                $i++;
+            }
+            // foreach($data as $d){
+            //     $result[] = $d;
+            //     if($d['detail_tagihan']){
+            //         foreach($d['detail_tagihan'] as $dtag){
+            //             $result[] = $dtag;
+            //             if($dtag['detail_tindakan']){
+            //                 foreach($dtag['detail_tindakan'] as $dtin){
+            //                     $result[] = $dtin;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+            // $i = 0;
+            // foreach($result as $rs){
+            //     if(isset($result[$i]['detail_tagihan'])){
+            //         unset($result[$i]['detail_tagihan']);
+            //     } else if(isset($result[$i]['detail_tindakan'])){
+            //         unset($result[$i]['detail_tindakan']);
+            //     }
+            //     $i++;
+            // }
+            // dd($final_result);
+            return [$final_result, $result[$i-1]['page']];
         }
 
         public function getRincianTagihanBu($id_pendaftaran){

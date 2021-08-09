@@ -1,78 +1,103 @@
-<style>
-    .main_cetakan_tagihan{
-        width: 100%;
-        /* font-family: Arial; */
-    }
-    .div_table_rincian_taghian{
-        margin-top: 20px;
-        font-size: 14px;
-    }
-
-    .table_content_cetak_rincian_tagihan {
-        border-collapse: collapse;
-        border-bottom: 1px solid black;
-    }
-
-    .th_content_cetak_rincian_tagihan, .tr_content_cetak_rincian_tagihan{
-        border: 1px solid black;
-    }
-
-    .th_cetak_rincian_tagihan, .td_cetak_rincian_tagihan{
-        border-right: 1px solid black;
-        border-left: 1px solid black;
-        padding: 5px;
-    }
-
-    .td_cetak_rincian_tagihan_no{
-        border: 0;
-    }
-</style>
-<div class="main_cetakan_tagihan" style="width: 100%;">
-    <div class="div_table_rincian_taghian">
-        <table class="table_content_cetak_rincian_tagihan" style="width: 100%;">
-            <thead class="tr_content_cetak_rincian_tagihan">
-                <th class="th_cetak_rincian_tagihan" style="width: 5%; text-align: center;">NO</th>
-                <th class="th_cetak_rincian_tagihan" style="width: 50%;">TAGIHAN</th>
-                <th class="th_cetak_rincian_tagihan" style="width: 15%; text-align: center;">BIAYA</th>
-                <th class="th_cetak_rincian_tagihan" style="width: 30%; text-align: center;">TANGGAL INPUT</th>
-            </thead>
-            <tbody class="tbody_rincian_tagihan">
-                <?php if($rincian_tagihan){ $no=1; foreach($rincian_tagihan as $rt){ 
-                    ?>
-                    <tr class="tr_content_cetak_rincian_tagihan">
-                        <td class="td_cetak_rincian_tagihan" style="width: 5%; text-align: center;"><a style="font-weight: bold;"><?=$no;?></a></td>
-                        <td class="td_cetak_rincian_tagihan" colspan=3 style="width: 95%;"><a style="font-weight: bold;"><?=$rt['nm_jns_tindakan']?></a></td>
-                        <?php
-                        if($rt['detail_tagihan']){
-                            usort($rt['detail_tagihan'], function($a, $b) {
-                                $ad = new DateTime($a['created_date']);
-                                $bd = new DateTime($b['created_date']);
-                                if ($ad == $bd) {
-                                    return 0;
-                                }
-                                return $ad > $bd ? -1 : 1;
-                            });
-                        $no_detail_tagihan = 1; foreach($rt['detail_tagihan'] as $dt){ ?>
-                        <tr class="tr_content_cetak_rincian_tagihan">
-                            <td class="td_cetak_rincian_tagihan_no" style="width: 5%; text-align: center;"><b><?=$no.'.'.$no_detail_tagihan;?></b></td>
-                            <td class="td_cetak_rincian_tagihan" style="width: 50%;"><b><?=$dt['nama_tagihan']?></b></td>
-                            <td class="td_cetak_rincian_tagihan" style="width: 15%; text-align: center;"><?=formatCurrency($dt['biaya'])?></td>
-                            <td class="td_cetak_rincian_tagihan" style="width: 30%; text-align: center;"><?=formatDate($dt['created_date'])?></td>
+<html>
+    <head>
+        <style>
+            @page{
+                size: A4;
+                margin-top: 150px;
+                font-size: 14px;
+            }
+            @media print {
+                .pagebreak{ 
+                    page-break-before: always;
+                }
+            }
+            .thead_rincian_tagihan{
+                font-weight: bold;
+                text-align: center;
+                /* font-size: 12px; */
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                border-bottom: 1px solid black;
+                border-top: 2px solid black;
+            }
+            .content_rincian_tagihan{
+                width: 100%;
+                border: 1px solid black;
+                border-collapse: collapse;
+                /* margin-top: 10px; */
+            }
+            .td_jns_tindakan{
+               border: 1px solid black;
+               font-weight: bold;
+               /* font-size: 12px; */
+               padding: 3px;
+            }
+            .td_tagihan{
+               border: 1px solid black; 
+               font-weight: bold;
+               /* font-size: 12px; */
+               padding: 3px;
+            }
+            .td_tindakan{
+               border-left: 1px solid black;
+               /* font-size: 12px; */
+               padding: 3px;
+            }
+        </style>
+    </head>
+    <body style="font-family: <?=FONT_CETAKAN?>;">
+        <?php $pNo = 0; $chNo = 0; $halaman = 1; for($i = 1; $i <= $page_count; $i++){ ?>
+            <div class="pagebreak">
+                <?php
+                    $data['pendaftaran'] = $pendaftaran;    
+                    $data['page_number'] = $i;    
+                    $data['page_count'] = $page_count;  
+                    $this->load->view('cetakan/V_HeaderCetakan', $data);  
+                ?>
+                <table class="content_rincian_tagihan">
+                    <thead>
+                        <tr>
+                            <th class="thead_rincian_tagihan">NO</th>
+                            <th class="thead_rincian_tagihan">TAGIHAN</th>
+                            <th class="thead_rincian_tagihan">BIAYA</th>
+                            <th class="thead_rincian_tagihan">TANGGAL INPUT</th>
                         </tr>
-                        <?php if($dt['detail_tindakan']){ foreach($dt['detail_tindakan'] as $d) { ?>
-                        <tr class="">
-                            <td class="td_cetak_rincian_tagihan" style="width: 5%;"></td>
-                            <td class="td_cetak_rincian_tagihan" style="width: 50%;"><?=$d?></td>
-                            <td class="td_cetak_rincian_tagihan"></td>
-                            <td class="td_cetak_rincian_tagihan"></td>
-                        </tr>
-                        <?php } } $no_detail_tagihan++; } } ?>
-                    </tr>
-                <?php $no++; } } ?> 
-            </tbody>
-        </table> 
-        <?= "<div class='page-break' style='page-break-after:always;'></div>"?>
-    </div>
-</div>
-
-
+                    </thead>
+                    <tbody>
+                        <?php $j = 0; foreach($rincian_tagihan[$i] as $rt){
+                            $tagihan = '';
+                            $biaya = null;
+                            $tanggal_input = null;
+                            $row_num = '';
+                            $class_tr = '';
+                            if(isset($rt['nm_jns_tindakan'])){
+                                $tagihan = strtoupper($rt['nm_jns_tindakan']);
+                                $chNo = 0;
+                                $pNo++;
+                                $row_num = $pNo;
+                                $class_tr = 'td_jns_tindakan';
+                            } else if(isset($rt['nama_tagihan'])){
+                                $tagihan = $rt['nama_tagihan'];
+                                $biaya = formatCurrency($rt['biaya']);
+                                $tanggal_input = formatDate($rt['created_date']);
+                                $chNo++;
+                                $row_num = $pNo.'.'.$chNo;
+                                $class_tr = 'td_tagihan';
+                            } else if(isset($rt['nama_tindakan'])){
+                                $tagihan = $rt['nama_tindakan'];
+                                $class_tr = 'td_tindakan';
+                            }
+                        ?>
+                            <tr>
+                                <td class="<?=$class_tr?>" style="text-align:center"><?=$row_num?></td>
+                                <td class="<?=$class_tr?>"><?=$tagihan?></td>
+                                <td class="<?=$class_tr?>" style="text-align:center"><?=$biaya?></td>
+                                <td class="<?=$class_tr?>" style="text-align:center"><?=$tanggal_input?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } ?>
+    </body>
+</html>

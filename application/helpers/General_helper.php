@@ -109,6 +109,21 @@ function formatDateForEdit($data)
     return date("Y-m-d H:i:s", strtotime($data));
 }
 
+function array_flatten($array) { 
+    if (!is_array($array)) { 
+      return false; 
+    } 
+    $result = array(); 
+    foreach ($array as $key => $value) { 
+      if (is_array($value)) { 
+        $result = array_merge($result, array_flatten($value)); 
+      } else { 
+        $result = array_merge($result, array($key => $value));
+      } 
+    } 
+    return $result; 
+  }
+
 function formatDateNamaBulan($data){
     $date_only = formatDateOnly($data);
     $explode = explode('/', $date_only);
