@@ -103,4 +103,5 @@ define('DEVELOPER', 'nikita');
 
 define('MARGIN_TOP_CETAKAN', '150px');
 define('PADDING_CETAKAN', '10px');
-define('FONT_CETAKAN', 'Verdana');
+define('FONT_CETAKAN', 'Arial');
+define('CETAK_TAGIHAN_ROW_PER_PAGE', 46);

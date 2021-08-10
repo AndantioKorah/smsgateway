@@ -26,11 +26,11 @@
                 <th style="width: 30%;" class="text-center">TANGGAL INPUT</th>
             </thead>
             <tbody class="tbody_rincian_tagihan">
-                <?php if($rincian_tagihan){ $no=1; foreach($rincian_tagihan as $rt){ 
+                <?php if($rincian_tagihan){ $no=1; $no_detail_tindakan = 1; foreach($rincian_tagihan as $rt){ 
                     ?>
                     <tr style="cursor: pointer;">
                         <td style="width: 5%;" class="text-center"><b style=""><?=$no;?></b></td>
-                        <td style="width: 50%;"><b style=""><?=$rt['nm_jns_tindakan']?></b></td>
+                        <td style="width: 50%;"><b style=""><?=strtoupper($rt['nm_jns_tindakan'])?></b></td>
                         <td style="width: 15%;" class="text-left"></td>
                         <td style="width: 30%;" class="text-center"></td>
                         <?php
@@ -43,19 +43,20 @@
                                 }
                                 return $ad > $bd ? -1 : 1;
                             });
-                        $no_detail_tagihan = 1; foreach($rt['detail_tagihan'] as $dt){ ?>
-                        <tr style="cursor: pointer;">
+                        $no_detail_tagihan = 1;
+                        foreach($rt['detail_tagihan'] as $dt){ ?>
+                        <tr style="cursor: pointer;" onclick="openTrDetailTindakan('<?=$no_detail_tindakan?>')">
                             <td style="width: 5%;" class="text-center"><b><?=$no.'.'.$no_detail_tagihan;?></b></td>
                             <td style="width: 50%;"><b><?=$dt['nama_tagihan']?></b></td>
                             <td style="width: 15%;" class="text-left"><b><?=formatCurrency($dt['biaya'])?></b></td>
                             <td style="width: 30%;" class="text-center"><b><?=formatDate($dt['created_date'])?></b></td>
                         </tr>
-                        <?php if($dt['detail_tindakan']){ foreach($dt['detail_tindakan'] as $d) { ?>
-                        <tr>
+                        <?php if($dt['detail_tindakan']){foreach($dt['detail_tindakan'] as $d) { ?>
+                        <tr class="tr_detail_tindakan_<?=$no_detail_tindakan?>" style="display: none;">
                             <td style="width: 5%;"></td>
-                            <td colspan=2 style="width: 95%;"><?=$d?></td>
+                            <td colspan=3 style="width: 95%;"><?=$d?></td>
                         </tr>
-                        <?php } } $no_detail_tagihan++; } } ?>
+                        <?php $no_detail_tindakan++; } } $no_detail_tagihan++; } } ?>
                         <tr>
                             <td style="width: 5%;"></td>
                             <td style="width: 50%;" class="text-right"><b style="font-size: 18px;">TOTAL <?=$rt['nm_jns_tindakan']?> :</b></td>
@@ -78,6 +79,10 @@
                         window.frames["print_frame"].document.body.innerHTML = isi;
                         window.frames["print_frame"].window.focus();
                         window.frames["print_frame"].window.print();
+                    }
+
+                    function openTrDetailTindakan(id){
+                        $('.tr_detail_tindakan_'+id).toggle()
                     }
                 </script>
                 <?php } else { ?>

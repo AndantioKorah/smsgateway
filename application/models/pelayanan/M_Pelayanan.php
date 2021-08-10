@@ -168,13 +168,14 @@
 
             $this->db->select('*')
                 ->from('m_tindakan as a')
-                ->where('a.parent_id', $id_tindakan);
+                ->where('a.parent_id', $id_tindakan)
+                ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
 
             
 
             if($cekTindakan) {
-                $this->db->select('a.biaya,a.nama_tindakan')
+                $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal, a.satuan')
                 ->from('m_tindakan as a')
                 ->where('a.id', $id_tindakan)
                 ->where('a.flag_active', 1);
@@ -195,7 +196,9 @@
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
                         'parent_id_tindakan' => $id_tindakan,
-                        'nama_tindakan' => $tindakan->nama_tindakan
+                        'nama_tindakan' => $tindakan->nama_tindakan,
+                        'nilai_normal' => $tindakan->nilai_normal,
+                        'satuan' => $tindakan->satuan
                     );
                     $this->db->insert('t_tindakan', $data);
                     $detail_tindakan[] = $tindakan->nama_tindakan;  
@@ -393,13 +396,24 @@
 
     public function select2Tindakan(){
         $params = $this->input->post('search_param'); 
-       
-        $id = ['1', '2','38'];
+
+        
+        $this->db->select('a.id')
+        ->from('m_tindakan as a')
+        ->where('a.parent_id', 0);
+        $cekTindakan =  $this->db->get()->result();
+        
+         if($cekTindakan){
+            foreach($cekTindakan as $tindakan){
+            $list_id[] = $tindakan->id;  
+            }
+         }
+        //  $list_id = ['1','2','8'];
 
         $this->db->select('a.*,a.id as id_tindakan ')
         ->from('m_tindakan as a')
         ->like('nama_tindakan',$params)
-        ->where_in('a.parent_id', $id);
+        ->where_in('a.parent_id', $list_id);
     return $this->db->get()->result();
     }
 

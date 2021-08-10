@@ -17,7 +17,8 @@ class C_Master extends CI_Controller
     }
 
     public function tindakan(){
-        $data=array('get_category'=> $this->master->get_option()); 
+        $data['get_jenis_pemerikasaan'] =$this->master->get_option(); 
+        $data['get_parent'] =$this->master->get_option_parent(); 
         render('master/V_MasterTindakan', 'master', 'tindakan', $data);
     }
 

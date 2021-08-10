@@ -8,6 +8,7 @@
                 <th>Tarif</th>
                 <th>Nilai Normal</th>
                 <th>Satuan</th>
+                <th>Parent</th>
                 <th class="text-center">Pilihan</th>
             </thead>
             <tbody>
@@ -19,12 +20,13 @@
                         <td><?=$rs['biaya'];?></td>
                         <td><?=$rs['nilai_normal'];?></td>
                         <td><?=$rs['satuan'];?></td>
+                        <td><?=$rs['nama_tindakan_parent'];?></td>
                         <td class="text-center">
                         <button href="#edit_master_tindakan" data-toggle="modal" class="btn btn-sm btn-navy"
                            onclick="openModalEdiMasterTindakan('<?=$rs['id_tindakan']?>', 'loadMasterTindakan')"><i class="fa fa-edit"></i></button>
-                            <?php if($rs['id'] != $this->session->userdata('active_role_id') && $rs['id'] != 5){ ?>
+                           
                                 <button type="button" onclick="hapus('<?=$rs['id_tindakan']?>')" class="btn btn-sm btn-danger" data-tooltip="tooltip" title="Hapus"><i class="fa fa-trash"></i></button>
-                            <?php } ?>
+                           
 
                         </td>
                     </tr>
@@ -50,7 +52,7 @@
                     success: function(data){
                         let rs = JSON.parse(data)
                         if(rs.code == 0){
-                            loadJenisPemeriksaan()
+                            loadMasterTindakan()
                             successtoast('Tindakan berhasil dihapus')
                         } else {
                             errortoast(rs.message)

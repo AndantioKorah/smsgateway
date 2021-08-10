@@ -7,7 +7,7 @@
         
         <?php if($id_tagihan['0']->id_m_status_tagihan == 1){ ?>
             <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
-             <button id="button_submit_input_tindakan " type="submit" class="btn btn-navy btn-sm col-12 mt-2"> Simpan </button>
+             <button id="button_submit_input_tindakan " type="submit" class="btn btn-navy btn-sm col-12 mt-2 button_submit_input_tindakan"> Simpan </button>
         <?php }?>
 
     
@@ -56,7 +56,8 @@
                             $styleTagihan = null;
                             if($id_tagihan['0']->id_m_status_tagihan == 2) $styleTagihan="style='display:none;'"; else $styleTagihan="style=''";  
                             foreach($rt['tindakan'] as $dt){   
-                            $list_id = array(7,8,31); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { $style="style='display:none;'"; } else {$style="style=''";} 
+                            // $list_id = array(7,8,31); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { $style="style='display:none;'"; } else {$style="style=''";}
+                            if ($dt['nilai_normal'] == null || $dt['nilai_normal'] == "" ) { $style="style='display:none;'"; } else {$style="style=''";}  
                           ;?>
                         <tr  style="cursor: pointer;">
                             <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>
@@ -149,8 +150,9 @@ $('#form_input_tindakan').on('submit', function(e){
             return false
         }  
         // $('#button_loading').show()
-        // $('#button_submit_input_tindakan').hide('fast')     
-           
+        // $('#button_submit_input_tindakan').hide('fast')   
+        $('.button_submit_input_tindakan').html('Loading <i class="fas fa-spinner fa-spin"></i>');
+    
             // tindakan = tindakan.tlist_idtring();
             //  $('#daftar_tindakan').html('');
             //  $('#daftar_tindakan').append(divLoaderNavy)
@@ -163,7 +165,7 @@ $('#form_input_tindakan').on('submit', function(e){
                         if(res.code == 1){
                          errortoast(res.message)
                         } 
-                        LoadViewInputTindakan(id_pendaftaran)
+                        LoadViewInputTindakanAfterSubmit(id_pendaftaran)
                         // tampilTindakan()
 						// $('#result').html(data);
 					} , error: function(e){
@@ -264,7 +266,7 @@ function tampilTindakan()
                 }
             )
             .done(function(data) { 
-                LoadViewInputTindakan(id_pendaftaran)                               
+                LoadViewInputTindakanAfterSubmit(id_pendaftaran)                               
             })
             .fail(function(err){
                 $(this).html('<i class="fas fa-trash"></i>')
@@ -337,5 +339,16 @@ function tampilTindakan()
    $('#action_alert').dialog('open');
   }
  });
+
+ function LoadViewInputTindakanAfterSubmit(id = 0, callback = 0){
+        setHeader('tindakan')
+        $('[data-tooltip="tooltip_detail_pendaftaran_left"]').tooltip('hide')
+        // loadDetailPendaftaran(id)
+        $('#content_div_transaksi').html('')
+        $('#content_div_transaksi').append(divLoaderNavy)
+        $('#content_div_transaksi').load('<?=base_url("pelayanan/C_Pelayanan/loadViewInputTindakan")?>'+'/'+id, function(){
+            $('#loader').hide()
+        })
+  }
 
 </script>

@@ -10,7 +10,7 @@
                         <label class="bmd-label-floating">Jenis Pemeriksaan</label>
                         <Select class="form-control select2_this select2-navy" autocomplete="off" name="id_m_jns_tindakan" id="id_m_jns_tindakan" required>
                         <option value="">---Pilih Jenis Pemeriksaan---</option>                    
-                            <?php foreach($get_category as $row) { ?>
+                            <?php foreach($get_jenis_pemerikasaan as $row) { ?>
                                 <option value="<?php echo $row->id;?>"><?php echo $row->nm_jns_tindakan;?></option>
                             <?php } ?>
 
@@ -34,21 +34,35 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Nilai Normal</label>
-                        <input type="number" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
+                        <input type="text" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Satuan</label>
-                        <input type="number" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
+                        <input type="text" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="bmd-label-floating">Parent</label>
+                        <Select class="form-control select2_this select2-navy" autocomplete="off" name="parent" id="parent" required>
+                        <option value=""></option> 
+                        <option value="0">Tidak ada</option>                    
+                            <?php foreach($get_parent as $row) { ?>
+                                <option value="<?php echo $row->id;?>"><?php echo $row->nama_tindakan;?></option>
+                            <?php } ?>
+
+                        </Select>
                     </div>
                 </div>
                 
                 
                 </div>
-                    <div class="col-8"></div>
-                <div class="col-8 text-right mt-2">
+                    <div class="col-12"></div>
+                <div class="col-12 text-right mt-2">
                     <button class="btn btn-sm btn-navy" type="submit"><i class="fa fa-save"></i> SIMPAN</button>
                 </div>
             </div>
@@ -101,7 +115,7 @@
             method: 'post',
             data: $(this).serialize(),
             success: function(){
-                loadJenisPemeriksaan()
+                loadMasterTindakan()
                 $('#role_name').val('')
                 $('#nama').val('')
                 $('#keterangan').val('')
