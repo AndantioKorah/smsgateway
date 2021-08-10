@@ -392,17 +392,17 @@
                 $detail_tindakan[] = $tindakan->nama_tindakan;  
             }
 
-            $dataTagihan = array(
-                'id_t_pendaftaran' => $last_id_pendaftaran,
-                'id_reference' => 0,
-                'id_t_tagihan' => $last_id_tagihan,
-                'jenis_tagihan' => "Tindakan",
-                'nama_tagihan' => "tes",
-                'detail_tindakan' => json_encode($detail_tindakan),
-                'biaya' => 2000,
-                'created_by' => $this->general_library->getId()
-            );
-            $this->db->insert('t_tagihan_detail', $dataTagihan);
+            // $dataTagihan = array(
+            //     'id_t_pendaftaran' => $last_id_pendaftaran,
+            //     'id_reference' => 0,
+            //     'id_t_tagihan' => $last_id_tagihan,
+            //     'jenis_tagihan' => "Tindakan",
+            //     'nama_tagihan' => "tes",
+            //     'detail_tindakan' => json_encode($detail_tindakan),
+            //     'biaya' => 2000,
+            //     'created_by' => $this->general_library->getId()
+            // );
+            // $this->db->insert('t_tagihan_detail', $dataTagihan);
 
             if($this->db->trans_status() == FALSE){
                 $this->db->trans_rollback();
