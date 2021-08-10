@@ -92,7 +92,7 @@
                     <?php $no++; ?> 
                     <script>
                     function cetakHasil() {
-                        alert()
+        
                         $("#print_div").load('<?= base_url('pelayanan/C_Pelayanan/cetakHasil/'.$id_pendaftaran)?>',
                             function () {
                                 printSpace('print_div');

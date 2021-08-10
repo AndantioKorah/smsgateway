@@ -75,6 +75,5 @@
                 <?php $no++; } } ?> 
             </tbody>
         </table> 
-        <?= "<div class='page-break' style='page-break-after:always;'></div>"?>
     </div>
 </div>
