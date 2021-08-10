@@ -112,7 +112,7 @@
                 }
             }
             // $temp_data = $this->makeAllParent($data);
-            // $pages = intval((count($temp_data) / CETAK_TAGIHAN_ROW_PER_PAGE) + 1);
+            // $pages = intval((count($temp_data) / ROW_PER_PAGE_CETAK_TAGIHAN) + 1);
             // dd($temp_data);
             return $data;
         }
@@ -141,10 +141,11 @@
                     }
                 }
             }
-            // $pages = intval((count($temp_data) / CETAK_TAGIHAN_ROW_PER_PAGE) + 1);
+            // $pages = intval((count($temp_data) / ROW_PER_PAGE_CETAK_TAGIHAN) + 1);
             $i = 0;
             $last_parent_index = 0;
             $last_jns_index = 0;
+            $current_page = 0;
             $final_result = null;
             foreach($result as $rs){
                 if(isset($result[$i]['nm_jns_tindakan'])){
@@ -154,7 +155,7 @@
                     $last_parent_index = $i;
                 }
                 //hitung sekarang page berapa
-                $result[$i]['page'] = intval(($i / CETAK_TAGIHAN_ROW_PER_PAGE) + 1);
+                $result[$i]['page'] = intval(($i / ROW_PER_PAGE_CETAK_TAGIHAN) + 1);
                 $current_page = $result[$i]['page'];
                 //masukkan data ke index final_result dimana index == page 
                 $final_result[$current_page][] = $result[$i];
@@ -203,7 +204,7 @@
             //     $i++;
             // }
             // dd($final_result);
-            return [$final_result, $result[$i-1]['page']];
+            return [$final_result, $current_page];
         }
 
         public function getRincianTagihanBu($id_pendaftaran){

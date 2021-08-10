@@ -15,8 +15,10 @@ class C_Pendaftaran extends CI_Controller
     public function pendaftaran(){
         $data['id_m_pasien'] = $this->session->userdata('ID_PENDAFTARAN_PASIEN');
         $this->session->set_userdata([
-            'ID_PENDAFTARAN_PASIEN' => null
+            'ID_PENDAFTARAN_PASIEN' => null,
+            'session_id' => date("YmdHis")
         ]);
+      
         $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
         $data['cara_bayar_detail'] = $this->general->getAllWithOrder('m_cara_bayar_detail', 'nama_cara_bayar_detail', 'asc');
         render('pendaftaran/V_Pendaftaran', '', 'pendaftaran', $data);
@@ -118,4 +120,26 @@ class C_Pendaftaran extends CI_Controller
         $data['pendaftaran'] = $this->pendaftaran->getDetailPendaftaran($id_t_pendaftaran);
         $this->load->view('pendaftaran/V_DetailPendaftaranLeft', $data);
     }
+    
+    public function insertTindakanPendaftaran(){
+        echo json_encode($this->pendaftaran->insertTindakanPendaftaran());
+    }
+
+
+    public function loadTindakanPendaftaran($session_id){
+
+        $data['rincian_tindakan'] = $this->pendaftaran->getRincianTindakan($session_id);
+        $this->session->set_userdata([
+            'list_tindakan_pasien' => $data['rincian_tindakan']
+        ]);
+
+        $this->load->view('pendaftaran/V_TindakanPendaftaran', $data);
+    }
+
+    public function delTindakanPendaftaran()
+    {
+        echo json_encode($this->pendaftaran->delTindakanPendaftaran());
+    }
+
+
 }

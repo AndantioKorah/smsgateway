@@ -34,14 +34,14 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Nilai Normal</label>
-                        <input type="text" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
+                        <input type="text" class="form-control" autocomplete="off" name="nilai_normal" id="nilai_normal"/>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Satuan</label>
-                        <input type="text" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
+                        <input type="text" class="form-control" autocomplete="off" name="satuan" id="satuan"/>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                         <option value=""></option> 
                         <option value="0">Tidak ada</option>                    
                             <?php foreach($get_parent as $row) { ?>
-                                <option value="<?php echo $row->id;?>"><?php echo $row->nama_tindakan;?></option>
+                                <option value="<?php echo $row->id;?>,<?php echo $row->nama_tindakan;?>"><?php echo $row->nama_tindakan;?></option>
                             <?php } ?>
 
                         </Select>

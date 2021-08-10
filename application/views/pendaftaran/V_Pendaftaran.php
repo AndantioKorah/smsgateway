@@ -203,6 +203,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mt-3" >
+                     <input type="hidden" name="session_id" id="session_id" value="<?= $this->session->userdata('session_id')?>">
+                    <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
+                    <input id="button_submit_input_tindakan" type="button"   class="btn btn-navy btn-sm col-12 mt-2 " onclick="createTindakanPendaftaran()" value="Simpan">  
+                  
+                </div>
+
+                    <div id="content_div_tindakan" class="mt-3">
+
+                    </div>
+
                     <div class="row mt-3 text-right">
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
@@ -233,10 +245,13 @@
 
 <script>
     $(function(){
+        var session_id = $('#session_id').val();
+        LoadViewTindakan(session_id)
         <?php if($id_m_pasien){ ?>
             fillDataPasien('<?=$id_m_pasien?>')
         <?php } ?>
     })
+    
 
     function editPasien(){
         openModalEditPasien($('#lbl_norm').html(), 'fillDataPasien')
@@ -258,10 +273,12 @@
 
     $('#form_pendaftaran_lab').on('submit', function(e){
         e.preventDefault()
+        $('#content_div_tindakan').hide()
         $('#button_loading').show()
         $('#button_submit_pendaftaran').hide()
         if($('#norm_pasien').val() == ''){
             errortoast('Belum ada pasien yang dipilih untuk pendaftaran')
+            $('#content_div_tindakan').show()
             $('#button_loading').hide()
             $('#button_submit_pendaftaran').show()
             return false
@@ -276,7 +293,7 @@
                     successtoast('Pendaftaran Berhasil Dibuat')
                     window.location=""
                 } else {
-                    errortoast(obj.message)
+                    errortoast(obj.message)               
                 }
             }, error: function(e){
                 errortoast('Terjadi Kesalahan')
@@ -382,4 +399,73 @@
             $('#loader').hide()
         })
     }
+
+    
+    $("#cari_tindakan").select2({
+        placeholder: "Cari Tindakan",
+        tokenSeparators: [',', ' '],
+        minimumInputLength: 2,
+        minimumResultsForSearch: 10,
+        ajax: {
+            url: '<?=base_url("pelayanan/C_Pelayanan/select2Tindakan")?>',
+            dataType: "json",
+            type: "POST",
+            data: function (params) {
+
+                var queryParameters = {
+                    search_param: params.term
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.nama_tindakan,
+                            id: item.id_tindakan
+                        }
+                    })
+                };
+            }
+        }
+    });
+
+    function LoadViewTindakan(id = 0, callback = 0){
+        $('#content_div_tindakan').html('')
+        $('#content_div_tindakan').append(divLoaderNavy)
+        $('#content_div_tindakan').load('<?=base_url("pendaftaran/C_Pendaftaran/loadTindakanPendaftaran")?>'+'/'+id, function(){
+            $('#loader').hide()
+        })
+  }
+
+
+    function createTindakanPendaftaran(){
+        var tindakan = $('#cari_tindakan').val();
+        var session_id = $('#session_id').val();
+      
+        if(tindakan == "" || tindakan == null){
+            errortoast('  Tindakan Belum dipilih')
+            $('#button_submit_input_tindakan').show('fast')
+            return false
+        }  
+				$.ajax({
+					url:"<?=base_url("pendaftaran/C_Pendaftaran/insertTindakanPendaftaran")?>",
+					method:"post",
+					data:{session_id:session_id,tindakan:tindakan},
+					success:function(data){
+                        let res = JSON.parse(data)
+                        if(res.code == 1){
+                         errortoast(res.message)
+                        } 
+                          LoadViewTindakan(session_id)
+
+					} , error: function(e){
+                errortoast('Terjadi Kesalahan')
+            }
+		})
+      
+    }
+
+
+
 </script>

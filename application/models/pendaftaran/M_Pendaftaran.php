@@ -312,9 +312,9 @@
             $res['data'] = null;
 
             $data_pendaftaran = $this->input->post();
-
+           
             $this->db->trans_begin();
-
+            $session_id = $data_pendaftaran['session_id'];
             $tanggal_pendaftaran = explode(' ', $data_pendaftaran['tanggal_pendaftaran']);
             $date_tanggal_pendaftaran = explode('-', $tanggal_pendaftaran[0]);
             $last_pendaftaran = $this->db->select('*')
@@ -371,6 +371,38 @@
             $data_tagihan['status_tagihan'] = 'Belum Lunas';
             $data_tagihan['created_by'] = $data_pendaftaran['created_by'];
             $this->db->insert('t_tagihan', $data_tagihan);
+            $last_id_tagihan = $this->db->insert_id();
+
+            $this->db->select('*')
+            ->from('t_tindakan_pendaftaran as a')
+            ->where('a.session_id', $session_id)
+            ->where('a.flag_active', 1);
+            $getTindakan =  $this->db->get()->result();
+     
+            foreach($getTindakan as $tindakan){
+                $data = array(
+                    'id_t_pendaftaran' => $last_id_pendaftaran,
+                    'id_m_nm_tindakan' => $tindakan->id_m_nm_tindakan,
+                    'parent_id_tindakan' => $tindakan->parent_id_tindakan,
+                    'nama_tindakan' => $tindakan->nama_tindakan,
+                    'nilai_normal' => $tindakan->nilai_normal,
+                    'satuan' => $tindakan->satuan
+                );
+                $this->db->insert('t_tindakan', $data);
+                $detail_tindakan[] = $tindakan->nama_tindakan;  
+            }
+
+            $dataTagihan = array(
+                'id_t_pendaftaran' => $last_id_pendaftaran,
+                'id_reference' => 0,
+                'id_t_tagihan' => $last_id_tagihan,
+                'jenis_tagihan' => "Tindakan",
+                'nama_tagihan' => "tes",
+                'detail_tindakan' => json_encode($detail_tindakan),
+                'biaya' => 2000,
+                'created_by' => $this->general_library->getId()
+            );
+            $this->db->insert('t_tagihan_detail', $dataTagihan);
 
             if($this->db->trans_status() == FALSE){
                 $this->db->trans_rollback();
@@ -468,5 +500,235 @@
 
             return $res;
         }
+
+
+        public function insertTindakanPendaftaran(){
+            $res['code'] = 0;
+            $res['message'] = 'ok';
+            $res['data'] = null;
+
+            $session_id = $this->input->post('session_id');
+            $id_tindakan = $this->input->post('tindakan');
+           
+            $this->db->trans_begin();
+
+            $this->db->select('*')
+            ->from('t_tindakan_pendaftaran as a')
+            ->where('a.id_m_nm_tindakan', $id_tindakan)
+            ->where('a.session_id', $session_id)
+            ->where('a.flag_active', 1);
+             $cekTindakanDouble =  $this->db->get()->result();
+
+             if($cekTindakanDouble){
+                $res['code'] = 1;
+                $res['message'] = 'Tindakan Sudah ada';
+                return $res;
+             }
+
+            $this->db->select('*')
+                ->from('m_tindakan as a')
+                ->where('a.parent_id', $id_tindakan)
+                ->where('a.flag_active', 1);
+            $cekTindakan =  $this->db->get()->result();
+
+            if($cekTindakan) {
+                $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal, a.satuan')
+                ->from('m_tindakan as a')
+                ->where('a.id', $id_tindakan)
+                ->where('a.flag_active', 1);
+                 $dataTindakan =  $this->db->get()->result();
+              
+
+
+                $data = array(
+                    'session_id' => $session_id,
+                    'nama_tindakan' => $dataTindakan['0']->nama_tindakan,
+                    'id_m_nm_tindakan' => $id_tindakan
+                );
+
+                $this->db->insert('t_tindakan_pendaftaran', $data);
+                $last_id_tindakan = $this->db->insert_id();
+
+                foreach($cekTindakan as $tindakan){
+                
+                    $data = array(
+                        'session_id' => $session_id,
+                        'id_m_nm_tindakan' => $tindakan->id,
+                        'nama_tindakan' => $tindakan->nama_tindakan,
+                        'parent_id_tindakan' => $id_tindakan,    
+                        'nama_tindakan' => $tindakan->nama_tindakan,
+                        'nilai_normal' => $tindakan->nilai_normal,
+                        'satuan' => $tindakan->satuan  
+                    );
+                    $this->db->insert('t_tindakan_pendaftaran', $data);
+                }
+            } else {
+              
+                $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal,a.satuan')
+                ->from('m_tindakan as a')
+                ->where('a.id', $id_tindakan)
+                ->where('a.flag_active', 1);
+                 $dataTindakan =  $this->db->get()->result();
+                
+                 $data = array(
+                    'session_id' => $session_id,
+                    'id_m_nm_tindakan' => $id_tindakan,
+                    'nama_tindakan' => $dataTindakan[0]->nama_tindakan,
+                    'nilai_normal' => $dataTindakan[0]->nilai_normal,
+                    'satuan' => $dataTindakan[0]->satuan 
+                );
+                $this->db->insert('t_tindakan_pendaftaran', $data);
+                $last_id_tindakan = $this->db->insert_id();
+
+            }
+            
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+            } else {
+                $this->db->trans_commit();
+            }
+
+            return $res;
+        }
+
+        public function getRincianTindakan($session_id){
+            $data = null;
+            $list_parent = null;
+            $list_id_top_parent = null;
+            $list_top_parent = null;
+            $tindakan = $this->db->select('a.*, b.parent_id, b.id_m_jns_tindakan, b.id as id_m_tindakan, b.nilai_normal')
+                                        ->from('t_tindakan_pendaftaran a')
+                                        ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                                        ->where('a.session_id', $session_id)
+                                        ->where('a.flag_active', 1)
+                                        ->group_by('a.id')
+                                        ->get()->result_array();
+                                        // dd($tindakan);
+           
+            if($tindakan){
+                $i = 0;
+                foreach($tindakan as $t){
+                    if($t['parent_id_tindakan'] == 0){
+                        $list_id_top_parent[] = $t['id_m_jns_tindakan'];
+                        $list_parent[] = $t; 
+                        array_splice($tindakan, $i, 1);
+                        $i -= 1;
+                    }
+                    $i++;
+                }
+                $list_id_top_parent = array_unique($list_id_top_parent);
+            // }
+            
+            $list_top_parent = $this->db->select('*')
+                                        ->from('m_jns_tindakan')
+                                        ->where_in('id', $list_id_top_parent)
+                                        ->get()->result_array();
+            if($list_top_parent){
+                foreach($list_top_parent as $ltp){
+                    $data[$ltp['id']] = $ltp;
+                }
+                foreach($list_parent as $lp){
+                    $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']] = $lp;
+                    $j = 0;
+                    foreach($tindakan as $t){
+                        if($t['parent_id_tindakan'] == $lp['id_m_nm_tindakan']){
+                            $data[$lp['id_m_jns_tindakan']]['tindakan'][$lp['id_m_nm_tindakan']]['detail_tindakan'][] = $t;
+                            array_splice($tindakan, $j, 1);
+                            $j -= 1;
+                        }
+                        $j++;
+                    }
+                }
+            }
+        }
+            // dd($data);
+            // fungsi ini akan berhenti jika $tindakan sudah null; tapi belum ada contoh, jadi belum lanjut
+            return $data;
+        }
+
+        public function delTindakanPendaftaran(){
+            $res['code'] = 0;
+            $res['message'] = 'ok';
+            $res['data'] = null;
+            
+        
+            $id_tindakan = $this->input->post('idtindakan');
+            $session_id = $this->input->post('session_id');
+     
+        
+             $this->db->trans_begin();
+             $this->db->select('a.id_m_nm_tindakan,b.id')
+             ->from('t_tindakan_pendaftaran as a')
+             ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+             ->where('a.session_id', $session_id)
+             ->where('a.id', $id_tindakan)
+             ->where('a.nilai_normal', null)
+             ->where('a.flag_active', 1);
+              $cekTindakan =  $this->db->get()->result();
+                          
+           if($cekTindakan){
+              foreach($cekTindakan as $tindakan){
+              $list_id[] = $tindakan->id;  
+              }
+              if (in_array($cekTindakan[0]->id_m_nm_tindakan, $list_id)) {
+               
+                $this->db->select('*')
+                    ->from('t_tindakan_pendaftaran as a')
+                    ->where('a.parent_id_tindakan', $cekTindakan[0]->id_m_nm_tindakan)
+                    ->where('a.session_id', $session_id)
+                    ->where('a.flag_active', 1);
+                $getTindakan =  $this->db->get()->result();
+            
+                if($getTindakan){
+                    foreach($getTindakan as $tindakan){
+                        $this->db->where('id', $tindakan->id)
+                        ->update('t_tindakan_pendaftaran', [
+                            'updated_by' => $this->general_library->getId(),
+                            'flag_active' => 0
+                        ]);
+                    }
+                    $this->db->where('id', $id_tindakan)
+                    ->update('t_tindakan_pendaftaran', [
+                        'updated_by' => $this->general_library->getId(),
+                        'flag_active' => 0
+                    ]); 
+                
+                }  
+               
+            } else {
+              
+                $this->db->where('id', $id_tindakan)
+                ->update('t_tindakan_pendaftaran', [
+                    'updated_by' => $this->general_library->getId(),
+                    'flag_active' => 0
+                ]);
+            }
+
+           } else {
+            $this->db->where('id', $id_tindakan)
+            ->update('t_tindakan_pendaftaran', [
+                'updated_by' => $this->general_library->getId(),
+                'flag_active' => 0
+            ]); 
+           }
+ 
+           
+
+
+   if($this->db->trans_status() == FALSE){
+       $this->db->trans_rollback();
+       $res['code'] = 1;
+       $res['message'] = 'Terjadi Kesalahan';
+       $res['data'] = null;
+   } else {
+       $this->db->trans_commit();
+   }
+
+   return $res;
+}
+
+        
+
 	}
 ?>

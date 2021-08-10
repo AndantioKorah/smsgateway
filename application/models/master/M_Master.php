@@ -51,20 +51,43 @@
             ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
            
             ->where('a.flag_active', 1)
-            ->order_by('a.created_date', 'desc')
+            ->order_by('a.id_m_jns_tindakan', 'asc')
+        
             ->from('m_tindakan as a');
             return $this->db->get()->result_array(); 
         }
 
 
         public function createMasterTindakan(){
+
+
+            $this->db->select('a.nm_jns_tindakan')
+            ->from('m_jns_tindakan as a')
+            ->where('a.id', $this->input->post('id_m_jns_tindakan'));
+             $jnsPemeriksaan =  $this->db->get()->result();
+            
+              $nama_jns_tindakan = $jnsPemeriksaan[0]->nm_jns_tindakan;
+            
+             $this->db->select('a.id')
+             ->from('m_tindakan as a')
+             ->like('a.nama_tindakan', $jnsPemeriksaan[0]->nm_jns_tindakan)
+             ->limit(1);
+              $parent =  $this->db->get()->result();
+             
+              if($this->input->post('parent') == 0 || $this->input->post('parent') == ""){
+              $parent_id = $parent[0]->id;
+              } else {
+              $parent_id = $this->input->post('parent');
+              }
+             
+
             $data = array(
                 'id_m_jns_tindakan' => $this->input->post('id_m_jns_tindakan'),
                 'nama_tindakan' => $this->input->post('nama_tindakan'),
                 'biaya' => $this->input->post('biaya'),
                 'nilai_normal' => $this->input->post('nilai_normal'),
                 'satuan' => $this->input->post('satuan'),
-                'parent_id' => $this->input->post('parent'),
+                'parent_id' => $parent_id,
                 'created_by' => $this->general_library->getId()
             );
             $this->db->insert('m_tindakan', $data);
