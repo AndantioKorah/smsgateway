@@ -389,7 +389,7 @@
                     'satuan' => $tindakan->satuan
                 );
                 $this->db->insert('t_tindakan', $data);
-                $detail_tindakan[] = $tindakan->nama_tindakan;  
+                $detail_tindakan[] = $tindakan->nama_tindakan;
             }
 
             // $dataTagihan = array(
@@ -712,10 +712,7 @@
                 'flag_active' => 0
             ]); 
            }
- 
            
-
-
    if($this->db->trans_status() == FALSE){
        $this->db->trans_rollback();
        $res['code'] = 1;
@@ -727,8 +724,5 @@
 
    return $res;
 }
-
-        
-
 	}
 ?>

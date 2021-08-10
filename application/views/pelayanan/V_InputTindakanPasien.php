@@ -13,7 +13,7 @@
     
     </form>
     <button
-        <?php if($id_tagihan[0]->id_m_status_tagihan == 2) echo "style='display:none'" ;?>
+        <?php if($id_tagihan[0]->id_m_status_tagihan == 1) echo "style='display:none'" ;?>
         onclick="cetakHasil()" class="btn btn-sm btn-navy mt-2" ><i class="fa fa-print"></i> Cetak Hasil</button> 
        
         <div id="tabel_tindakan_pasien" class="row p-2 mt-4" style="border-radius: 10px; border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
