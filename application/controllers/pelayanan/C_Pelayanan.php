@@ -22,6 +22,9 @@ class C_Pelayanan extends CI_Controller
        
         $data['id_pendaftaran'] = $id_pendaftaran;
         $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakan($id_pendaftaran);
+        $this->session->set_userdata([
+            'list_tindakan_pasien' => $data['rincian_tindakan']
+        ]);
         // var_dump($data['rincian_tindakan']);
         // die();
         // $this->load->view('pelayanan/V_tes', $data);
@@ -73,6 +76,12 @@ class C_Pelayanan extends CI_Controller
         }
 
         echo json_encode($data);
+    }
+
+    public function cetakHasil($id_pendaftaran){
+        list($data['rincian_tindakan'], $data['page_count']) = $this->pelayanan->buildDataPrintTindakan($this->session->userdata('list_tindakan_pasien'));
+        $data['pendaftaran'] = $this->pendaftaran->getDataPendaftaran($id_pendaftaran);
+        $this->load->view('pelayanan/V_CetakRincianTindakan', $data);        
     }
 
 }

@@ -1,17 +1,7 @@
 <html>
     <head>
         <style>
-            @page{
-                size: A4;
-                margin-top: 150px;
-                font-size: 14px;
-            }
-            @media print {
-                .pagebreak{ 
-                    page-break-before: always;
-                }
-            }
-            .thead_rincian_tagihan{
+            .thead_rincian_tagihan_cetakan{
                 font-weight: bold;
                 text-align: center;
                 /* font-size: 12px; */
@@ -57,10 +47,10 @@
                 <table class="content_rincian_tagihan">
                     <thead>
                         <tr>
-                            <th class="thead_rincian_tagihan">NO</th>
-                            <th class="thead_rincian_tagihan">TAGIHAN</th>
-                            <th class="thead_rincian_tagihan">BIAYA</th>
-                            <th class="thead_rincian_tagihan">TANGGAL INPUT</th>
+                            <th class="thead_rincian_tagihan_cetakan set_font">NO</th>
+                            <th class="thead_rincian_tagihan_cetakan set_font">TAGIHAN</th>
+                            <th class="thead_rincian_tagihan_cetakan set_font">BIAYA</th>
+                            <th class="thead_rincian_tagihan_cetakan set_font">TANGGAL INPUT</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,24 +65,24 @@
                                 $chNo = 0;
                                 $pNo++;
                                 $row_num = $pNo;
-                                $class_tr = 'td_jns_tindakan';
+                                $class_tr = 'td_jns_tindakan set_font';
                             } else if(isset($rt['nama_tagihan'])){
                                 $tagihan = $rt['nama_tagihan'];
                                 $biaya = formatCurrency($rt['biaya']);
                                 $tanggal_input = formatDate($rt['created_date']);
                                 $chNo++;
                                 $row_num = $pNo.'.'.$chNo;
-                                $class_tr = 'td_tagihan';
+                                $class_tr = 'td_tagihan set_font';
                             } else if(isset($rt['nama_tindakan'])){
                                 $tagihan = $rt['nama_tindakan'];
-                                $class_tr = 'td_tindakan';
+                                $class_tr = 'td_tindakan set_font';
                             }
                         ?>
                             <tr>
-                                <td class="<?=$class_tr?>" style="text-align:center"><?=$row_num?></td>
+                                <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$row_num?></td>
                                 <td class="<?=$class_tr?>"><?=$tagihan?></td>
-                                <td class="<?=$class_tr?>" style="text-align:center"><?=$biaya?></td>
-                                <td class="<?=$class_tr?>" style="text-align:center"><?=$tanggal_input?></td>
+                                <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$biaya?></td>
+                                <td class="<?=$class_tr?>" style="text-align:center; vertical-align: top;"><?=$tanggal_input?></td>
                             </tr>
                         <?php } ?>
                     </tbody>

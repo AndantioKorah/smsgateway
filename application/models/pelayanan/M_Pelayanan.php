@@ -533,7 +533,72 @@
         $result = $this->db->update('t_tindakan', $data);        
     }
 
+    public function buildDataPrintTindakan($data){
+        $result = null;
+        $i = 0;
+        foreach($data as $d){
+            $result[$i] = $d;
+            $result[$i]['page'] = 1;
+            if($d['tindakan']){
+                unset($result[$i]['tindakan']);
+                $i++;
+                foreach($d['tindakan'] as $tind){
+                    $result[$i] = $tind;
+                    $result[$i]['page'] = 1;
+                    if(isset($tind['detail_tindakan'])){
+                        unset($result[$i]['detail_tindakan']);
+                        $i++;
+                        foreach($tind['detail_tindakan'] as $dtin){
+                            $result[$i] = $dtin;
+                            $result[$i]['page'] = 1;
+                            $i++;
+                        }
+                    }
+                }
+            }
+        }
 
+        $i = 0;
+        $last_parent_index = 0;
+        $last_jns_index = 0;
+        $current_page = 0;
+        $final_result = null;
+        foreach($result as $rs){
+            if(isset($result[$i]['nm_jns_tindakan'])){
+                $last_jns_index = $i;
+            }
+            if(isset($result[$i]['id_t_pendaftaran']) && $result[$i]['parent_id_tindakan'] == '0'){
+                $last_parent_index = $i;
+            }
+            //hitung sekarang page berapa
+            $result[$i]['page'] = intval(($i / ROW_PER_PAGE_CETAK_TINDAKAN) + 1);
+            $current_page = $result[$i]['page'];
+            //masukkan data ke index final_result dimana index == page 
+            $final_result[$current_page][] = $result[$i];
+            //jika halaman data current index != data current index sebelumnya, samakan halaman data ini dengan parent dari data ini
+            if(isset($result[$i-1]) && 
+                (intval($result[$i]['page']) != intval($result[$i-1]['page']))
+            ){
+                $final_result[$current_page] = null;
+                //jika data sebelum parent ini adalah data jns, samakan halaman data jns dengan data parent ini  
+                if(($last_parent_index - 1) == $last_jns_index){
+                    $result[$last_jns_index]['page'] = $current_page;
+                    $final_result[$current_page][] = $result[$last_jns_index];
+                    //hapus data jns di halaman sebelumnya
+                    unset($final_result[$current_page-1][$last_jns_index]);
+                }
+                //ambil data parent, dan samakan halaman dengan data ini
+                for($j = $last_parent_index; $j <= $i; $j++){
+                    $result[$j]['page'] = $result[$i]['page'];
+                    $final_result[$current_page][] = $result[$j];
+                    //hapus data parent di halaman sebelumnya
+                    unset($final_result[$current_page-1][$j]);
+                }
+            }
+            $i++;
+        }
+        return [$final_result, $current_page];
+    }
        
 	}
 ?>
