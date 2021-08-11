@@ -377,32 +377,53 @@
             ->from('t_tindakan_pendaftaran as a')
             ->where('a.session_id', $session_id)
             ->where('a.flag_active', 1);
-            $getTindakan =  $this->db->get()->result();
-     
-            foreach($getTindakan as $tindakan){
-                $data = array(
-                    'id_t_pendaftaran' => $last_id_pendaftaran,
-                    'id_m_nm_tindakan' => $tindakan->id_m_nm_tindakan,
-                    'parent_id_tindakan' => $tindakan->parent_id_tindakan,
-                    'nama_tindakan' => $tindakan->nama_tindakan,
-                    'nilai_normal' => $tindakan->nilai_normal,
-                    'satuan' => $tindakan->satuan
-                );
-                $this->db->insert('t_tindakan', $data);
-                $detail_tindakan[] = $tindakan->nama_tindakan;
-            }
+            $getTindakan =  $this->db->get()->result_array();
 
-            // $dataTagihan = array(
-            //     'id_t_pendaftaran' => $last_id_pendaftaran,
-            //     'id_reference' => 0,
-            //     'id_t_tagihan' => $last_id_tagihan,
-            //     'jenis_tagihan' => "Tindakan",
-            //     'nama_tagihan' => "tes",
-            //     'detail_tindakan' => json_encode($detail_tindakan),
-            //     'biaya' => 2000,
-            //     'created_by' => $this->general_library->getId()
-            // );
-            // $this->db->insert('t_tagihan_detail', $dataTagihan);
+            $tindakan_tagihan = null;
+            $arr_tindakan = null;
+
+            foreach($getTindakan as $gt){
+                $last_id_t_tindakan = null;
+                $tindakan = array(
+                    'id_t_pendaftaran' => $last_id_pendaftaran,
+                    'id_m_nm_tindakan' => $gt['id_m_nm_tindakan'],
+                    'parent_id_tindakan' => $gt['parent_id_tindakan'],
+                    'nama_tindakan' => $gt['nama_tindakan'],
+                    'nilai_normal' => $gt['nilai_normal'],
+                    'satuan' => $gt['satuan'],
+                    'created_by' => $this->general_library->getId()
+                );
+                if($gt['parent_id_tindakan'] != 0){
+                    $arr_tindakan[] = $tindakan;
+                } else {
+                    $this->db->insert('t_tindakan', $tindakan);
+                    $last_id_t_tindakan = $this->db->insert_id();
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['id_t_pendaftaran'] = $last_id_pendaftaran;
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['id_t_tagihan'] = $last_id_tagihan;
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['jenis_tagihan'] = 'Tindakan';
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['id_reference'] = $last_id_t_tindakan;
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['nama_tagihan'] = $gt['nama_tindakan'];
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['biaya'] = $gt['biaya'];
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['created_by'] = $this->general_library->getId();
+                }
+
+                if(isset($tindakan_tagihan[$gt['parent_id_tindakan']])){
+                    $tindakan_tagihan[$gt['parent_id_tindakan']]['detail_tindakan'][] = $gt['nama_tindakan'];
+                }
+                
+            }
+            $this->db->insert_batch('t_tindakan', $arr_tindakan);
+
+            $i = 0;
+            $detail_tagihan = null;
+            foreach($tindakan_tagihan as $tt){
+                $detail_tagihan[] = $tt;
+                if(isset($tt['detail_tindakan'])){
+                    $detail_tagihan[$i]['detail_tindakan'] = json_encode($tt['detail_tindakan']);
+                }
+                $i++;
+            }
+            $this->db->insert_batch('t_tagihan_detail', $detail_tagihan);
 
             if($this->db->trans_status() == FALSE){
                 $this->db->trans_rollback();
@@ -536,21 +557,20 @@
                 ->from('m_tindakan as a')
                 ->where('a.id', $id_tindakan)
                 ->where('a.flag_active', 1);
-                 $dataTindakan =  $this->db->get()->result();
-              
-
+                $dataTindakan =  $this->db->get()->result();
 
                 $data = array(
                     'session_id' => $session_id,
                     'nama_tindakan' => $dataTindakan['0']->nama_tindakan,
-                    'id_m_nm_tindakan' => $id_tindakan
+                    'id_m_nm_tindakan' => $id_tindakan,
+                    'biaya' => $dataTindakan['0']->biaya
                 );
 
                 $this->db->insert('t_tindakan_pendaftaran', $data);
                 $last_id_tindakan = $this->db->insert_id();
 
+                $arr_tindakan = null;
                 foreach($cekTindakan as $tindakan){
-                
                     $data = array(
                         'session_id' => $session_id,
                         'id_m_nm_tindakan' => $tindakan->id,
@@ -560,14 +580,14 @@
                         'nilai_normal' => $tindakan->nilai_normal,
                         'satuan' => $tindakan->satuan  
                     );
-                    $this->db->insert('t_tindakan_pendaftaran', $data);
+                    $arr_tindakan[] = $data;
                 }
+                $this->db->insert_batch('t_tindakan_pendaftaran', $arr_tindakan);
             } else {
-              
                 $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal,a.satuan')
-                ->from('m_tindakan as a')
-                ->where('a.id', $id_tindakan)
-                ->where('a.flag_active', 1);
+                        ->from('m_tindakan as a')
+                        ->where('a.id', $id_tindakan)
+                        ->where('a.flag_active', 1);
                  $dataTindakan =  $this->db->get()->result();
                 
                  $data = array(

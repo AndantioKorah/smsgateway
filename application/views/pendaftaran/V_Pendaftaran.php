@@ -146,13 +146,33 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-3">
+        <div class="card card-default">
+            <div class="card-header" style="height: 50px;">
+                <h3 class="card-title"><strong>TINDAKAN</strong></h3>
+            </div>
+            <div class="card-body">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <select class="form-control" id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
+                        <input id="button_submit_input_tindakan" type="button" class="btn btn-navy btn-block mt-2" onclick="createTindakanPendaftaran()" value="Simpan">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div id="content_div_tindakan">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
         <div class="card card-default">
             <div class="card-header" style="height: 50px;">
                 <h3 class="card-title"><strong>PENDAFTARAN LAB</strong></h3>
             </div>
             <div class="card-body">
                 <form id="form_pendaftaran_lab">
+                    <input type="hidden" name="session_id" id="session_id" value="<?= $this->session->userdata('session_id')?>">
                     <input style="display: none;" name="norm" id="norm_pasien" />
                     <div class="row">
                         <div class="col-md-6">
@@ -204,22 +224,11 @@
                         </div>
                     </div>
 
-                    <div class="row mt-3" >
-                     <input type="hidden" name="session_id" id="session_id" value="<?= $this->session->userdata('session_id')?>">
-                    <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
-                    <input id="button_submit_input_tindakan" type="button"   class="btn btn-navy btn-sm col-12 mt-2 " onclick="createTindakanPendaftaran()" value="Simpan">  
-                  
-                </div>
-
-                    <div id="content_div_tindakan" class="mt-3">
-
-                    </div>
-
-                    <div class="row mt-3 text-right">
+                    <div class="row mt-3">
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
-                            <button id="button_submit_pendaftaran" type="submit" accesskey="b" class="btn btn-navy btn-sm"><u>B</u>uat Pendaftaran</button>
-                            <button disabled id="button_loading" style="display:none;" class="btn btn-navy btn-sm"><i class="fa fa-spin fa-spinner"></i> Membuat Pendaftaran</button>
+                            <button id="button_submit_pendaftaran" type="submit" accesskey="b" class="btn btn-navy btn-block"><u>B</u>uat Pendaftaran</button>
+                            <button disabled id="button_loading" style="display:none;" class="btn btn-navy btn-block"><i class="fa fa-spin fa-spinner"></i> Membuat Pendaftaran</button>
                         </div>
                     </div>
                 </form>
@@ -299,8 +308,6 @@
                 errortoast('Terjadi Kesalahan')
             }
         })
-        // $('#button_loading').show()
-        // $('#button_submit_pendaftaran').hide()
     })
 
     $('#dokter_pengirim').on('change', function(){
@@ -442,9 +449,9 @@
     function createTindakanPendaftaran(){
         var tindakan = $('#cari_tindakan').val();
         var session_id = $('#session_id').val();
-      
+
         if(tindakan == "" || tindakan == null){
-            errortoast('  Tindakan Belum dipilih')
+            errortoast('Tindakan Belum dipilih')
             $('#button_submit_input_tindakan').show('fast')
             return false
         }  

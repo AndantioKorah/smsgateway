@@ -10,6 +10,7 @@
     $nama_pekerjaan = $pasien['nama_pekerjaan'] ? $pasien['nama_pekerjaan'] : '-';
     $kewarganegaraan = $pasien['kewarganegaraan'] ? $pasien['kewarganegaraan'] : '-';
     $nomor_telepon = $pasien['nomor_telepon'] ? $pasien['nomor_telepon'] : '-';
+    $umur = countDiffDateLengkap($pasien['tanggal_lahir'], date('Y-m-d H:i:s'), ['tahun']);
 ?>
 <style>
     #div_detail_pendaftaran{
@@ -49,7 +50,7 @@
                 <i class="fa fa-birthday-cake"></i></span>
             </div>
             <div class="col-11">
-                <span class="span_data_pasien_left"><?=$tempat_lahir.', '.$tanggal_lahir?></span>
+                <span class="span_data_pasien_left"><?=$tempat_lahir.', '.$tanggal_lahir.' ('.strtoupper($umur).' )'?></span>
             </div>
             <div class="col-1 text-center">
                 <span class="span_data_pasien_left">
