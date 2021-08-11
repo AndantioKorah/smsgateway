@@ -386,7 +386,8 @@
                     'parent_id_tindakan' => $tindakan->parent_id_tindakan,
                     'nama_tindakan' => $tindakan->nama_tindakan,
                     'nilai_normal' => $tindakan->nilai_normal,
-                    'satuan' => $tindakan->satuan
+                    'satuan' => $tindakan->satuan,
+                    'created_by' => $this->general_library->getId()
                 );
                 $this->db->insert('t_tindakan', $data);
                 $detail_tindakan[] = $tindakan->nama_tindakan;  
@@ -543,7 +544,8 @@
                 $data = array(
                     'session_id' => $session_id,
                     'nama_tindakan' => $dataTindakan['0']->nama_tindakan,
-                    'id_m_nm_tindakan' => $id_tindakan
+                    'id_m_nm_tindakan' => $id_tindakan,
+                    'created_by' => $this->general_library->getId()
                 );
 
                 $this->db->insert('t_tindakan_pendaftaran', $data);
@@ -558,7 +560,8 @@
                         'parent_id_tindakan' => $id_tindakan,    
                         'nama_tindakan' => $tindakan->nama_tindakan,
                         'nilai_normal' => $tindakan->nilai_normal,
-                        'satuan' => $tindakan->satuan  
+                        'satuan' => $tindakan->satuan,
+                        'created_by' => $this->general_library->getId()
                     );
                     $this->db->insert('t_tindakan_pendaftaran', $data);
                 }
@@ -575,7 +578,8 @@
                     'id_m_nm_tindakan' => $id_tindakan,
                     'nama_tindakan' => $dataTindakan[0]->nama_tindakan,
                     'nilai_normal' => $dataTindakan[0]->nilai_normal,
-                    'satuan' => $dataTindakan[0]->satuan 
+                    'satuan' => $dataTindakan[0]->satuan,
+                    'created_by' => $this->general_library->getId()
                 );
                 $this->db->insert('t_tindakan_pendaftaran', $data);
                 $last_id_tindakan = $this->db->insert_id();
