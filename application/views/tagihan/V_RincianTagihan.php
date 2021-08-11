@@ -45,14 +45,14 @@
                             });
                         $no_detail_tagihan = 1;
                         foreach($rt['detail_tagihan'] as $dt){ ?>
-                        <tr style="cursor: pointer;" onclick="openTrDetailTindakan('<?=$no_detail_tindakan?>')">
+                        <tr style="cursor: pointer;" onclick="openTrDetailTindakan('<?=$dt['id']?>')">
                             <td style="width: 5%;" class="text-center"><b><?=$no.'.'.$no_detail_tagihan;?></b></td>
                             <td style="width: 50%;"><b><?=$dt['nama_tagihan']?></b></td>
                             <td style="width: 15%;" class="text-left"><b><?=formatCurrency($dt['biaya'])?></b></td>
                             <td style="width: 30%;" class="text-center"><b><?=formatDate($dt['created_date'])?></b></td>
                         </tr>
                         <?php if($dt['detail_tindakan']){foreach($dt['detail_tindakan'] as $d) { ?>
-                        <tr class="tr_detail_tindakan_<?=$no_detail_tindakan?>" style="display: none;">
+                        <tr class="tr_detail_tindakan_<?=$dt['id']?>" style="display: none;">
                             <td style="width: 5%;"></td>
                             <td colspan=3 style="width: 95%;"><?=$d?></td>
                         </tr>

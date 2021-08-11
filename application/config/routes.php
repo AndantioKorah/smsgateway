@@ -1,5 +1,6 @@
 <?php
 require_once 'tio.php';
+require_once 'laporan.php';
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
