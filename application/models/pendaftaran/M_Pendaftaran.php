@@ -405,6 +405,7 @@
                     $tindakan_tagihan[$gt['id_m_nm_tindakan']]['nama_tagihan'] = $gt['nama_tindakan'];
                     $tindakan_tagihan[$gt['id_m_nm_tindakan']]['biaya'] = $gt['biaya'];
                     $tindakan_tagihan[$gt['id_m_nm_tindakan']]['created_by'] = $this->general_library->getId();
+                    $tindakan_tagihan[$gt['id_m_nm_tindakan']]['detail_tindakan'] = null;
                 }
 
                 if(isset($tindakan_tagihan[$gt['parent_id_tindakan']])){
@@ -412,7 +413,9 @@
                 }
                 
             }
-            $this->db->insert_batch('t_tindakan', $arr_tindakan);
+            if($arr_tindakan){
+                $this->db->insert_batch('t_tindakan', $arr_tindakan);
+            }
 
             $i = 0;
             $detail_tagihan = null;
@@ -432,6 +435,7 @@
                 $res['code'] = 1;
                 $res['message'] = 'Terjadi Kesalahan';
                 $res['data'] = null;
+                $this->general_library->countTagihan($last_id_pendaftaran);
             } else {
                 $this->db->trans_commit();
                 $res['data'] = $data_pendaftaran;

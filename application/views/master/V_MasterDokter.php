@@ -12,23 +12,27 @@
                     </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-3">
                     <div class="form-group">
                         <label class="bmd-label-floating">Nomor Telepon</label>
-                        <input class="form-control" type="number" autocomplete="off" name="nomor_telepon" id="nomor_telepon" required/>
+                        <input class="form-control" type="number" autocomplete="off" name="nomor_telepon" id="nomor_telepon"/>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Alamat</label>
-                        <input class="form-control" autocomplete="off" name="alamat" id="alamat" required/>
+                        <input class="form-control" autocomplete="off" name="alamat" id="alamat"/>
                     </div>
                 </div>
                 
-                
+                <div class="col-1">
+                    <div class="form-group">
+                        <label class="bmd-label-floating">Fee</label>
+                        <input class="form-control" autocomplete="off" name="fee" id="fee" value="10" required/>
+                    </div>
                 </div>
-                    <div class="col-12"></div>
+                
                 <div class="col-12 text-right mt-2">
                     <button class="btn btn-sm btn-navy" type="submit"><i class="fa fa-save"></i> SIMPAN</button>
                 </div>
@@ -84,9 +88,10 @@
             data: $(this).serialize(),
             success: function(){
                 loadMasterDokter()
-                $('#role_name').val('')
-                $('#nama').val('')
-                $('#keterangan').val('')
+                $('#nama_dokter').val('')
+                $('#nomor_telepon').val('')
+                $('#alamat').val('')
+                // $('#fee').val('')
             }, error: function(e){
                 errortoast('Terjadi Kesalahan')
             }
