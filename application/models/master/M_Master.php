@@ -1,5 +1,5 @@
 <?php
-	class M_master extends CI_Model
+	class M_Master extends CI_Model
 	{
 		public function __construct()
         {
@@ -192,6 +192,7 @@
                 'nama_dokter' => $this->input->post('nama_dokter'),
                 'nomor_telepon' => $this->input->post('nomor_telepon'),
                 'alamat' => $this->input->post('alamat'),
+                'fee' => $this->input->post('fee'),
                 'created_by' => $this->general_library->getId()
             );
             $this->db->insert('m_dokter', $data);

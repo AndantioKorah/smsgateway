@@ -22,6 +22,7 @@
         margin-top: 5px;
         font-size: 14px;
         font-family: Verdana;
+        margin-bottom: 10px;
     }
 </style>
 <?php if($result){ ?>
@@ -35,7 +36,7 @@
         <tbody>
             <tr>
                 <td>
-                <table class="table" style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: 20px;">
+                <table class="table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <thead>
                     <th class="format_str text-center">NO</th>
                     <th class="format_str text-center">NAMA PASIEN</th>
