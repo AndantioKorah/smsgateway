@@ -172,9 +172,23 @@
                 ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
 
-            $umur = 2;
-            $jenis_kelamin = 2;
-            $kategori_pasien = "Anak 2 - 4 Tahun";
+            $dateOfBirth = $this->input->post('tanggal_lahir');
+            $today = date("Y-m-d");
+            $diff = date_diff(date_create($dateOfBirth), date_create($today));
+            $umur = (int)$diff->format('%y');
+            $jenis_kelamin = $this->input->post('jenis_kelamin');
+            // dd($umur);
+            if($umur < 5){
+                $kategori_pasien = "Anak 2 - 4 Tahun";
+            } else if($umur == 5){
+                $kategori_pasien = "Anak 5 Tahun";
+            } else if($umur > 5 && $umur < 13) {
+                $kategori_pasien = "Anak 6 - 12 Tahun";
+            } else {
+                $kategori_pasien = null;
+            }
+            
+            
 
             if($cekTindakan) {
                 $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal, a.satuan')
@@ -194,13 +208,85 @@
                 $last_id_tindakan = $this->db->insert_id();
 
                 foreach($cekTindakan as $tindakan){
+                 
+                    if($umur < 13 ){
+                        if($tindakan->flag_m_nilai_normal == 1){
+                            $this->db->select('a.nilai_normal, a.jenis_kelamin,a.umur')
+                            ->from('m_nilai_normal as a')
+                            ->where('a.id_m_nm_tindakan', $tindakan->id)
+                            ->where('a.kategori_pasien', $kategori_pasien)
+                            ->where('a.flag_active', 1);
+                            $masterNilaiNormal =  $this->db->get()->result();
+                           
+                            if($masterNilaiNormal[0]->jenis_kelamin == null){
+                                 if($masterNilaiNormal[0]->umur == null){
+                                    $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
+                                 } else {
+                                    $this->db->select('a.nilai_normal, a.umur')
+                                     ->from('m_nilai_normal as a')
+                                     ->where('a.id_m_nm_tindakan', $tindakan->id)
+                                     ->where('a.umur <=', $umur)
+                                     ->where('a.kategori_pasien', $kategori_pasien)
+                                     ->where('a.flag_active', 1)
+                                     ->order_by('a.umur', 'desc')
+                                     ->limit(1);
+                                $masterNilaiNormalUmur =  $this->db->get()->result();
+                             
+                                $nilai_normal = $masterNilaiNormalUmur[0]->nilai_normal;
+                                 }
+                            } else {
+                                if($masterNilaiNormal[0]->umur == null){
+                                    $this->db->select('a.nilai_normal, a.umur')
+                                    ->from('m_nilai_normal as a')
+                                    ->where('a.id_m_nm_tindakan', $tindakan->id)
+                                    ->where('a.jenis_kelamin', $jenis_kelamin)
+                                    ->where('a.kategori_pasien', $kategori_pasien)
+                                    ->where('a.flag_active', 1)
+                                    ->order_by('a.umur', 'desc')
+                                    ->limit(1);
+                                    $masterNilaiNormalJK =  $this->db->get()->result();
+                                    $nilai_normal = $masterNilaiNormalJK[0]->nilai_normal;
+                                } else {
+                                    $this->db->select('a.nilai_normal, a.umur')
+                                    ->from('m_nilai_normal as a')
+                                    ->where('a.id_m_nm_tindakan', $tindakan->id)
+                                    ->where('a.umur <=', $umur)
+                                    ->where('a.jenis_kelamin', $jenis_kelamin)
+                                    ->where('a.kategori_pasien', $kategori_pasien)
+                                    ->where('a.flag_active', 1)
+                                    ->order_by('a.umur', 'desc')
+                                    ->limit(1);
+                                    $masterNilaiNormalJK =  $this->db->get()->result();
+                                    $nilai_normal = $masterNilaiNormalJK[0]->nilai_normal;
+                                }
+
+                            }
+                           
+                        } else {
+                            $nilai_normal = $tindakan->nilai_normal;
+                        }
+                    } else {
+                        
+                        if($tindakan->flag_m_nilai_normal == 1){
+                            $this->db->select('a.nilai_normal')
+                            ->from('m_nilai_normal as a')
+                            ->where('a.id_m_nm_tindakan', $tindakan->id)
+                            ->where('a.jenis_kelamin', $jenis_kelamin)
+                            ->where('a.kategori_pasien', null)
+                            ->where('a.flag_active', 1);
+                            $masterNilaiNormal =  $this->db->get()->result();
+                            $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
+                        } else {
+                            $nilai_normal = $tindakan->nilai_normal;
+                        }
+                    }
                 
                     $data = array(
                         'id_t_pendaftaran' => $id_pendaftaran,
                         'id_m_nm_tindakan' => $tindakan->id,
                         'parent_id_tindakan' => $id_tindakan,
                         'nama_tindakan' => $tindakan->nama_tindakan,
-                        'nilai_normal' => $tindakan->nilai_normal,
+                        'nilai_normal' => $nilai_normal,
                         'satuan' => $tindakan->satuan,
                         'created_by' => $this->general_library->getId()
                     );
@@ -222,7 +308,7 @@
 
             } else {
               
-                $this->db->select('a.biaya,a.nama_tindakan')
+                $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal,a.satuan')
                 ->from('m_tindakan as a')
                 ->where('a.id', $id_tindakan)
                 ->where('a.flag_active', 1);
@@ -232,7 +318,9 @@
                  $data = array(
                     'id_t_pendaftaran' => $id_pendaftaran,
                     'id_m_nm_tindakan' => $id_tindakan,
-                    'nama_tindakan' => $dataTindakan[0]->nama_tindakan
+                    'nama_tindakan' => $dataTindakan[0]->nama_tindakan,
+                    'nilai_normal' => $dataTindakan[0]->nilai_normal,
+                    'satuan' => $dataTindakan[0]->satuan,
                 );
                 $this->db->insert('t_tindakan', $data);
                 $last_id_tindakan = $this->db->insert_id();
@@ -421,6 +509,15 @@
         $this->db->select('*')
         ->from('t_tagihan as a')
         ->where('a.id_t_pendaftaran', $id_pendaftaran)
+        ->where('a.flag_active', '1');
+    return $this->db->get()->result();
+    }
+
+    public function getDataPasien($id_pendaftaran){
+        $this->db->select('b.tanggal_lahir, b.jenis_kelamin')
+        ->from('t_pendaftaran as a')
+        ->join('m_pasien as b', 'b.norm = a.norm')
+        ->where('a.id', $id_pendaftaran)
         ->where('a.flag_active', '1');
     return $this->db->get()->result();
     }

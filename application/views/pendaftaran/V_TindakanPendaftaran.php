@@ -47,12 +47,14 @@
     </tbody>
 </table> 
 <script>
+     var base_url = "<?=base_url()?>";
+
     function showTrDetailTindakan(id){
         $('.tr_detail_tindakan_'+id).toggle()
     }
 
     $('#daftar_tindakan').on('click','.tombol_hapus_tindakan',function(){
-        var base_url = 'http://localhost/lab/';
+       
         var session_id = $('#session_id').val();
     
         if(confirm('Apakah anda yakin?')){ 

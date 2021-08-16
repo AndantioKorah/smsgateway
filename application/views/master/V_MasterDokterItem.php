@@ -6,6 +6,7 @@
                 <th>Nama Dokter</th>
                 <th>Nomor Telepon</th>
                 <th>Alamat</th>
+                <th>Fee</th>
                 <th class="text-center">Pilihan</th>
             </thead>
             <tbody>
@@ -15,6 +16,7 @@
                         <td><?=$rs['nama_dokter'];?></td>
                         <td><?=$rs['nomor_telepon'];?></td>
                         <td><?=$rs['alamat'];?></td>
+                        <td><?=$rs['fee'];?></td>
                         <td class="text-center">
                         <button href="#edit_master_dokter" data-toggle="modal" class="btn btn-sm btn-navy"
                            onclick="openModalEdiMasterDokter('<?=$rs['id']?>', 'loadMasterDokter')"><i class="fa fa-edit"></i></button>

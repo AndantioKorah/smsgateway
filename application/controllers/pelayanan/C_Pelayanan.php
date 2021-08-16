@@ -16,10 +16,11 @@ class C_Pelayanan extends CI_Controller
 
 
     public function loadViewInputTindakan($id_pendaftaran){
-        $data['list_tindakan'] = $this->pelayanan->getListTindakan();
-        $data['tindakan_pasien'] = $this->pelayanan->getTindakanPasien($id_pendaftaran);
+        // $data['list_tindakan'] = $this->pelayanan->getListTindakan();
+        // $data['tindakan_pasien'] = $this->pelayanan->getTindakanPasien($id_pendaftaran);
         $data['id_tagihan'] = $this->pelayanan->getTagihan($id_pendaftaran);
-       
+        $data['pasien'] = $this->pelayanan->getDataPasien($id_pendaftaran);
+      
         $data['id_pendaftaran'] = $id_pendaftaran;
         $data['rincian_tindakan'] = $this->pelayanan->getRincianTindakan($id_pendaftaran);
         $this->session->set_userdata([
@@ -68,6 +69,7 @@ class C_Pelayanan extends CI_Controller
                 'hasil' => $_POST['hasil'][$count],
                 'nilai_normal' => $_POST['nilai_normal'][$count],
                 'satuan' => $_POST['satuan'][$count],
+                'keterangan' => $_POST['keterangan'][$count],
             );
             // var_dump($data);
             // die();

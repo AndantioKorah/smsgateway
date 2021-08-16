@@ -83,4 +83,34 @@ class C_Laporan extends CI_Controller
         $this->load->view('laporan/V_LaporanRekapHarianExcel', $data);
     }
 
+    public function laporanFeeDokter(){
+        $data['dokter'] = $this->general->getAllWithOrder('m_dokter', 'nama_dokter', 'asc');
+        render('laporan/V_LaporanFeeDokter', null, null, $data);
+    }
+
+    public function searchLaporanFeeDokter(){
+        $data['parameter'] = $this->input->post();
+        $data['result'] = $this->laporan->searchLaporanFeeDokter();
+        // dd($data['result']);
+        $this->session->set_userdata([
+            'result_laporan_fee_dokter' => json_encode($data)
+        ]);
+        $this->load->view('laporan/V_LaporanFeeDokterResult', $data);
+    }
+
+    public function printResultLaporanFeeDokter(){
+        $params = json_decode($this->session->userdata('result_laporan_fee_dokter'), true);
+        $data['parameter'] = $params['parameter'];
+        $data['result'] = $params['result'];
+        $this->load->view('laporan/V_LaporanFeeDokterPrint', $data);
+    }
+
+    public function saveResultLaporanFeeDokter(){
+        $params = json_decode($this->session->userdata('result_laporan_fee_dokter'), true);
+        $data['parameter'] = $params['parameter'];
+        $data['result'] = $params['result'];
+        $this->load->view('laporan/V_LaporanFeeDokterExcel', $data);
+    }
+    
+
 }

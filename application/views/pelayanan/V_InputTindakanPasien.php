@@ -3,7 +3,8 @@
         <input  class="col-12" type='hidden'  id='id_m_status_tagihan' value=<?php echo $id_tagihan['0']->id_m_status_tagihan;?>>
         <input  class="col-12" type='hidden'  id='id_tagihan' value=<?php echo $id_tagihan['0']->id;?>>
         <input  class="col-12" type='hidden'  id='id_pendaftaran' value=<?php echo $id_pendaftaran;?>>
-        
+        <input  class="col-12" type='hidden'  id='jenis_kelamin' value=<?php echo $pasien[0]->jenis_kelamin;?>>
+        <input  class="col-12" type='hidden'  id='tanggal_lahir' value=<?php echo $pasien[0]->tanggal_lahir;?>>
         
         <?php if($id_tagihan['0']->id_m_status_tagihan == 1){ ?>
             <select class='col-12' id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
@@ -13,7 +14,7 @@
     
     </form>
     <button
-        <?php if($id_tagihan[0]->id_m_status_tagihan == 1) echo "style='display:none'" ;?>
+        <?php if($id_tagihan[0]->id_m_status_tagihan == 3) echo "style='display:none'" ;?>
         onclick="cetakHasil()" class="btn btn-sm btn-navy mt-2" ><i class="fa fa-print"></i> Cetak Hasil</button> 
        
         <div id="tabel_tindakan_pasien" class="row p-2 mt-4" style="border-radius: 10px; border: 1px solid #001f3f;   background-color: #white;font-color: #000000;">
@@ -66,7 +67,7 @@
                             <input <?=$style;?> name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <td ><input <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" readonly></td>
+                            <td ><input <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
                             <td ><input <?=$style;?> name="satuan[]" class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
                             <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
                             <td >
@@ -81,7 +82,7 @@
                             <td> <input name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
                               <input type="hidden" name="id_t_tindakan[]"  value="<?=$d['id']?>" />
                             </td>
-                            <td><input name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" readonly></td>
+                            <td><input name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>
                             <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td>
                             <td ><input name="keterangan[]" class="col-12" type='text' value="<?=$d['keterangan']?>" ></td>
                             <td></td>
@@ -116,7 +117,7 @@
         </table> 
         <?php if($rincian_tindakan){ ?>
             <button 
-            <?php if($id_tagihan[0]->id_m_status_tagihan == 1) echo "style='display:none'" ;?> 
+            <?php if($id_tagihan[0]->id_m_status_tagihan == 3) echo "style='display:none'" ;?> 
             class="btn btn-navy btn-sm col-12 mt-2 simpan"> Simpan Hasil </button>        
         <?php } ?>
        </form>
@@ -134,7 +135,7 @@ $(function(){
 
 
 
-var base_url = 'http://localhost/lab/';
+     var base_url = "<?=base_url()?>";
 
 $('#form_input_tindakan').on('submit', function(e){
         e.preventDefault() 
@@ -142,6 +143,8 @@ $('#form_input_tindakan').on('submit', function(e){
         var id_pendaftaran = $('#id_pendaftaran').val();
         var id_tagihan = $('#id_tagihan').val();
         var tindakan = $('#cari_tindakan').val();
+        var tanggal_lahir = $('#tanggal_lahir').val();
+        var jenis_kelamin = $('#jenis_kelamin').val();
         
         if(tindakan == "" || tindakan == null){
             errortoast('  Tindakan Belum dipilih')
@@ -158,7 +161,7 @@ $('#form_input_tindakan').on('submit', function(e){
 				$.ajax({
 					url:"<?=base_url("pelayanan/C_Pelayanan/insertTindakan")?>",
 					method:"post",
-					data:{id_pendaftaran:id_pendaftaran,tindakan:tindakan,id_tagihan:id_tagihan},
+					data:{id_pendaftaran:id_pendaftaran,tindakan:tindakan,id_tagihan:id_tagihan,tanggal_lahir:tanggal_lahir,jenis_kelamin:jenis_kelamin},
 					success:function(data){
                         let res = JSON.parse(data)
                         if(res.code == 1){
@@ -295,7 +298,7 @@ function tampilTindakan()
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.nama_tindakan,
+                            text: item.nm_tindakan,
                             id: item.id_tindakan
                         }
                     })

@@ -19,10 +19,12 @@
             $this->db->insert('m_jns_tindakan', $data);
 
             $dataMtindakan = array(
-                'nama_tindaakn' => $this->input->post('nm_jns_tindakan'),
+                'nama_tindakan' => $this->input->post('nm_jns_tindakan'),
                 'id_m_jns_tindakan' => 0,
+                'flag_active' => 0,
                 'created_by' => $this->general_library->getId()
             );
+            $this->db->insert('m_tindakan', $dataMtindakan);
 
 
         }
@@ -252,6 +254,7 @@
             $data["nama_dokter"] = $datapost["nama_dokter"]; 
             $data["nomor_telepon"] = $datapost["nomor_telepon"];
             $data["alamat"] = $datapost["alamat"];
+            $data["fee"] = $datapost["fee"];
 
 
             $this->db->where('id', $id_dokter)
