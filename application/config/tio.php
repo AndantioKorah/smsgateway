@@ -9,3 +9,4 @@ $route['pasien/(:any)'] = 'pendaftaran/C_Pendaftaran/dataPasien/$1';
 $route['pemeriksaan'] = 'master/C_Master/jenisPemeriksaan';
 $route['tindakan'] = 'master/C_Master/tindakan';
 $route['dokter'] = 'master/C_Master/masterDokter';
+$route['database/backup'] = 'backup/C_Backup/backupDatabase';
