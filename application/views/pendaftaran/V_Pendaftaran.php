@@ -282,9 +282,9 @@
 
     $('#form_pendaftaran_lab').on('submit', function(e){
         e.preventDefault()
-        $('#content_div_tindakan').hide()
-        $('#button_loading').show()
-        $('#button_submit_pendaftaran').hide()
+        // $('#content_div_tindakan').hide()
+        // $('#button_loading').show()
+        // $('#button_submit_pendaftaran').hide()
         if($('#norm_pasien').val() == ''){
             errortoast('Belum ada pasien yang dipilih untuk pendaftaran')
             $('#content_div_tindakan').show()

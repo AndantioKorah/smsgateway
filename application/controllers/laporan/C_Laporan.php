@@ -44,4 +44,43 @@ class C_Laporan extends CI_Controller
         $this->load->view('laporan/V_LaporanPendaftaranPerPasienPrint', $data);
     }
 
+    public function laporanRekapHarian(){
+        render('laporan/V_LaporanRekapHarian', null, null, null);
+    }
+
+    public function searchLaporanRekapHarian(){
+        $data['parameter'] = $this->input->post();
+        list($data['result'], $data['jumlah_pendaftaran'], $data['total_uang_muka'],
+        $data['total_pembayaran'], $data['total_belum_bayar'], $data['total_penerimaan']) 
+        = $this->laporan->searchLaporanRekapHarian();
+        $this->session->set_userdata([
+            'result_rekap_harian' => json_encode($data)
+        ]);
+        $this->load->view('laporan/V_LaporanRekapHarianResult', $data);
+    }
+
+    public function printLaporanRekapHarian(){
+        $params = json_decode($this->session->userdata('result_rekap_harian'), true);
+        $data['parameter'] = $params['parameter'];
+        $data['result'] = $params['result'];
+        $data['jumlah_pendaftaran'] = $params['jumlah_pendaftaran'];
+        $data['total_uang_muka'] = $params['total_uang_muka'];
+        $data['total_pembayaran'] = $params['total_pembayaran'];
+        $data['total_belum_bayar'] = $params['total_belum_bayar'];
+        $data['total_penerimaan'] = $params['total_penerimaan'];
+        $this->load->view('laporan/V_LaporanRekapHarianPrint', $data);
+    }
+
+    public function saveLaporanRekapHarian(){
+        $params = json_decode($this->session->userdata('result_rekap_harian'), true);
+        $data['parameter'] = $params['parameter'];
+        $data['result'] = $params['result'];
+        $data['jumlah_pendaftaran'] = $params['jumlah_pendaftaran'];
+        $data['total_uang_muka'] = $params['total_uang_muka'];
+        $data['total_pembayaran'] = $params['total_pembayaran'];
+        $data['total_belum_bayar'] = $params['total_belum_bayar'];
+        $data['total_penerimaan'] = $params['total_penerimaan'];
+        $this->load->view('laporan/V_LaporanRekapHarianExcel', $data);
+    }
+
 }

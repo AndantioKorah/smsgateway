@@ -1,5 +1,5 @@
 <?php
-	class M_master extends CI_Model
+	class M_Master extends CI_Model
 	{
 		public function __construct()
         {
@@ -80,11 +80,17 @@
               $parent_id = $this->input->post('parent');
               }
              
+              if($this->input->post('biaya') == 0 || $this->input->post('biaya') == ""){
+                $biaya = null;
+                } else {
+                $biaya = $this->input->post('parent');
+                }
+               
 
             $data = array(
                 'id_m_jns_tindakan' => $this->input->post('id_m_jns_tindakan'),
                 'nama_tindakan' => $this->input->post('nama_tindakan'),
-                'biaya' => $this->input->post('biaya'),
+                'biaya' => $biaya,
                 'nilai_normal' => $this->input->post('nilai_normal'),
                 'satuan' => $this->input->post('satuan'),
                 'parent_id' => $parent_id,
@@ -186,6 +192,7 @@
                 'nama_dokter' => $this->input->post('nama_dokter'),
                 'nomor_telepon' => $this->input->post('nomor_telepon'),
                 'alamat' => $this->input->post('alamat'),
+                'fee' => $this->input->post('fee'),
                 'created_by' => $this->general_library->getId()
             );
             $this->db->insert('m_dokter', $data);
