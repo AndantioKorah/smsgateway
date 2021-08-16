@@ -21,6 +21,11 @@
                 <input required  autocomplete="off" id="alamat"  class="form-control form-control-sm" name="alamat" value="<?=$dokter['alamat']?>" />
             </div>
 
+            <div class="col-md-4">
+                <label>Fee</label>
+                <input required  autocomplete="off" id="fee"  class="form-control form-control-sm" name="fee" value="<?=$dokter['fee']?>" />
+            </div>
+
             <div class="col-md-12"><hr></div>
             <div class="col-md-12 text-right">
                 <button type="submit" id="btn_simpan_edit" accesskey="s" class="btn btn-block btn-navy"><i class="fa fa-save"></i> <u>S</u>IMPAN</button>

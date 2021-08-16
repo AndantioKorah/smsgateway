@@ -557,10 +557,23 @@
                 ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
           
-            $umur = 20;
-            $jenis_kelamin = 2;
-            $kategori_pasien = "Anak 2 - 4 Tahun";
-
+            $dateOfBirth = $this->input->post('tanggal_lahir');
+            $today = date("Y-m-d");
+            $diff = date_diff(date_create($dateOfBirth), date_create($today));
+            $umur = (int)$diff->format('%y');
+            $jenis_kelamin = $this->input->post('jenis_kelamin');
+            // dd($umur);
+            if($umur < 5){
+                $kategori_pasien = "Anak 2 - 4 Tahun";
+            } else if($umur == 5){
+                $kategori_pasien = "Anak 5 Tahun";
+            } else if($umur > 5 && $umur < 13) {
+                $kategori_pasien = "Anak 6 - 12 Tahun";
+            } else {
+                $kategori_pasien = null;
+            }
+            
+           
             if($cekTindakan) {
                 $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal, a.satuan')
                 ->from('m_tindakan as a')
@@ -582,7 +595,6 @@
                 $arr_tindakan = null;
                 foreach($cekTindakan as $tindakan){
                     if($umur < 13){
-                       
                         if($tindakan->flag_m_nilai_normal == 1){
                             $this->db->select('a.nilai_normal, a.jenis_kelamin,a.umur')
                             ->from('m_nilai_normal as a')

@@ -149,7 +149,7 @@
     <div class="col-md-3">
         <div class="card card-default">
             <div class="card-header" style="height: 50px;">
-                <h3 class="card-title"><strong>TINDAKAN</strong></h3>
+                <h3 class="card-title"><strong>TINDAKAN </strong></h3>
             </div>
             <div class="card-body">
                 <div class="row mt-3">
@@ -173,7 +173,9 @@
             <div class="card-body">
                 <form id="form_pendaftaran_lab">
                     <input type="hidden" name="session_id" id="session_id" value="<?= $this->session->userdata('session_id')?>">
-                    <input style="display: none;" name="norm" id="norm_pasien" />
+                    <input style="display: none;"  name="norm" id="norm_pasien" />
+                    <input style="display: none;"   id="tanggal_lahir" />
+                    <input style="display: none;"   id="jenis_kelamin" />
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
@@ -375,6 +377,8 @@
                 let jenis_identitas = obj.jenis_identitas == '0' ? 'TIDAK ADA' : obj.jenis_identitas
                 let no_identitas = obj.jenis_identitas == '0' ? '' : obj.nomor_identitas
                 $('#norm_pasien').val(obj.norm)
+                $('#jenis_kelamin').val(obj.jenis_kelamin)
+                $('#tanggal_lahir').val(obj.tanggal_lahir)
                 $('#loader_data_pasien').hide()
                 $('#data_pasien').show()
                 $('#lbl_nama_pasien').html(obj.nama_pasien)
@@ -428,7 +432,7 @@
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.nama_tindakan,
+                            text: item.nm_tindakan,
                             id: item.id_tindakan
                         }
                     })
@@ -448,17 +452,27 @@
 
     function createTindakanPendaftaran(){
         var tindakan = $('#cari_tindakan').val();
+        var tanggal_lahir = $('#tanggal_lahir').val();
+        var jenis_kelamin = $('#jenis_kelamin').val();
         var session_id = $('#session_id').val();
-
+        
         if(tindakan == "" || tindakan == null){
             errortoast('Tindakan Belum dipilih')
             $('#button_submit_input_tindakan').show('fast')
             return false
+        }
+        if($('#norm_pasien').val() == ''){
+            errortoast('Belum ada pasien yang dipilih untuk pendaftaran')
+            $('#content_div_tindakan').show()
+            $('#button_loading').hide()
+            $('#button_submit_pendaftaran').show()
+            return false
         }  
+
 				$.ajax({
 					url:"<?=base_url("pendaftaran/C_Pendaftaran/insertTindakanPendaftaran")?>",
 					method:"post",
-					data:{session_id:session_id,tindakan:tindakan},
+					data:{session_id:session_id,tindakan:tindakan,tanggal_lahir:tanggal_lahir,jenis_kelamin:jenis_kelamin},
 					success:function(data){
                         let res = JSON.parse(data)
                         if(res.code == 1){
