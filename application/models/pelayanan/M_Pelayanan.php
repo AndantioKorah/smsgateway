@@ -172,7 +172,9 @@
                 ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
 
-            
+            $umur = 2;
+            $jenis_kelamin = 2;
+            $kategori_pasien = "Anak 2 - 4 Tahun";
 
             if($cekTindakan) {
                 $this->db->select('a.biaya,a.nama_tindakan,a.nilai_normal, a.satuan')
@@ -456,8 +458,10 @@
          }
         //  $list_id = ['1','2','8'];
 
-        $this->db->select('a.*,a.id as id_tindakan ')
+        $this->db->select('a.*,a.id as id_tindakan,
+        CONCAT(b.nm_jns_tindakan, " / ", a.nama_tindakan ) as nm_tindakan ')
         ->from('m_tindakan as a')
+        ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
         ->like('nama_tindakan',$params)
         ->where_in('a.parent_id', $list_id)
         ->where('a.flag_active', 1);

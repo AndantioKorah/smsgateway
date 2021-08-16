@@ -557,7 +557,7 @@
                 ->where('a.flag_active', 1);
             $cekTindakan =  $this->db->get()->result();
           
-            $umur = 20;
+            $umur = 2;
             $jenis_kelamin = 2;
             $kategori_pasien = "Anak 2 - 4 Tahun";
 
@@ -582,7 +582,6 @@
                 $arr_tindakan = null;
                 foreach($cekTindakan as $tindakan){
                     if($umur < 13){
-                       
                         if($tindakan->flag_m_nilai_normal == 1){
                             $this->db->select('a.nilai_normal, a.jenis_kelamin,a.umur')
                             ->from('m_nilai_normal as a')

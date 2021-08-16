@@ -428,7 +428,7 @@
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.nama_tindakan,
+                            text: item.nm_tindakan,
                             id: item.id_tindakan
                         }
                     })

@@ -17,6 +17,14 @@
                 'created_by' => $this->general_library->getId()
             );
             $this->db->insert('m_jns_tindakan', $data);
+
+            $dataMtindakan = array(
+                'nama_tindaakn' => $this->input->post('nm_jns_tindakan'),
+                'id_m_jns_tindakan' => 0,
+                'created_by' => $this->general_library->getId()
+            );
+
+
         }
 
         public function deleteJenisPemeriksaan($id){
