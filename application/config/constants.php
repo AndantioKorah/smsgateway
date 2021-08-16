@@ -105,6 +105,8 @@ define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>NiKita TEAM</strong>
 define('TRANSAKSI_TABLE_VIEW', 1);
 define('USE_PRINT', '0');
 define('URI_UPLOAD', './assets/'); //local with xampp
+define('DB_BACKUP_FOLDER', 'db/backup/'); //local with xampp
+define('DB_RESTORE_FOLDER', 'db/restore/'); //local with xampp
 
 define('DEVELOPER', 'nikita');
 
