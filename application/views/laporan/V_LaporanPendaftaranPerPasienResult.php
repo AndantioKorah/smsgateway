@@ -28,7 +28,7 @@
                         <td class="text-center"><?=formatDate($rs['tanggal_pendaftaran'])?></td>
                         <td class="text-center"><?=$rs['nomor_pendaftaran']?></td>
                         <td class="text-center"><?=formatCurrency($rs['total_tagihan'])?></td>
-                        <td class="text-center"><?=$rs['status_tagihan']?></td>
+                        <td class="text-center"><?=$rs['flag_active'] == 0 ? 'Dihapus' : $rs['status_tagihan']?></td>
                     </tr>
                 <?php } ?>
                 </tbody>

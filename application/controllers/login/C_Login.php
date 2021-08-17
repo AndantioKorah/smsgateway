@@ -10,12 +10,13 @@ class C_Login extends CI_Controller
     }
 
     public function login(){
-        $userLoggedIn = $this->session->userdata('user_logged_in');
-        if($userLoggedIn){
-            redirect(base_url($this->session->userdata('landing_page')));
-        } else {
+        // $userLoggedIn = $this->session->userdata('user_logged_in');
+        // if($userLoggedIn){
+        //     redirect(base_url($this->session->userdata('landing_page')));
+        // } else {
+            $this->session->set_userdata(['user_logged_in' => null, 'test' => null, 'params' => null]);
             $this->load->view('login/V_Login', null);
-        }
+        // }
     }
 
     public function logout(){
@@ -26,6 +27,9 @@ class C_Login extends CI_Controller
     }
 
     public function welcomePage(){
+        if(!$this->general_library->isNotMenu()){
+            redirect('logout');
+        };
         render('login/V_Welcome', '', '', null);
     }
 

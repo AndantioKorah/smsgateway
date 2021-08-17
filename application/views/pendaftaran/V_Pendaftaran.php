@@ -3,6 +3,22 @@
         font-weight: bold;
         font-size: 15px;
     }
+
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+        color: white !important;
+        background-color: #001f3f !important;
+        border-color: #001f3f #001f3f #fff;
+        font-weight: bold !important;
+        height: 38px;
+    }
+
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
+        color: #001f3f !important;
+        background-color: #fff !important;
+        border-color: #dde2e6 #dde2e6 #dde2e6;
+        font-weight: bold !important;
+        height: 38px;
+    }
 </style>
 
 <div class="row">
@@ -146,96 +162,101 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-default">
-            <div class="card-header" style="height: 50px;">
-                <h3 class="card-title"><strong>TINDAKAN </strong></h3>
-            </div>
-            <div class="card-body">
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <select class="form-control" id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
-                        <input id="button_submit_input_tindakan" type="button" class="btn btn-navy btn-block mt-2" onclick="createTindakanPendaftaran()" value="Simpan">
-                    </div>
-                    <div class="col-12 mt-3">
-                        <div id="content_div_tindakan">
+    <div class="col-md-8">
+        <form id="form_pendaftaran_lab">
+            <div class="card card-default">
+                <div class="card-header" style="height: 50px;">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a style="border-left: 1px solid #dde2e6;" data-toggle="tab" class="nav-link active" href="#data_pendaftaran_tab"><span class="text_tab">DATA PENDAFTARAN</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a data-toggle="tab" class="nav-link" href="#data_tindakan_tab"><span class="text_tab">DATA TINDAKAN</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" name="session_id" id="session_id" value="<?= $this->session->userdata('session_id')?>">
+                    <input style="display: none;" name="norm" id="norm_pasien" />
+                    <input style="display: none;" id="tanggal_lahir" />
+                    <input style="display: none;" id="jenis_kelamin" />
+                    <div class="tab-content">
+                        <div id="data_pendaftaran_tab" class="tab-pane active">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Dokter Pengirim</label>
+                                            <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
+                                                <option value="0">Atas Permintaan Sendiri</option>
+                                                <?php foreach($dokter as $d){ ?>
+                                                    <option value="<?=$d['id'].';'.$d['nama_dokter'].';'.$d['alamat'].';'.$d['nomor_telepon']?>"><?=$d['nama_dokter']?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="data_dokter_pengirim" style="display: none;">
+                                        <div class="col-md-12">
+                                            <label>Alamat</label>
+                                            <input class="form-control form-control-sm" id="alamat_dokter_pengirim" name="alamat_dokter_pengirim" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>No. Telepon</label>
+                                            <input class="form-control form-control-sm" id="nomor_telepon_dokter_pengirim" name="nomor_telepon_dokter_pengirim" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Tanggal Pendaftaran</label>
+                                            <input readonly class="form-control form-control-sm datetimepickermaxtodaythis realdatetimethis" name="tanggal_pendaftaran" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Cara Bayar</label>
+                                            <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" name="cara_bayar">
+                                                <?php foreach($cara_bayar_detail as $cbd){ ?>
+                                                    <option <?=$cbd['id'] == 1 ? 'selected' : ''?> value="<?=$cbd['id'].';'.$cbd['nama_cara_bayar_detail']?>"><?=$cbd['nama_cara_bayar_detail']?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Dokter Penanggung Jawab</label>
+                                            <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" name="dpjp">
+                                                <?php foreach($dokter as $d){ ?>
+                                                    <option <?=$d['id'] == 1 ? 'selected' : ''?> value="<?=$d['id'].';'.$d['nama_dokter']?>"><?=$d['nama_dokter']?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="data_tindakan_tab" class="tab-pane">
+                            <div class="row">
+                                <div class="col-12">
+                                    <select class="form-control" style="width: 100%;" id="cari_tindakan" type='text' placeholder="Cari Tindakan...">Cari Tindakan...</select>
+                                    <input id="button_submit_input_tindakan" type="button" class="btn btn-navy btn-block mt-2" onclick="createTindakanPendaftaran()" value="Simpan">
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div id="content_div_tindakan">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-5">
-        <div class="card card-default">
-            <div class="card-header" style="height: 50px;">
-                <h3 class="card-title"><strong>PENDAFTARAN LAB</strong></h3>
-            </div>
-            <div class="card-body">
-                <form id="form_pendaftaran_lab">
-                    <input type="hidden" name="session_id" id="session_id" value="<?= $this->session->userdata('session_id')?>">
-                    <input style="display: none;"  name="norm" id="norm_pasien" />
-                    <input style="display: none;"   id="tanggal_lahir" />
-                    <input style="display: none;"   id="jenis_kelamin" />
+                <div class="card-footer">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>Dokter Pengirim</label>
-                                    <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" id="dokter_pengirim" name="dokter_pengirim">
-                                        <option value="0">Atas Permintaan Sendiri</option>
-                                        <?php foreach($dokter as $d){ ?>
-                                            <option value="<?=$d['id'].';'.$d['nama_dokter'].';'.$d['alamat'].';'.$d['nomor_telepon']?>"><?=$d['nama_dokter']?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" id="data_dokter_pengirim" style="display: none;">
-                                <div class="col-md-12">
-                                    <label>Alamat</label>
-                                    <input class="form-control form-control-sm" id="alamat_dokter_pengirim" name="alamat_dokter_pengirim" />
-                                </div>
-                                <div class="col-md-12">
-                                    <label>No. Telepon</label>
-                                    <input class="form-control form-control-sm" id="nomor_telepon_dokter_pengirim" name="nomor_telepon_dokter_pengirim" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>Tanggal Pendaftaran</label>
-                                    <input readonly class="form-control form-control-sm datetimepickermaxtodaythis realdatetimethis" name="tanggal_pendaftaran" />
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Cara Bayar</label>
-                                    <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" name="cara_bayar">
-                                        <?php foreach($cara_bayar_detail as $cbd){ ?>
-                                            <option <?=$cbd['id'] == 1 ? 'selected' : ''?> value="<?=$cbd['id'].';'.$cbd['nama_cara_bayar_detail']?>"><?=$cbd['nama_cara_bayar_detail']?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Dokter Penanggung Jawab</label>
-                                    <select class="form-control form-control-sm select2_this select2-navy" data-dropdown-css-class="select2-navy" name="dpjp">
-                                        <?php foreach($dokter as $d){ ?>
-                                            <option <?=$d['id'] == 1 ? 'selected' : ''?> value="<?=$d['id'].';'.$d['nama_dokter']?>"><?=$d['nama_dokter']?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
                             <button id="button_submit_pendaftaran" type="submit" accesskey="b" class="btn btn-navy btn-block"><u>B</u>uat Pendaftaran</button>
                             <button disabled id="button_loading" style="display:none;" class="btn btn-navy btn-block"><i class="fa fa-spin fa-spinner"></i> Membuat Pendaftaran</button>
                         </div>
-                    </div>
-                </form>
+                    </div>                                
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 

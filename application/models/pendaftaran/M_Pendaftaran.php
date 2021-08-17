@@ -435,10 +435,10 @@
                 $res['code'] = 1;
                 $res['message'] = 'Terjadi Kesalahan';
                 $res['data'] = null;
-                $this->general_library->countTagihan($last_id_pendaftaran);
             } else {
                 $this->db->trans_commit();
                 $res['data'] = $data_pendaftaran;
+                $this->general_library->countTagihan($last_id_pendaftaran);
             }
 
             return $res;

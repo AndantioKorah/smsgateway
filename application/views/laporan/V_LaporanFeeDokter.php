@@ -13,8 +13,7 @@
                         </div>
                         <div class="col-6">
                             <label>Pilih Dokter</label>
-                            <Select class="form-control select2_this select2-navy" autocomplete="off" name="dokter" id="dokter" required>
-                        <option value="">---Pilih Dokter---</option>  
+                            <Select class="form-control select2_this select2-navy form-control-sm" autocomplete="off" name="dokter" id="dokter" required>
                         <option value="0">Semua</option>   
                             <?php foreach($dokter as $d) { ?>
                                 <option value="<?php echo $d['id'];?>"><?php echo $d['nama_dokter'];?></option>

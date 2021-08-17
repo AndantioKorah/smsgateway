@@ -102,7 +102,9 @@
     <?php if($this->session->flashdata('message')){ ?>
       $('#error_div').show()
       $('#error_div').append('<label>'+'<?=$this->session->flashdata('message')?>'+'</label>')
-    <?php } ?>
+    <?php
+      $this->session->set_flashdata('message', null);
+    } ?>
   })
 
   function errortoast(message = '', timertoast = 3000){
