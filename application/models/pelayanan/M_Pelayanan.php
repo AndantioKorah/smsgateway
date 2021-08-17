@@ -560,6 +560,7 @@
         ->from('m_tindakan as a')
         ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
         ->like('nama_tindakan',$params)
+        ->or_like('b.nm_jns_tindakan',$params)
         ->where_in('a.parent_id', $list_id)
         ->where('a.flag_active', 1);
     return $this->db->get()->result();
@@ -699,8 +700,11 @@
         $result = null;
         $i = 0;
         foreach($data as $d){
+           
             $result[$i] = $d;
             $result[$i]['page'] = 1;
+           
+
             if($d['tindakan']){
                 unset($result[$i]['tindakan']);
                 $i++;
@@ -721,18 +725,27 @@
                 
             }
         }
-
+      
         $i = 0;
         $last_parent_index = 0;
         $last_jns_index = 0;
         $current_page = 0;
         $final_result = null;
         foreach($result as $rs){
+
             if(isset($result[$i]['nm_jns_tindakan'])){
                 $last_jns_index = $i;
+                if($result[$i]['id'] == 27){
+                    unset($result[$i]);
+                }
             }
+           
             if(isset($result[$i]['id_t_pendaftaran']) && $result[$i]['parent_id_tindakan'] == '0'){
                 $last_parent_index = $i;
+                if($result[$i]['id_m_jns_tindakan'] == 27){
+                    unset($result[$i]);
+                }
+               
             }
             //hitung sekarang page berapa
             $result[$i]['page'] = intval(($i / ROW_PER_PAGE_CETAK_TINDAKAN) + 1);
@@ -760,6 +773,8 @@
                 }
             }
             $i++;
+            
+           
         }
         return [$final_result, $current_page];
     }

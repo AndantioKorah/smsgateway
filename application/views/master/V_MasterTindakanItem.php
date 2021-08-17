@@ -17,7 +17,7 @@
                         <td align="center"><?=$no++;?></td>
                         <td><?=$rs['nm_jns_tindakan'];?></td>
                         <td><?=$rs['nama_tindakan'];?></td>
-                        <td><?=$rs['biaya'];?></td>
+                        <td><?= formatCurrency($rs['biaya']);?></td>
                         <td><?=$rs['nilai_normal'];?></td>
                         <td><?=$rs['satuan'];?></td>
                         <td><?=$rs['nama_tindakan_parent'];?></td>

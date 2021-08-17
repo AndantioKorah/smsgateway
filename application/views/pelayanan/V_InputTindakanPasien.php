@@ -58,7 +58,7 @@
                             if($id_tagihan['0']->id_m_status_tagihan == 2) $styleTagihan="style='display:none;'"; else $styleTagihan="style=''";  
                             foreach($rt['tindakan'] as $dt){   
                             // $list_id = array(7,8,31); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { $style="style='display:none;'"; } else {$style="style=''";}
-                            if ($dt['nilai_normal'] == null || $dt['nilai_normal'] == "" ) { $style="style='display:none;'"; } else {$style="style=''";}  
+                            if ($dt['nilai_normal'] == "" ) { $style="style='display:none;'"; } else {$style="style=''";}  
                           ;?>
                         <tr  style="cursor: pointer;">
                             <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>

@@ -87,20 +87,33 @@
               } else {
               $parent_id = $this->input->post('parent');
               }
-             
+        
               if($this->input->post('biaya') == 0 || $this->input->post('biaya') == ""){
                 $biaya = null;
                 } else {
-                $biaya = $this->input->post('parent');
-                }
+                $biaya = $this->input->post('biaya');
+                }  
+                
+                
+              if($this->input->post('nilai_normal') == ""){
+                $nilai_normal = null;
+                } else {
+                $nilai_normal = $this->input->post('nilai_normal');
+                }   
+                
+                if($this->input->post('satuan') == ""){
+                $satuan = null;
+                } else {
+                $satuan = $this->input->post('satuan');
+                }  
                
 
             $data = array(
                 'id_m_jns_tindakan' => $this->input->post('id_m_jns_tindakan'),
                 'nama_tindakan' => $this->input->post('nama_tindakan'),
                 'biaya' => $biaya,
-                'nilai_normal' => $this->input->post('nilai_normal'),
-                'satuan' => $this->input->post('satuan'),
+                'nilai_normal' => $nilai_normal,
+                'satuan' => $satuan,
                 'parent_id' => $parent_id,
                 'created_by' => $this->general_library->getId()
             );
