@@ -707,16 +707,18 @@
                 foreach($d['tindakan'] as $tind){
                     $result[$i] = $tind;
                     $result[$i]['page'] = 1;
+                    $i++;
                     if(isset($tind['detail_tindakan'])){
                         unset($result[$i]['detail_tindakan']);
-                        $i++;
+                        // $i++;
                         foreach($tind['detail_tindakan'] as $dtin){
                             $result[$i] = $dtin;
                             $result[$i]['page'] = 1;
                             $i++;
-                        }
+                        } 
                     }
                 }
+                
             }
         }
 

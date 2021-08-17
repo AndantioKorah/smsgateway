@@ -58,7 +58,7 @@
                     $data['page_count'] = $page_count;  
                     $this->load->view('cetakan/V_HeaderCetakan', $data);  
                 ?>
-                <table class="content_rincian_tagihan">
+                <table class="content_rincian_tagihan" >
                     <thead>
                         <tr>
                             <th class="thead_rincian_tindakan_cetakan">JENIS PEMERIKSAAN</th>
@@ -83,6 +83,9 @@
                             } else if(isset($rt['id_t_pendaftaran']) && $rt['parent_id_tindakan'] == '0'){
                                 $jenis_pemeriksaan = $rt['nama_tindakan'];
                                 $class_tr = 'td_tindakan';
+                                $nilai_normal = $rt['nilai_normal'];
+                                $satuan = $rt['satuan'];
+                                $catatan = $rt['keterangan'];
                             } else if(isset($rt['id_t_pendaftaran']) && $rt['parent_id_tindakan'] != '0'){
                                 $jenis_pemeriksaan = $rt['nama_tindakan'];
                                 $hasil = $rt['hasil'];

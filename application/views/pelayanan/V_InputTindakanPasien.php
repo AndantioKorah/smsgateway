@@ -67,7 +67,7 @@
                             <input <?=$style;?> name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text' value="<?php if($dt['hasil'] == null) echo ""; else echo $dt['hasil'];?>">
                             <input type="hidden" name="id_t_tindakan[]"  value="<?=$dt['id']?>" />
                             </td>
-                            <td ><input <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
+                            <td ><input autocomplete="off" <?=$style;?> name="nilai_normal[]" class="col-12" type='text' value="<?=$dt['nilai_normal']?>" ></td>
                             <td ><input <?=$style;?> name="satuan[]" class="col-12" type='text' value="<?=$dt['satuan']?>" readonly></td>
                             <td ><input <?=$style;?> name="keterangan[]" class="col-12" type='text' value="<?=$dt['keterangan']?>" ></td>
                             <td >
@@ -82,7 +82,7 @@
                             <td> <input name="hasil[]"   autocomplete="off" class="col-12 hsl" type='text'value="<?php if($d['hasil'] == null) echo ""; else echo $d['hasil'];?>" ></td>
                               <input type="hidden" name="id_t_tindakan[]"  value="<?=$d['id']?>" />
                             </td>
-                            <td><input name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>
+                            <td><input autocomplete="off" name="nilai_normal[]" class="col-12" type='text' value="<?=$d['nilai_normal']?>" ></td>
                             <td><input name="satuan[]" class="col-12" type='text' value="<?=$d['satuan']?>" readonly></td>
                             <td ><input name="keterangan[]" class="col-12" type='text' value="<?=$d['keterangan']?>" ></td>
                             <td></td>
