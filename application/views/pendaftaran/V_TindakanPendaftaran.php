@@ -5,10 +5,12 @@
     <thead class="thead_rincian_tindakan">
         <th style="width: 5%;" class="text-center" >No</th>
         <th style="width: 25%;" >Tindakan</th>
-        <th style="width: 5%;" class="text-left"></th>
+        <th style="width: 5%;" class="text-center">Biaya</th>
+        <th style="width: 5%;" class="text-center">Pilihan</th>
     </thead>
     <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
         <?php if(isset($rincian_tindakan)){ 
+            $total_biaya = 0;
             $no=1; 
             foreach($rincian_tindakan as $rt){ 
             ?>
@@ -16,16 +18,20 @@
                 <td class="text-center"><b style="font-size: 14px;"><?=$no;?></b></td>
                 <td><b style="font-size: 14px;"><?=strtoupper($rt['nm_jns_tindakan'])?></b></td>
                 <td class="text-center"></td>
+                <td class="text-center"></td>
 
                 <?php 
                 
-                if(isset($rt['tindakan'])){  
+                if(isset($rt['tindakan'])){
                     $nmr=1;
-                    foreach($rt['tindakan'] as $dt){?>
+                    foreach($rt['tindakan'] as $dt){
+                    $total_biaya += $dt['biaya'];
+                    ?>
                 <tr style="cursor: pointer;" onclick="showTrDetailTindakan('<?=$no.$nmr?>')">
                     <td class="text-center" style="font-size: 14px;"> <?=$no.'.'.$nmr;?> </td>
                     <td><b style="font-size: 14px;"><?=$dt['nama_tindakan']?></b></td>
-                    <td><input  type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>
+                    <td class="text-center"><b><?=formatCurrency($dt['biaya'])?></b></td>
+                    <td class="text-center"><input type="button" title="Hapus Tindakan"  class="btn btn-danger btn-sm tombol_hapus_tindakan" data-idtindakan="<?=$dt['id']?>"  value="Hapus"></td>
                 </tr>
             
                 <?php if(isset($dt['detail_tindakan'])){ foreach($dt['detail_tindakan'] as $d) { ?>
@@ -33,13 +39,19 @@
                     <td></td>
                     <td style="font-size: 14px;"><?=$d['nama_tindakan']?></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <?php } } $nmr++; } } ?>
                 
             </tr>
             <?php $no++; ?> 
-        
-        <?php } } else { ?>
+        <?php } ?>
+            <tr>
+                <td colspan=2 class="text-right"><b style="font-size: 16px;">TOTAL BIAYA :</b></td>
+                <td colspan=1 class="text-center"><b style="font-size: 16px;"><?=formatCurrency($total_biaya)?></b></td>
+                <td></td>
+            </tr>
+        <?php } else { ?>
             <tr>
                 <td colspan="4">BELUM ADA DATA</td>
             </tr>
