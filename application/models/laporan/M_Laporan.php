@@ -63,9 +63,7 @@
             // dd($data['dokter']);
 
             if($data['dokter'] != "0"){
-                $result = $this->db->select('`a`.*, `b`.`nama_dokter`, `c`.`total_tagihan`, `c`.`status_tagihan`, b.fee,
-                (SELECT sum(total_tagihan) FROM t_tagihan JOIN t_pendaftaran on t_tagihan.id_t_pendaftaran = t_pendaftaran.id 
-                WHERE t_pendaftaran.id_m_dokter_pengirim = b.id LIMIT 1) as total')
+                $result = $this->db->select('`a`.*, `b`.`nama_dokter`, `c`.`total_tagihan`,  sum(c.total_tagihan)as total, `c`.`status_tagihan`, b.fee')
                                 ->from('t_pendaftaran a')
                                 ->join('m_dokter b', 'a.id_m_dokter_pengirim = b.id')
                                 ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')
@@ -78,9 +76,7 @@
                                 ->order_by('b.nama_dokter', 'asc')
                                 ->get()->result_array();
             } else {
-                $result = $this->db->select('`a`.*, `b`.`nama_dokter`, `c`.`total_tagihan`, `c`.`status_tagihan`, b.fee,
-                (SELECT sum(total_tagihan) FROM t_tagihan JOIN t_pendaftaran on t_tagihan.id_t_pendaftaran = t_pendaftaran.id 
-                WHERE t_pendaftaran.id_m_dokter_pengirim = b.id LIMIT 1) as total')
+                $result = $this->db->select('`a`.*, `b`.`nama_dokter`, `c`.`total_tagihan`, sum(c.total_tagihan)as total, `c`.`status_tagihan`, b.fee')
                                 ->from('t_pendaftaran a')
                                 ->join('m_dokter b', 'a.id_m_dokter_pengirim = b.id')
                                 ->join('t_tagihan c', 'a.id = c.id_t_pendaftaran')

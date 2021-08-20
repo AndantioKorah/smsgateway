@@ -315,6 +315,16 @@
             $('#button_submit_pendaftaran').show()
             return false
         }
+     
+
+        if($('#cari_tindakan').val() == null){
+            errortoast('Belum ada Tindakan yang dipilih')
+            $('#content_div_tindakan').show()
+            $('#button_loading').hide()
+            $('#button_submit_pendaftaran').show()
+            return false
+        }
+
         $.ajax({
             url: '<?=base_url("pendaftaran/C_Pendaftaran/pendaftaranLab")?>',
             method: 'post',

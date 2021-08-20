@@ -52,7 +52,6 @@ class C_Master extends CI_Controller
 
     public function editMasterTindakan($id_tindakan){
         $data['tindakan'] = $this->master->getMasterTindakanEdit($id_tindakan);
-  
         $this->load->view('master/V_EditMasterTindakan', $data);
     }
 
@@ -86,6 +85,46 @@ class C_Master extends CI_Controller
     public function editMasterDokter(){
         echo json_encode($this->master->editMasterDokter());
     }
+
+    public function nilaiNormal(){ 
+        render('master/V_MasterNilaiNormal', 'master', 'tindakan', null);
+    }
+
+    public function loadMasterNilaiNormal(){
+        $data['result'] = $this->master->getMasterNilaiNormal();
+        $this->load->view('master/V_MasterNilaiNormalItem', $data);
+    }
+
+    public function loadEditMasterNilaiNormal($id){
+        $data['n_normal'] = $this->master->getMasterNilaiNormalEdit($id);
+        $this->load->view('master/V_EditMasterDokter', $data);
+    }
+
+    public function select2Tindakan()
+    {
+        echo json_encode($this->master->select2Tindakan());
+    }
+
+    public function createMasterNilaiNormal(){
+        $this->master->createMasterNilaiNormal();
+    }
+
+    
+    public function editMasterNilaiNormal($id){
+        $data['nilai_normal'] = $this->master->getMasterNilaiNormalEdit($id);
+        $this->load->view('master/V_EditMasterNilaiNormal', $data);
+    }
+
+    public function editMasterNilaiNormalSubmit(){
+        echo json_encode($this->master->editMasterNilaiNormalSubmit());
+    }
+
+    public function deleteMasterNilaiNormal($id){
+        echo json_encode($this->master->deleteMasterNilaiNormal($id));
+    }
+
+
+    
 
 
 

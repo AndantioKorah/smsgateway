@@ -27,7 +27,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label class="bmd-label-floating">Tarif</label>
-                        <input type="number" class="form-control" autocomplete="off" name="biaya" id="biaya" value=""/>
+                        <input type="number" class="form-control" autocomplete="off" name="biaya" id="biaya"/>
                     </div>
                 </div>
 
