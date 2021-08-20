@@ -299,7 +299,7 @@
 <?php } else { ?>
     <div class="row mt-3">
         <div class="col-12 text-left">
-            <button class="btn btn-sm btn-navy"><i class="fa fa-print"></i> Cetak Kwitansi Pembayaran</button>
+            <button class="btn btn-sm btn-navy" onclick="cetakKwitansiPembayaran()"><i class="fa fa-print"></i> Cetak Kwitansi Pembayaran</button>
             <hr>
         </div>
         <div class="col-6 border-right">
@@ -363,6 +363,21 @@
         </div>
     </div>
     <script>
+        function cetakKwitansiPembayaran() {
+            $("#print_div").load('<?= base_url('pembayaran/C_Pembayaran/cetakKwitansiPembayaran/'.$pembayaran['id_t_pendaftaran'])?>',
+                function () {
+                    printSpace('print_div');
+                });
+        }
+
+        function printSpace(elementId) {
+            var isi = document.getElementById(elementId).innerHTML;
+            window.frames["print_frame"].document.title = document.title;
+            window.frames["print_frame"].document.body.innerHTML = isi;
+            window.frames["print_frame"].window.focus();
+            window.frames["print_frame"].window.print();
+        }
+
         $('#confirmation_hapus_pembayaran').on('input', function(){
             if($(this).val() == 'hapus pembayaran'){
                 $('#btn_hapus_pembayaran').prop('disabled', false)
