@@ -10,26 +10,31 @@
                 /* width: 100%; */
             }
             .title_kwitansi{
+                font-family: Verdana !important;
                 text-decoration: underline;
                 font-weight: bold;
             }
             .title_nomor_pembayaran{
-                
+                font-family: Verdana !important;
             }
             .table_content_kwitansi{
+                font-family: Verdana !important;
                 /* border: 1px solid black; */
                 margin-top: 30px;
                 width: 100%;
                 font-size: 12px; 
             }
             .parameter_content{
+                font-family: Verdana !important;
                 font-weight: bold;
                 font-size: 14px;
             }
             .table_content_kwitansi td{
+                font-family: Verdana !important;
                 vertical-align: top;
             }
             .footer_kwitansi{
+                font-family: Verdana !important;
                 font-size: 14px;
             }
         </style>
@@ -78,12 +83,13 @@
                     <tr>
                         <td>TERBILANG</td>
                         <td>:</td>
-                        <td class="parameter_content"><?=terbilang($pembayaran['jumlah_pembayaran'])?></td>
+                        <td class="parameter_content"><?=strtoupper(terbilang($pembayaran['jumlah_pembayaran']))?></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
-                        <td style="text-align: center; vertical-align: bottom; height: 80px;">
+                        <td style="text-align: center; vertical-align: bottom;">
+                        <br><br><br>
                             <span class="footer_kwitansi">Manado, <?=date('d/m/Y')?></span><br><br><br><br><br>
                             <span class="footer_kwitansi"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></span>
                         </td>
