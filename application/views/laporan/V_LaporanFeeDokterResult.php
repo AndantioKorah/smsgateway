@@ -15,6 +15,8 @@
                 <thead>
                     <th class="text-center">NO</th>
                     <th class="text-center">NAMA DOKTER</th>
+                    <th class="text-center">TOTAL</th>
+                    <th class="text-center">%</th>
                     <th class="text-center">FEE</th>
                 </thead>
                 <tbody>
@@ -22,6 +24,8 @@
                     <tr>
                         <td class="text-center"><?=$no++;?></td>
                         <td class="text-center"><?=$rs['nama_dokter']?></td>
+                        <td class="text-center"><?=formatCurrency($rs['total'])?></td>
+                        <td class="text-center"><?=$rs['fee']?>%</td>
                         <td class="text-center"><?=formatCurrency($rs['total'] * $rs['fee'] / 100)?></td>
                 
                     </tr>
