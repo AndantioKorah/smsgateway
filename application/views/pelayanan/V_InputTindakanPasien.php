@@ -38,7 +38,7 @@
             <tbody class="tbody_rincian_tindakan" id="daftar_tindakan">
                 <?php if(isset($rincian_tindakan)){ 
                     $no=1; 
-                  
+                    
                     foreach($rincian_tindakan as $rt){ 
                     ?>
                     <tr style="cursor: pointer;">
@@ -54,11 +54,17 @@
                       
                         if(isset($rt['tindakan'])){  
                             $nmr=1;
-                            $styleTagihan = null;
+                            $styleTagihan = null;                       
+                        
                             if($id_tagihan['0']->id_m_status_tagihan == 2) $styleTagihan="style='display:none;'"; else $styleTagihan="style=''";  
-                            foreach($rt['tindakan'] as $dt){   
-                            // $list_id = array(7,8,31); if (in_array($dt['id_m_nm_tindakan'], $list_id)) { $style="style='display:none;'"; } else {$style="style=''";}
-                            if ($dt['nilai_normal'] == "" ) { $style="style='display:none;'"; } else {$style="style=''";}  
+                            foreach($rt['tindakan'] as $dt){  
+                                if(isset($dt['detail_tindakan'])){
+                                    $flagHasil=1;
+                                } else{
+                                    $flagHasil=0;
+                                }
+                            // if ($dt['nilai_normal'] == "" ) { $style="style='display:none;'"; } else {$style="style=''";}  
+                            if ($flagHasil == 1 ) { $style="style='display:none;'"; } else {$style="style=''";}  
                           ;?>
                         <tr  style="cursor: pointer;">
                             <td  class="text-center"> <?=$no.'.'.$nmr;?> </td>
@@ -131,7 +137,29 @@ $(function(){
     })
     $('.data_table_this').DataTable({
                     responsive: false
-     });
+    });
+
+    $('.hsl').on('keyup', function(){
+                $(this).val(formatRupiah($(this).val()))
+            })
+
+    function formatRupiah(angka, prefix = "Rp ") {
+                var number_string = angka.replace(/[^,\d]/g, "").toString(),
+                    split = number_string.split(","),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? "." : "";
+                    rupiah += separator + ribuan.join(".");
+                }
+
+                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+                return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+            }
+
 
 
 

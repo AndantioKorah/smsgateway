@@ -283,6 +283,146 @@
             return $res;
         }
 
+
+        public function select2Tindakan(){
+            $params = $this->input->post('search_param'); 
+    
+            
+  
+            $this->db->select('a.*,a.id as id_tindakan,
+            (select nama_tindakan from m_tindakan where id = a.parent_id) as parent,
+            CONCAT(b.nm_jns_tindakan, " / ", a.nama_tindakan ) as nm_tindakan ')
+            ->from('m_tindakan as a')
+            ->join('m_jns_tindakan as b', 'b.id = a.id_m_jns_tindakan')
+            ->like('nama_tindakan',$params)
+            ->where('a.flag_active', 1);
+        return $this->db->get()->result();
+        }
+
+        public function getMasterNilaiNormal()
+        {
+            $this->db->select('a.*, b.nama_tindakan, a.id as id_m_nilai_normal,
+            (select nama_tindakan from m_tindakan where id = b.parent_id) as parent')
+            ->join('m_tindakan as b', 'b.id = a.id_m_nm_tindakan')
+            ->where('a.flag_active', 1)
+            ->from('m_nilai_normal as a');
+            return $this->db->get()->result_array(); 
+        }
+
+
+        public function createMasterNilaiNormal(){
+
+              if($this->input->post('jenis_kelamin') == ""){
+                $jenis_kelamin = null;
+                } else {
+                $jenis_kelamin = $this->input->post('jenis_kelamin');
+                }  
+                
+                
+              if($this->input->post('umur') == ""){
+                $umur = null;
+                } else {
+                $umur = $this->input->post('umur');
+                }   
+                
+            $data = array(
+                'id_m_nm_tindakan' => $this->input->post('tindakan'),
+                'jenis_kelamin' => $jenis_kelamin,
+                'umur' => $umur,
+                'nilai_normal' => $this->input->post('nilai_normal'),
+                'created_by' => $this->general_library->getId()
+            );
+            $this->db->insert('m_nilai_normal', $data);
+
+            $this->db->where('id', $this->input->post('tindakan'))
+            ->update('m_tindakan',
+            [
+                'flag_m_nilai_normal' => 1,
+                'updated_by' => $this->general_library->getId()
+            ]); 
+        }
+
+
+        public function getMasterNilaiNormalEdit($id){
+            return $this->db->select('a.*, b.nama_tindakan, a.id as id_m_nilai_normal,
+            (select nama_tindakan from m_tindakan where id = b.parent_id) as parent')
+                            ->from('m_nilai_normal a')
+                            ->join('m_tindakan b', 'a.id_m_nm_tindakan = b.id')
+                            ->where('a.id', $id)
+                            ->where('a.flag_active', 1)
+                            ->where('b.flag_active', 1)
+                            ->limit(1)
+                            ->get()->row_array();
+        }
+
+        public function editMasterNilaiNormalSubmit(){
+            $res['code'] = 0;
+            $res['message'] = 'ok';
+            $res['data'] = null;
+
+            $datapost = $this->input->post();
+            
+            $this->db->trans_begin();
+            $id_m_nilai_normal = $datapost['id_m_nilai_normal'];
+            
+            if($datapost["nilai_normal"] == ""){
+                $data["umur"] = null; 
+            } else {
+                $data["nilai_normal"] = $datapost["nilai_normal"]; 
+            }
+
+            if($datapost["jenis_kelamin"] == ""){
+                $data["jenis_kelamin"] = null;  
+            } else {
+                $data["jenis_kelamin"] = $datapost["jenis_kelamin"];   
+            }
+
+            if($datapost["umur"] == ""){
+                $data["umur"] = null;
+            } else {
+                $data["umur"] = $datapost["umur"]; 
+            }
+        
+            $this->db->where('id', $id_m_nilai_normal)
+                    ->update('m_nilai_normal', $data);
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+                $res['code'] = 1;
+                $res['message'] = 'Terjadi Kesalahan';
+                $res['data'] = null;
+            } else {
+                $this->db->trans_commit();
+            }
+
+            return $res;
+        }
+
+        public function deleteMasterNilaiNormal($id){
+            $rs['code'] = 0;
+            $rs['message'] = 'OK';
+
+            $this->db->trans_begin();
+            $this->db->where('id', $id)
+                        ->update('m_nilai_normal',
+                        [
+                            'flag_active' => 0,
+                            'updated_by' => $this->general_library->getId()
+                        ]); 
+            
+
+            if($this->db->trans_status() == FALSE){
+                $this->db->trans_rollback();
+                $rs['code'] = 1;
+                $rs['message'] = 'Terjadi Kesalahan';
+            } else {
+                $this->db->trans_commit();
+            }
+
+            return $rs;
+        }
+
+
     
 	}
 ?>

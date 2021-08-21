@@ -275,7 +275,18 @@
                             ->where('a.kategori_pasien', null)
                             ->where('a.flag_active', 1);
                             $masterNilaiNormal =  $this->db->get()->result();
-                            $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
+                            if($masterNilaiNormal){
+                                $nilai_normal = $masterNilaiNormal[0]->nilai_normal;
+                            } else {
+                                $this->db->select('a.nilai_normal')
+                            ->from('m_nilai_normal as a')
+                            ->where('a.id_m_nm_tindakan', $tindakan->id)
+                            ->where('a.kategori_pasien', null)
+                            ->where('a.flag_active', 1);
+                            $masterNilaiNormalNonJK =  $this->db->get()->result();
+                            $nilai_normal = $masterNilaiNormalNonJK[0]->nilai_normal;
+                            }
+                           
                         } else {
                             $nilai_normal = $tindakan->nilai_normal;
                         }
