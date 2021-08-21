@@ -82,6 +82,7 @@
                                 $class_tr = 'td_jns_tindakan';
                             } else if(isset($rt['id_t_pendaftaran']) && $rt['parent_id_tindakan'] == '0'){
                                 $jenis_pemeriksaan = $rt['nama_tindakan'];
+                                $hasil = $rt['hasil'];
                                 $class_tr = 'td_tindakan';
                                 $nilai_normal = $rt['nilai_normal'];
                                 $satuan = $rt['satuan'];
