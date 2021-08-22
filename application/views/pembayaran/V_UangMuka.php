@@ -169,7 +169,7 @@
 <?php } else { ?>
     <div class="row mt-3">
         <div class="col-12 text-left">
-            <button class="btn btn-sm btn-navy"><i class="fa fa-print"></i> Cetak Kwitansi Uang Muka</button>
+            <button class="btn btn-sm btn-navy" onclick="cetakKwitansiUangMuka()"><i class="fa fa-print"></i> Cetak Kwitansi Uang Muka</button>
             <hr>
         </div>
         <div class="col-6 border-right">
@@ -221,6 +221,14 @@
         </div>
     </div>
     <script>
+
+        function cetakKwitansiUangMuka() {
+            $("#print_div").load('<?= base_url('pembayaran/C_Pembayaran/cetakKwitansiUangMuka/'.$id_t_pendaftaran)?>',
+                function () {
+                    printSpace('print_div');
+                });
+        }
+
         $('#confirmation_hapus_uang_muka').on('input', function(){
             if($(this).val() == 'hapus uang muka'){
                 $('#btn_hapus_uang_muka').prop('disabled', false)
