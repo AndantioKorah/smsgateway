@@ -58,8 +58,10 @@
   <!-- /.login-logo -->
   <div class="card shadow-lg p-3 mb-5 bg-white rounded" style="opacity: 1; transition: .2s">
     <div class="card-body login-card-body">
-      <p class="login-box-msg text-navy"><strong><?=TITLES?></strong></p>
-
+      <center>
+      <img src="<?=base_url('assets/img/logo-sms-gateway-putih-hitam.png')?>" style="height: 120px; width: 290px;" />
+      <br><br>
+      </center>
       <form action="<?=base_url('login/C_Login/authenticateAdmin')?>" method="post">
         <div class="input-group mb-3">
           <input type="text" class="form-control" onclick="hideError()" name="username" placeholder="Username">

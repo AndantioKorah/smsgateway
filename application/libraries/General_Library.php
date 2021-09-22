@@ -16,12 +16,7 @@ class General_library
         $this->bios_serial_num = shell_exec('wmic bios get serialnumber 2>&1');
         date_default_timezone_set("Asia/Singapore");
         $this->nikita->load->model('general/M_General', 'm_general');
-        $this->nikita->load->model('tagihan/M_Tagihan', 'm_tagihan');
         $this->nikita->load->model('user/M_User', 'm_user');
-    }
-
-    public function countTagihan($id_pendaftaran){
-        $this->nikita->m_tagihan->countTagihan($id_pendaftaran);
     }
 
     public function getBiosSerialNum(){

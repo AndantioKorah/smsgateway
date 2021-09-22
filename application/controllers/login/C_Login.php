@@ -57,7 +57,7 @@ class C_Login extends CI_Controller
             }
 
             if(!$active_role){
-                $this->session->set_flashdata('message', 'Akun Anda belum memiliki Role. Silahkan menghubungi Supervisi.');
+                $this->session->set_flashdata('message', 'Akun Anda belum memiliki Role. Silahkan menghubungi Administrator.');
                 redirect('login');
             }
 

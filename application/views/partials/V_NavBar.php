@@ -48,7 +48,7 @@
     display: none;
   }
 </style>
-<nav class="main-header navbar navbar-expand navbar-dark navbar-navy">
+<nav class="main-header navbar navbar-expand navbar-dark navbar-gray-dark">
     <!-- <form class="form-inline ml-3">
       <div class="row">
         <div class="input-group input-group-sm div_search_bar">

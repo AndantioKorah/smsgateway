@@ -11,8 +11,8 @@
 
 <aside class="main-sidebar elevation-4 sidebar-light-navy">
   <!-- Brand Logo -->
-  <a href="<?=base_url('welcome')?>" class="brand-link navbar-navy">
-    <img src="<?=base_url('assets/img/logo-putih-biru.png')?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+  <a href="<?=base_url('welcome')?>" class="brand-link navbar-dark">
+    <img src="<?=base_url('assets/img/logo-putih-biru.png')?>" alt="SMS Gateway" class="brand-image img-circle elevation-3"
           style="opacity: .8">
     <span class="brand-text font-weight-light text-light"><?=TITLES?></span>
   </a>
