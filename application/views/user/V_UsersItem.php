@@ -5,6 +5,7 @@
                 <th class="text-center">No</th>
                 <th>Nama</th>
                 <th>Username</th>
+                <th>Nomor HP</th>
                 <th>Pilihan</th>
             </thead>
             <tbody>
@@ -13,6 +14,7 @@
                         <td align="center"><?=$no++;?></td>
                         <td><?=$rs['nama_user'];?></td>
                         <td><?=$rs['username'];?></td>
+                        <td><?=$rs['no_hp'];?></td>
                         <td>
                             <button type="button" data-toggle="modal" href="#add_role_modal" onclick="openAddRoleModal('<?=$rs['id']?>')" class="btn btn-sm btn-info"
                             data-tooltip="tooltip" title="Tambah Role"><i class="fa fa-user"></i> Role</button>

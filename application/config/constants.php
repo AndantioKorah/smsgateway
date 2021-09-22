@@ -90,7 +90,7 @@ define('DEVELOPMENT_MODE', '1');
 define('DB_HOST', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_NAME', 'db_lab');
+define('DB_NAME', 'db_smsgateway');
 
 
 define('KODE_TRANSAKSI', '01');
@@ -98,9 +98,9 @@ define('KODE_TRANSAKSI_PEMBAYARAN', '02');
 define('KODE_TRANSAKSI_UANG_MUKA', '03');
 
 define('VERSION', 'Version 1.0');
-define('TITLES', 'NiKita LAB');
+define('TITLES', 'SMS Gateway');
 define('PROGRAMMER_PHONE', '082115407812');
-define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>NiKita TEAM</strong>');
+define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>BKPSDM Manado</strong>');
 // define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>PATRA LAB</strong>');
 define('TRANSAKSI_TABLE_VIEW', 1);
 define('USE_PRINT', '0');

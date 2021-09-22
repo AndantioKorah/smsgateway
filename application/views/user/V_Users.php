@@ -11,19 +11,25 @@
                         <input required class="form-control" autocomplete="off" name="nama" id="nama"/>
                     </div>
                 </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label class="bmd-label-floating">Nomor HP</label>
+                        <input required class="form-control" autocomplete="off" name="no_hp" id="no_hp"/>
+                    </div>
+                </div>
                 <div class="col-3">
                     <div class="form-group">
                         <label class="bmd-label-floating">Username</label>
                         <input required class="form-control" autocomplete="off" name="username" id="username"/>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group">
                         <label class="bmd-label-floating">Password</label>
                         <input required class="form-control" autocomplete="off" type="password" name="password" id="password"/>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group">
                         <label class="bmd-label-floating">Konfirmasi Password</label>
                         <input required class="form-control" autocomplete="off" type="password" name="konfirmasi_password" id="konfirmasi_password"/>
@@ -127,6 +133,7 @@
                     $('#nama').val('')
                     $('#username').val('')
                     $('#password').val('')
+                    $('#no_hp').val('')
                     $('#konfirmasi_password').val('')
                 } else {
                     errortoast(resp['message'])

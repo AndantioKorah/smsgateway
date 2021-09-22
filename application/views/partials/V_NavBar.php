@@ -49,7 +49,7 @@
   }
 </style>
 <nav class="main-header navbar navbar-expand navbar-dark navbar-navy">
-    <form class="form-inline ml-3">
+    <!-- <form class="form-inline ml-3">
       <div class="row">
         <div class="input-group input-group-sm div_search_bar">
           <input id="search_navbar" style="width: 300px" autocomplete="off" class="form-control form-control-navbar" type="text" placeholder="Cari Pasien" aria-label="Search">
@@ -65,7 +65,7 @@
       </div>
       <div class="row" id="div_search_result">
       </div>
-    </form>
+    </form> -->
     <ul class="navbar-nav">
       <!-- <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
