@@ -72,7 +72,7 @@ class Nexmolib extends CI_Model{
                         "&api_secret=".$this->api_secret.
                         "&from=".$this->from.
                         "&to=".$to.
-                        "&text=".$data['isi_pesan'];
+                        "&text=".urlencode($data['isi_pesan']);
 
         // dd($data_body);
 
@@ -99,7 +99,7 @@ class Nexmolib extends CI_Model{
         }
         curl_close($session);
         
-        return ['result' => $result, 'message' => $message];
+        return ['request' => $data_body, 'response' => $result, 'message' => $message];
     }
 }
 

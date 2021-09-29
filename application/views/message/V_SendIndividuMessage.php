@@ -1,3 +1,9 @@
+<style>
+    .label_contoh_nomor{
+        font-size: 13px;
+        color: grey;
+    }
+</style>
 <div class="card card-default">
     <div class="card-header"  style="display: block;">
         <h3 class="card-title">Kirim Pesan Individu</h3>
@@ -23,14 +29,15 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group">
-                            <label class="bmd-label-floating">Nomor Tujuan</label>
+                            <label class="bmd-label-floating">Nomor Tujuan</label><br>
+                            <label class="label_contoh_nomor">(format nomor tujuan: '08xxxxxxxxxx' atau '628xxxxxxxxxx' atau '+628xxxxxxxxxx')</label>
                             <input class="form-control" autocomplete="off" name="nomor_tujuan" id="nomor_tujuan" required/>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label class="bmd-label-floating">Isi Pesan</label>
+                        <label class="bmd-label-floating">Isi Pesan</label><br>
                         <textarea rows=6 class="form-control" autocomplete="off" name="isi_pesan" id="isi_pesan" required></textarea>
                     </div>
                 </div>          
@@ -57,10 +64,15 @@
             url: '<?=base_url("message/C_Message/sendIndividuMessage")?>',
             method: 'post',
             data: $(this).serialize(),
-            success: function(){
-                // successtoast('Pesan sedang dikirim...')
-                // $('#nomor_tujuan').val('')
-                // $('#isi_pesan').val('')
+            success: function(data){
+                let rs = JSON.parse(data)
+                if(rs.code != '0'){
+                    errortoast(rs.message)
+                } else{
+                    successtoast('Pesan terkirim')
+                    $('#nomor_tujuan').val('')
+                    $('#isi_pesan').val('')
+                }
             }, error: function(e){
                 errortoast('Terjadi Kesalahan')
             }
