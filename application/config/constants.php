@@ -98,7 +98,8 @@ define('KODE_TRANSAKSI_PEMBAYARAN', '02');
 define('KODE_TRANSAKSI_UANG_MUKA', '03');
 
 define('VERSION', 'Version 1.0');
-define('TITLES', 'SMS Gateway');
+define('TITLES', 'SMS Gateway | BKPSDM Manado');
+define('TITLE_SECOND', 'SMS Gateway ');
 define('PROGRAMMER_PHONE', '082115407812');
 define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>BKPSDM Manado</strong>');
 // define('COPYRIGHT', 'Copyright &copy; '.date('Y').' <strong>PATRA LAB</strong>');
@@ -115,3 +116,6 @@ define('PADDING_CETAKAN', '10px');
 define('FONT_CETAKAN', 'Verdana');
 define('ROW_PER_PAGE_CETAK_TAGIHAN', 55);
 define('ROW_PER_PAGE_CETAK_TINDAKAN', 45);
+
+define('VONAGE_API_KEY', 'b9e13f92');
+define('VONAGE_API_SECRET', 'd9b1754f4da78a5a');

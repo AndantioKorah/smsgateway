@@ -1,5 +1,5 @@
 <?php
-	class M_Master extends CI_Model
+	class M_Message extends CI_Model
 	{
 		public function __construct()
         {

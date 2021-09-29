@@ -11,10 +11,10 @@
 
 <aside class="main-sidebar elevation-4 sidebar-light-navy">
   <!-- Brand Logo -->
-  <a href="<?=base_url('welcome')?>" class="brand-link navbar-dark">
+  <a href="<?=base_url('welcome')?>" class="brand-link navbar-red">
     <img src="<?=base_url('assets/img/logo-putih-biru.png')?>" alt="SMS Gateway" class="brand-image img-circle elevation-3"
           style="opacity: .8">
-    <span class="brand-text font-weight-light text-light"><?=TITLES?></span>
+    <span class="brand-text" style="font-weight: bold; color: white;"><?=TITLE_SECOND?></span>
   </a>
   
   <!-- Sidebar -->

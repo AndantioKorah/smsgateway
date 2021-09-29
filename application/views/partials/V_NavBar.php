@@ -48,7 +48,7 @@
     display: none;
   }
 </style>
-<nav class="main-header navbar navbar-expand navbar-dark navbar-gray-dark">
+<nav class="main-header navbar navbar-expand navbar-dark navbar-red">
     <!-- <form class="form-inline ml-3">
       <div class="row">
         <div class="input-group input-group-sm div_search_bar">
@@ -71,7 +71,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li> -->
       <li class="nav-item">
-        <a style="font-weight: bold;" id="live_date_time" class="nav-link"></a>
+        <a style="font-weight: bold; color: white;" id="live_date_time" class="nav-link"></a>
       </li>
     </ul>
 
@@ -108,7 +108,7 @@
         </a>
       </li> -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <a class="nav-link" data-toggle="dropdown" href="#" style="font-weight: bold; color: white;">
           <i class="fa fa-id-badge"></i>
           <?=$active_role['nama']?>
         </a>
@@ -122,7 +122,7 @@
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <a class="nav-link" data-toggle="dropdown" href="#" style="font-weight: bold; color: white;">
             <img src="<?=$this->general_library->getProfilePicture()?>" style="height: 25px; width:25px; margin-right: 1px;" class="img-circle elevation-2" alt="User Image">
             <?=$this->general_library->getNamaUser()?>
         </a>

@@ -1,4 +1,5 @@
 <?php
+
 class General_library
 {
     protected $nikita;

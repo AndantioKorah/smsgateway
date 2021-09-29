@@ -45,7 +45,7 @@
             return $this->db->get()->result_array(); 
         }
 
-        public function getAllWithOrder($tableName, $orderBy = 'date_created', $whatType = 'desc')
+        public function getAllWithOrder($tableName, $orderBy = 'created_date', $whatType = 'desc')
         {
             $this->db->select('*')
             ->where('id !=', 0)

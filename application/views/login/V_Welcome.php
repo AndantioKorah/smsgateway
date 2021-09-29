@@ -27,7 +27,7 @@
   left: 53%;
   transform: translate(-50%, -50%);">
     <div class="col-12 text-center">
-        <h3>Welcome to <?=TITLES?></h3>
+        <h3>Welcome to <?=TITLE_SECOND?></h3>
         <h4><strong><?=$this->general_library->getNamaUser();?></strong></h4>
         <img class="img-circle elevation-2" id="profile_pict" style="max-width: 150px; max-height: 150px;" src="<?=$this->general_library->getProfilePicture()?>" alt="User Image">
     </div>

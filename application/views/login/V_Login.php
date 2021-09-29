@@ -56,14 +56,20 @@
     <a href="#"><b><?=TITLES?></b></a>
   </div> -->
   <!-- /.login-logo -->
-  <div class="card shadow-lg p-3 mb-5 bg-white rounded" style="opacity: 1; transition: .2s">
+  <div class="card shadow-lg mb-5 bg-white rounded" style="opacity: 1; transition: .2s">
     <div class="card-body login-card-body">
       <center>
-      <img src="<?=base_url('assets/img/logo-sms-gateway-putih-hitam.png')?>" style="height: 120px; width: 290px;" />
-      <br><br>
+      <img src="<?=base_url('assets/img/logo-putih-biru.png')?>" style="height: 250px; width: 250px;
+      margin-top: -20px;
+      margin-bottom: -50px;"/>
+      <br>
+      <span style="font-weight: bold; font-size: 25px; color: black; font-family: Verdana;"><?=TITLE_SECOND?></span>
+      <br>
+      <span style="font-weight: bold; font-size: 14px; color: black">BKPSDM Kota Manado</span>
+      <br>
       </center>
       <form action="<?=base_url('login/C_Login/authenticateAdmin')?>" method="post">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 mt-3">
           <input type="text" class="form-control" onclick="hideError()" name="username" placeholder="Username">
           <div class="input-group-append">
             <div class="input-group-text">
